@@ -67,6 +67,7 @@ userSchema.pre('save',async function(next){
 })
 // middleware : to update the passwordChangedAt property when the user update his password
 userSchema.pre('save',function(next){
+    if(this.isNew) return next()
     if(this.isModified('password')) {
         this.passwordChangedAt=Date.now()-1000;
     }

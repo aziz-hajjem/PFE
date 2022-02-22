@@ -189,12 +189,14 @@ export default function Users() {
                           src={require(`../img/users/${el.photo}`)}
                         />
                       </div>
-                      <h2 style={{ width: "20%" }}>
+                      <div style={{ width: "20%" }}>
+                      <h2 style={{ width: "100%",fontSize:'100%' }}>
                         {el.userName} <br />
                         {el.email}
                       </h2>
+                      </div>
 
-                      <div style={{ gap: "0.3em", display: "flex" }}>
+                      <div style={{ gap: "0.3em", display: "flex" ,}}>
                         <MdDelete
                           style={{
                             height: "2em",

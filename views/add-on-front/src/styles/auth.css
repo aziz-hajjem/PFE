@@ -175,11 +175,10 @@ form.sign-in-form {
   top: -10%;
   right: 48%;
   transform: translateY(-50%);
-  background-image: linear-gradient(
-    -45deg,
-    orange 0%,
-    rgba(255, 165, 0, 0.6) 100%
-  );
+  background-image: linear-gradient(220deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+  linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),
+  linear-gradient(320deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+
   transition: 1.8s ease-in-out;
   border-radius: 50%;
   z-index: 6;
@@ -411,4 +410,22 @@ form.sign-in-form {
     bottom: 28%;
     left: 50%;
   }
+}
+.btn {
+  width: 150px;
+  border: none;
+  outline: none;
+  height: 49px;
+  border-radius: 49px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+  background-image: linear-gradient(to right,#3b75fb,#26cdff);
+}
+
+.btn:hover {
+  transform: scale(.8) ;
 }

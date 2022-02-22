@@ -104,11 +104,11 @@ exports.updateMyPassword = async (req, res, next) => {
     // houni najamna na3mlou req.user.id khater deja amlin login ya3ni kbalha bech ysir el middleware protect
     if (!passwordCurrent || !password || !confirmPassword) {
       return res.status(404).json({
-        error: {
+        
           status: "Fail",
           message:
             "Please provide the current password , password and confirm it 😏",
-        },
+      
       });
     }
     const user = await User.findById(req.user.id).select("+password");
@@ -118,10 +118,10 @@ exports.updateMyPassword = async (req, res, next) => {
       !(await user.passwordCorrect(req.body.passwordCurrent, user.password))
     ) {
       return res.status(404).json({
-        error: {
+        
           status: "Fail",
           message: "Password is incorrect",
-        },
+      
       });
     }
 
@@ -137,7 +137,7 @@ exports.updateMyPassword = async (req, res, next) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
       message: error.message,
     });

@@ -57,7 +57,7 @@ exports.createProject = async (req, res, next) => {
               }
           })
       }
-      const user=await User.findById(req.user.id);
+      const user=await User.findById(req.user.id).populate('projects');
       await user.projects.push(newProject)
       await user.save()
       return res.status(201).json({
@@ -142,7 +142,7 @@ exports.deleteProject = async (req, res, next) => {
               }
           })
       }
-      const user=await User.findById(req.user.id)
+      const user=await User.findById(req.user.id).populate('projects')
       user.projects.pull({_id:req.params.id})
       await user.save()
 

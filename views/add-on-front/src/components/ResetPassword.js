@@ -42,31 +42,37 @@ export default function ResetPassword() {
     }
   };
   return (
-    <div >
+    <div className="container">
+      <div className="forms-container">
+      <div className="signin-signup">
       
         
-          <form onSubmit={resetPassword} className="sign-in-form">
-            <h2 className="title">Reset Password </h2>
-            <div className="input-field">
-              <i className="fas fa-user"></i>
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-lock"></i>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <input type="submit" value="Reset" className="btn solid" />
-          </form>
-        
-      
+      <form onSubmit={resetPassword} className="sign-in-form">
+        <h2 className="title">Reset Password </h2>
+        {error&&<h5 style={{color:"#ff3333"}}>{error}</h5>}
+        <div className="input-field">
+          <i className="fas fa-user"></i>
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="input-field">
+          <i className="fas fa-lock"></i>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <input type="submit" value="Reset" className="btn solid" />
+      </form>
+    
+  
+</div>
+      </div>
     </div>
+    
   );
 }
