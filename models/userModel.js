@@ -50,7 +50,7 @@ const userSchema= new mongoose.Schema({
     },
     photo:{
         type:String,
-        default:'default.jpeg'
+        default:'default.jpeg',
     },
     passwordChangedAt:Date,
     passwordResetToken:String,
@@ -73,13 +73,16 @@ userSchema.pre('save',function(next){
     }
     next()
 })
-// userSchema.pre(['save','find','create','findById','findByIdAndUpdate','findByIdAndDelete'],async function(next){
-//     await this.populate({
-//         path:'projects',
-//         select:'-__v'
-//     })
-//     next()
-// })
+
+
+userSchema.pre('save',async function(next){
+    await this.populate({
+        path:'projects',
+        select:'-__v',
+        populate:{path:'macros',select:'-__v'}
+    })
+    next()
+})
 
 
 // userSchema.pre('save',async function(next){

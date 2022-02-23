@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const macro=require('./macroModel');
 
 const projectSchema=new mongoose.Schema({
     name: {
@@ -43,7 +44,9 @@ const projectSchema=new mongoose.Schema({
     enableLicensing:{
         type:Boolean,
         required:[true,"Please provide the enableLicensing "]
-    }
+    },
+    macros:[{ type: mongoose.Schema.Types.ObjectId, ref: 'macro' } ]
+
 })
 
 const projectModel=mongoose.model("project",projectSchema);

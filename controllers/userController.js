@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Project=require('../models/projectModel')
+const Macro=require('../models/macroModel')
 const jwt = require("jsonwebtoken");
 const multer=require('multer');
 
@@ -41,7 +42,11 @@ const filterObj = (obj, ...params) => {
 };
 exports.viewMe = async (req, res, next) => {
   try {
-    const me = await User.findById(req.user.id).populate('projects');
+    const me = await User.findById(req.user.id).populate({path:"projects",populate:{path:"macros"}})
+    // const project=me.projects.map(el=>el.macros)
+    const arr=me
+    // const macros=await me.projects.select('+macros')
+    // const macros=me.projects.macros.map(async(el)=>await Macro.findById(el._id.toString()))
     if (!me) {
       return res.status(404).json({
         error: {
@@ -53,8 +58,9 @@ exports.viewMe = async (req, res, next) => {
     return res.status(200).json({
       status: "Succes",
       data: {
-        me,
-        currentUser: req.user,
+        me
+        // macros:arr.projects[0].macros[0].name
+     // currentUser: req.user,
       },
     });
   } catch (error) {
@@ -247,7 +253,7 @@ exports.updateUser = async (req, res, next) => {
   next();
 };
 exports.deleteUser = async (req, res, next) => {
-  try {
+   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if(!deletedUser){
       return res.status(400).json({
@@ -258,7 +264,10 @@ exports.deleteUser = async (req, res, next) => {
       })
     }
     if(deletedUser.projects){
-      deletedUser.projects.map(async el=>await Project.findByIdAndDelete(el._id.toString()))
+      deletedUser.projects.map(async el=>{const proj= await Project.findByIdAndDelete(el._id.toString());
+      if(proj.macros){
+        proj.macros.map(async m=>await Macro.findByIdAndDelete(m._id.toString()))
+      }})
     }
     res.status(200).json({
       status: "Succes",

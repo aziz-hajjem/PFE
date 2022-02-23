@@ -1,7 +1,5 @@
 const Project = require('../models/projectModel')
-const User = require('../models/userModel')
 const Macro = require('../models/macroModel')
-
 const multer=require('multer');
 
 const multerStorage=multer.diskStorage({
@@ -10,7 +8,7 @@ const multerStorage=multer.diskStorage({
     },
     filename:(req,file,cb)=>{
       const ext=file.mimetype.split('/')[1];
-      cb(null,`icon-${req.user.id}-${Date.now()}.${ext}`)
+      cb(null,`Macro_icon-${req.user.id}-${Date.now()}.${ext}`)
   
     }
   })
@@ -31,41 +29,38 @@ const multerStorage=multer.diskStorage({
     storage:multerStorage,
     fileFilter:multerFilter
   })
-  exports.uploadProjectPhoto=upload.single('icon');
+  exports.uploadMacroPhoto=upload.single('icon');
 
 
 
-exports.createProject = async (req, res, next) => {
+exports.createMacro = async (req, res, next) => {
     try {
-      const { name, key, description,icon,vendorName,vendorUrl,authentication,enableLicensing } = req.body;
+      const { name, key, description,icon,categories,bodyType,outputType } = req.body;
       
-      const newProject = await Project.create({
+      const newMacro=await Macro.create ({
         name:name,
         key:key,
         description:description,
         icon:icon,
-        vendor:{
-            name:vendorName,
-            url:vendorUrl
-        },
-        authentication:authentication,
-        enableLicensing:enableLicensing
+        categories:[categories],
+        bodyType:bodyType,
+        outputType:outputType
       });
-      if(!newProject){
+      if(!newMacro){
           return res.status(400).json({
               error:{
                   status:'Fail',
-                  message:"Failed to create new project"
+                  message:"Failed to create new macro :confounded:"
               }
           })
       }
-      const user=await User.findById(req.user.id).populate('projects');
-      await user.projects.push(newProject)
-      await user.save()
+      const project=await Project.findById(req.params.id).populate('macros');
+      await project.macros.push(newMacro)
+      await project.save()
       return res.status(201).json({
           status:"Succes",
           data:{
-              newProject
+              newMacro
           }
       })
 
@@ -89,10 +84,11 @@ const filterObj = (obj, ...params) => {
   return newObj;
 };
 
-exports.updateProject = async (req, res, next) => {
+exports.updateMacro = async (req, res, next) => {
     try {
       
-      const filteredBody = filterObj(req.body, "name", "key","description","authentication","enableLicensing");
+      const filteredBody = filterObj(req.body, "name", "key", "description","bodyType","outputType");
+      
       if(req.file)filteredBody.icon=req.file.filename
       if(!req.body){
           return res.status(400).json({
@@ -102,11 +98,12 @@ exports.updateProject = async (req, res, next) => {
               }
           })
       }
-      const project = await Project.findByIdAndUpdate(req.params.id,filteredBody,{
+      const macro = await Macro.findByIdAndUpdate(req.params.id,filteredBody,{
         new: true,
         runValidators: true,
       });
-      if(!project){
+      await macro.save()
+      if(!macro){
           return res.status(400).json({
               error:{
                   status:'Fail',
@@ -133,23 +130,20 @@ exports.updateProject = async (req, res, next) => {
     }
     next();
 };
-exports.deleteProject = async (req, res, next) => {
+exports.deleteMacro = async (req, res, next) => {
     try {
-      const project = await Project.findByIdAndDelete(req.params.id);
-      if(!project){
-          return res.status(400).json({
-              error:{
-                  status:'Fail',
-                  message:"Project is not exist !! "
-              }
-          })
-      }
-      const user=await User.findById(req.user.id).populate('projects')
-      user.projects.pull({_id:req.params.id})
-      await user.save()
-      if(project.macros){
-        project.macros.map(async el=>await Macro.findByIdAndDelete(el._id.toString()))
-      }
+      // const macro = await Macro.findByIdAndDelete(req.params.id);
+      // if(!macro){
+      //     return res.status(400).json({
+      //         error:{
+      //             status:'Fail',
+      //             message:"Project is not exist !! "
+      //         }
+      //     })
+      // }
+      const project=await Project.findByIdAndDelete(req.params.projectid).populate('macros')
+      project.macros.pull({_id:req.params.id})
+      await project.save()
 
       return res.status(201).json({
           status:"Succes",
@@ -170,14 +164,14 @@ exports.deleteProject = async (req, res, next) => {
     next();
 };
 
-exports.getAllProjects = async (req, res, next) => {
+exports.getAllMacro = async (req, res, next) => {
   try {
-    const projects = await User.findById(req.user.id).select('projects').populate('projects');
-    if(!projects){
+    const macros = await Project.findById(req.params.id).populate('macros').select('macros');
+    if(!macros){
         return res.status(400).json({
             error:{
                 status:'Fail',
-                message:"This user have not projects !! "
+                message:"This user have not macros !! "
             }
         })
     }
@@ -186,8 +180,7 @@ exports.getAllProjects = async (req, res, next) => {
     return res.status(201).json({
         status:"Succes",
         data:{
-          results:projects.projects.length,
-          projects:projects.projects
+          macros
         }
     })
 
@@ -203,14 +196,15 @@ exports.getAllProjects = async (req, res, next) => {
   next();
 };
 
-exports.getProject = async (req, res, next) => {
+exports.getMacro = async (req, res, next) => {
   try {
-    const project = await Project.findById(req.params.id);
-    if(!project){
+    const macro = await Macro.findById(req.params.id);
+    
+    if(!macro){
         return res.status(400).json({
             error:{
                 status:'Fail',
-                message:"Project not found !! "
+                message:"Macro not found !! "
             }
         })
     }
@@ -219,7 +213,7 @@ exports.getProject = async (req, res, next) => {
     return res.status(201).json({
         status:"Succes",
         data:{
-          project
+          macro
         }
     })
 
@@ -234,3 +228,68 @@ exports.getProject = async (req, res, next) => {
   }
   next();
 };
+exports.addCategories=async(req,res,next)=>{
+  try {
+    const {categorie}=req.body
+    const macro=await Macro.findById(req.params.id)
+    if(categorie) macro.categories.push(categorie);
+    await macro.save()
+    res.status(200).json({
+      status:"Succes",
+      data:{
+        message:"Categorie is added succesfully"
+      }
+    })
+  } catch (error) {
+    res.status(400).json({
+      error:{
+        status:"Fail",
+        message:error.message
+      }
+    })
+  }
+  next()
+}
+exports.addParamter=async(req,res,next)=>{
+  try {
+    const {identifier,name,description,type,required,multiple}=req.body
+    const macro=await Macro.findById(req.params.id)
+    if(req.body) macro.parameters.push({identifier,name,description,type,required,multiple});
+    await macro.save()
+    res.status(200).json({
+      status:"Succes",
+      data:{
+        macro
+      }
+    })
+  } catch (error) {
+    res.status(400).json({
+      error:{
+        status:"Fail",
+        message:error.message
+      }
+    })
+  }
+  next()
+}
+exports.deleteParamter=async(req,res,next)=>{
+  try {
+    const macro=await Macro.findById(req.params.id)
+     macro.parameters.pull({_id:req.params.paramid});
+    await macro.save()
+    res.status(200).json({
+      status:"Succes",
+      data:{
+        macro
+      }
+    })
+  } catch (error) {
+    res.status(400).json({
+      error:{
+        status:"Fail",
+        message:error.message
+      }
+    })
+  }
+  next()
+}

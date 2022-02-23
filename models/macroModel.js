@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-const paramterSchema=new mongooseSchema({
+const paramterSchema=new mongoose.Schema({
     identifier:{
         type:String,
         unique:true,
@@ -62,7 +62,7 @@ const macroSchema=new mongoose.Schema({
         enum:['block','inline'],
         default:'block'
     },
-    parameters :[{ type: mongoose.Schema.Types.ObjectId, ref: 'paramterSchema' } ]
+    parameters :[paramterSchema ]
 })
 
 const macroModel=mongoose.model("macro",macroSchema);
