@@ -140,16 +140,8 @@ exports.updateMacro = async (req, res, next) => {
 };
 exports.deleteMacro = async (req, res, next) => {
   try {
-    // const macro = await Macro.findByIdAndDelete(req.params.id);
-    // if(!macro){
-    //     return res.status(400).json({
-    //         error:{
-    //             status:'Fail',
-    //             message:"Project is not exist !! "
-    //         }
-    //     })
-    // }
-    const project = await Project.findByIdAndDelete(
+
+    const project = await Project.findById(
       req.params.projectid
     ).populate("macros");
     project.macros.pull({ _id: req.params.id });

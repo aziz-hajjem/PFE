@@ -33,7 +33,7 @@ const projectSchema=new mongoose.Schema({
     },
     icon:{
         type:String,
-        default:"default.jpeg"
+        default:"default.png"
     },
     authentication:{
         type:String,
