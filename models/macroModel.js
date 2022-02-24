@@ -62,7 +62,7 @@ const macroSchema=new mongoose.Schema({
         enum:['block','inline'],
         default:'block'
     },
-    parameters :[paramterSchema ]
+    parameters :[{type:paramterSchema,unique:true} ]
 })
 
 const macroModel=mongoose.model("macro",macroSchema);

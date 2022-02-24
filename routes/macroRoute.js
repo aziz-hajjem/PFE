@@ -9,8 +9,10 @@ route.delete('/:projectid/:id',authController.protect,macroController.deleteMacr
 route.get('/allMacros/:id',authController.protect,macroController.getAllMacro)
 route.get('/:id',authController.protect,macroController.getMacro)
 route.patch('/addCategorie/:id',authController.protect,macroController.addCategories)
-route.post('/addParamter/:id',authController.protect,macroController.addParamter)
-route.delete('/deleteParamter/:id/:paramid',authController.protect,macroController.deleteParamter)
+route.post('/paramter/:id',authController.protect,macroController.addParamter)
+route.delete('/paramter/:id/:paramid',authController.protect,macroController.deleteParamter)
+route.patch('/paramter/:id/:paramid',authController.protect,macroController.updateParamter)
+
 
 
 

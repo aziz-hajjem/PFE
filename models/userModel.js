@@ -75,14 +75,14 @@ userSchema.pre('save',function(next){
 })
 
 
-userSchema.pre('save',async function(next){
-    await this.populate({
-        path:'projects',
-        select:'-__v',
-        populate:{path:'macros',select:'-__v'}
-    })
-    next()
-})
+// userSchema.pre('save',async function(next){
+//     await this.populate({
+//         path:'projects',
+//         select:'-__v',
+//         populate:{path:'macros',select:'-__v'}
+//     })
+//     next()
+// })
 
 
 // userSchema.pre('save',async function(next){

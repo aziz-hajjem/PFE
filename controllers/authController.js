@@ -27,7 +27,7 @@ exports.signUp = async (req, res, next) => {
     });
   } catch (error) {
     
-    res.status(400).json({
+    return res.status(400).json({
       error: {
         status: "Fail",
         message: error.message,
