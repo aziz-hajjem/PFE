@@ -20,6 +20,7 @@ export default function Profile() {
         "http://localhost:5000/api/pfe/user/me",
         config
       );
+      console.log(data)
       setCurrentUser(data.data.me);
     } catch (error) {
       console.log(error.response.data.error.message);

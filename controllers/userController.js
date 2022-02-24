@@ -43,10 +43,7 @@ const filterObj = (obj, ...params) => {
 exports.viewMe = async (req, res, next) => {
   try {
     const me = await User.findById(req.user.id).populate({path:"projects",populate:{path:"macros"}})
-    // const project=me.projects.map(el=>el.macros)
-    const arr=me
-    // const macros=await me.projects.select('+macros')
-    // const macros=me.projects.macros.map(async(el)=>await Macro.findById(el._id.toString()))
+    
     if (!me) {
       return res.status(404).json({
         error: {
@@ -77,9 +74,11 @@ exports.updateMe = async (req, res, next) => {
   try {
     if (req.body.password || req.body.confirmPassword) {
       return res.status(400).json({
-        stauts: "Fail",
+        error:{
+          stauts: "Fail",
         message:
           "This route is not specified for password update please check /updatePassword",
+        }
       });
     }
     const filteredBody = filterObj(req.body, "userName", "email");
@@ -97,8 +96,10 @@ exports.updateMe = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).json({
-      stauts: "Fail",
+      error:{
+        stauts: "Fail",
       message: error.message,
+      }
     });
   }
   next();

@@ -195,6 +195,7 @@ export default function Sidebar() {
                 icon={<GoSettings style={{ width: "20px", height: "20px" }} />}
               >
                 <MenuItem
+                onClick={() => navigate("/updatemyprofile")}
                   icon={<MdBuild style={{ width: "20px", height: "20px" }} />}
                 >
                   Confidientiality

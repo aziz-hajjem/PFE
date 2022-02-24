@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import Project from "./components/Project";
 import { useLocation } from "react-router";
 import UpdateMyPassword from "./components/UpdateMyPassword";
+import UpdateMyProfile from "./components/UpdateMyProfile";
 
 function App() {
   const location=useLocation()
@@ -29,6 +30,7 @@ function App() {
             <Route path="/profile" element={<Profile />}/>
             <Route path="/projects" element={<Project />}/>
             <Route path="/updatemypassword" element={<UpdateMyPassword />}/>
+            <Route path="/updatemyprofile" element={<UpdateMyProfile />}/>
           </Route> 
           <Route path="/auth" element={<Auth />}></Route>
           <Route path="/resetPassword/:token" element={<ResetPassword />}></Route>
