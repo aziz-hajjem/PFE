@@ -76,6 +76,7 @@ export default function Project() {
         {projects &&
           projects.map((el) => (
             <div
+            onClick={()=>navigate(`/project/${el._id}`)}
               className="box box-down "
               style={{
                 borderTop: `3px solid #${Math.floor(

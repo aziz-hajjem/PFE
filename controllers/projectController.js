@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 const Macro = require('../models/macroModel')
 
 const multer=require('multer');
+const { isValidObjectId } = require('mongoose');
 
 const multerStorage=multer.diskStorage({
     destination:(req,file,cb)=>{
@@ -102,6 +103,15 @@ exports.updateProject = async (req, res, next) => {
               }
           })
       }
+      const find= req.user.projects.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This project is not yours 😠"
+          }
+        })
+      }
       const project = await Project.findByIdAndUpdate(req.params.id,filteredBody,{
         new: true,
         runValidators: true,
@@ -135,7 +145,7 @@ exports.updateProject = async (req, res, next) => {
 };
 exports.deleteProject = async (req, res, next) => {
     try {
-      const project = await Project.findByIdAndDelete(req.params.id);
+      const project = await Project.findById(req.params.id);
       if(!project){
           return res.status(400).json({
               error:{
@@ -145,6 +155,16 @@ exports.deleteProject = async (req, res, next) => {
           })
       }
       const user=await User.findById(req.user.id).populate('projects')
+      const find= req.user.projects.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This project is not yours 😠"
+          }
+        })
+      }
+      await Project.deleteOne(project)
       user.projects.pull({_id:req.params.id})
       await user.save()
       if(project.macros){
@@ -154,6 +174,7 @@ exports.deleteProject = async (req, res, next) => {
       return res.status(201).json({
           status:"Succes",
           data:{
+              find,
               currentUser:req.user
           }
       })
@@ -205,6 +226,15 @@ exports.getAllProjects = async (req, res, next) => {
 
 exports.getProject = async (req, res, next) => {
   try {
+    const find= req.user.projects.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This project is not yours 😠"
+          }
+        })
+      }
     const project = await Project.findById(req.params.id);
     if(!project){
         return res.status(400).json({

@@ -90,6 +90,15 @@ const filterObj = (obj, ...params) => {
 
 exports.updateMacro = async (req, res, next) => {
   try {
+    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This Macro is not yours 😠"
+          }
+        })
+      }
     const filteredBody = filterObj(
       req.body,
       "name",
@@ -140,6 +149,15 @@ exports.updateMacro = async (req, res, next) => {
 };
 exports.deleteMacro = async (req, res, next) => {
   try {
+    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This Macro is not yours 😠"
+          }
+        })
+      }
 
     const project = await Project.findById(
       req.params.projectid
@@ -197,6 +215,15 @@ exports.getAllMacro = async (req, res, next) => {
 
 exports.getMacro = async (req, res, next) => {
   try {
+    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This Macro is not yours 😠"
+          }
+        })
+      }
     const macro = await Macro.findById(req.params.id);
 
     if (!macro) {

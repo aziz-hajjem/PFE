@@ -73,6 +73,7 @@ export default function Sidebar() {
                     alignItems: "center",
                     textAlign: "center",
                     justifyContent: "center",
+                    color:"hsl(0, 0%, 98%)"
                   }}
                 >
                   Addons <br /> Generator

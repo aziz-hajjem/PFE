@@ -9,6 +9,7 @@ import Sidebar from "./components/Sidebar";
 import Users from "./components/Users";
 import Profile from "./components/Profile";
 import Project from "./components/Project";
+import Projects from "./components/Projects";
 import { useLocation } from "react-router";
 import UpdateMyPassword from "./components/UpdateMyPassword";
 import UpdateMyProfile from "./components/UpdateMyProfile";
@@ -29,6 +30,7 @@ function App() {
             <Route path="/users" element={<Users />}/>
             <Route path="/profile" element={<Profile />}/>
             <Route path="/projects" element={<Project />}/>
+            <Route path="/project/:id" element={<Projects />}/>
             <Route path="/updatemypassword" element={<UpdateMyPassword />}/>
             <Route path="/updatemyprofile" element={<UpdateMyProfile />}/>
           </Route> 
