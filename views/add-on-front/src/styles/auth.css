@@ -4,11 +4,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* overflow-x: hidden; */
 }
 .App {
-  width: 100vw;
+  width: auto;
+  min-height: 100vh;
+  
+}
+/* .App:not(:fullscreen){
+  height: 100vh;
+} */
+/* .App:fullscreen{
   height: 100vh;
 }
+.App */
 
 body,
 input {

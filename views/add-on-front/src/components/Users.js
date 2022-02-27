@@ -149,17 +149,18 @@ export default function Users() {
 
           <input
             onClick={() => updatedUser && updateHandler(updatedUser)}
+            readOnly
             value="Update"
             className="btn solid"
             style={{ textAlign: "center" }}
           />
         </form>
       </Modal>
-      <div>
-        <div style={{ display: "flex", width: "auto" }}>
+      <div style={{width:"100%"}}>
+        <div style={{ display: "flex", width: "100%" }}>
           <div
             style={{
-              width: "auto",
+              width: "  100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",

@@ -58,7 +58,7 @@ export default function Sidebar() {
         <ProSidebar
           className="side"
           collapsed={collapsed}
-          style={{ height: "100vh", margin: "0px" }}
+          style={{ height: "auto", margin: "0px" }}
           image="https://www.freecodecamp.org/news/content/images/size/w2000/2021/06/w-qjCHPZbeXCQ-unsplash.jpg"
         >
           <SidebarHeader>
