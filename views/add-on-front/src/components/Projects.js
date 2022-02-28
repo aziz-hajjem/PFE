@@ -84,6 +84,25 @@ export default function Projects() {
       console.log(error.response);
     }
   };
+  const deleteProject = async (project) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/pfe/user/projects/${project._id}`,
+        config
+      );
+      navigate('/projects')
+      
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
@@ -171,7 +190,7 @@ export default function Projects() {
                     Math.random() * 16777215
                   ).toString(16)}`,
                 }}
-              >
+              ><div style={{display:"flex" ,justifyContent:"space-between"}}>
                 <div className="box-header">
                   {project.icon && (
                     <img
@@ -180,9 +199,15 @@ export default function Projects() {
                       alt=""
                     />
                   )}
-
+                 
                   <h2>{project.name}</h2>
+                 
                 </div>
+                <a
+                    onClick={() => project && deleteProject(project)}
+                    className="close"
+                  ></a>
+                  </div>
                 <div className="content">
                   <div className="row">
                     <h2>NAME :</h2>

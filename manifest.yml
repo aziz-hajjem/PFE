@@ -1,0 +1,11 @@
+modules:
+  macro:
+    - key: Second macro.fr
+      function: main
+      title: Second Macro
+      description: azsazaz
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd

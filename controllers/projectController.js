@@ -38,13 +38,13 @@ const multerStorage=multer.diskStorage({
 
 exports.createProject = async (req, res, next) => {
     try {
-      const { name, key, description,icon,vendorName,vendorUrl,authentication,enableLicensing } = req.body;
+      const { name, key, description,vendorName,vendorUrl,authentication,enableLicensing } = req.body;
       
       const newProject = await Project.create({
         name:name,
         key:key,
         description:description,
-        icon:icon,
+        // icon:icon,
         vendor:{
             name:vendorName,
             url:vendorUrl

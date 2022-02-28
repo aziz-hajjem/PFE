@@ -34,7 +34,7 @@ export default function Profile() {
     getMe();
   }, []);
   return (
-    <>
+    <div className="containers">
       {currentUser && (
         <div className="cards-container">
           {console.log(currentUser)}
@@ -78,6 +78,6 @@ export default function Profile() {
           <div className="clear"></div>
         </div>
       )}
-    </>
+    </div>
   );
 }

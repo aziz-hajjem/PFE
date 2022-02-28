@@ -129,7 +129,8 @@ export default function Sidebar() {
                 </MenuItem>
               )}
               <MenuItem
-                icon={<GoProject onClick={() => navigate("/projects")} style={{ width: "20px", height: "20px" }} />}
+              onClick={() => navigate("/projects")}
+                icon={<GoProject  style={{ width: "20px", height: "20px" }} />}
               >
                 Projects
               </MenuItem>

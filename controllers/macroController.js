@@ -73,7 +73,7 @@ exports.createMacro = async (req, res, next) => {
     res.status(400).json({
       error: {
         status: "Fail",
-        message: error.message,
+        message: error,
       },
     });
   }
@@ -90,15 +90,6 @@ const filterObj = (obj, ...params) => {
 
 exports.updateMacro = async (req, res, next) => {
   try {
-    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
-      if(!find){
-        return res.status(400).json({
-          error:{
-            status:"Fail",
-            message:"This Macro is not yours 😠"
-          }
-        })
-      }
     const filteredBody = filterObj(
       req.body,
       "name",
@@ -107,6 +98,16 @@ exports.updateMacro = async (req, res, next) => {
       "bodyType",
       "outputType"
     );
+    const project=await Project.findById(req.params.projectid)
+    const find= project.macros.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This Macro is not yours 😠"
+          }
+        })
+      }
 
     if (req.file) filteredBody.icon = req.file.filename;
     if (!req.body) {
@@ -121,12 +122,12 @@ exports.updateMacro = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
-    await macro.save();
+    
     if (!macro) {
       return res.status(400).json({
         error: {
           status: "Fail",
-          message: "Project is not exist !! ",
+          message: "Macro does not exist !! ",
         },
       });
     }
@@ -149,7 +150,17 @@ exports.updateMacro = async (req, res, next) => {
 };
 exports.deleteMacro = async (req, res, next) => {
   try {
-    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
+    const macro=await Macro.findByIdAndDelete(req.params.id);
+    if(!macro){
+      return res.status(400).json({
+        error: {
+          status: "Fail",
+          message: "Macro does not exist 😠",
+        },
+      });
+    }
+    const project=await Project.findById(req.params.projectid)
+    const find= project.macros.find(el=>el.toString()===req.params.id)
       if(!find){
         return res.status(400).json({
           error:{
@@ -159,16 +170,14 @@ exports.deleteMacro = async (req, res, next) => {
         })
       }
 
-    const project = await Project.findById(
-      req.params.projectid
-    ).populate("macros");
+      
     project.macros.pull({ _id: req.params.id });
     await project.save();
 
     return res.status(201).json({
       status: "Succes",
       data: {
-        currentUser: req.user,
+        project
       },
     });
   } catch (error) {
@@ -215,15 +224,6 @@ exports.getAllMacro = async (req, res, next) => {
 
 exports.getMacro = async (req, res, next) => {
   try {
-    const find= req.user.projects.macros.find(el=>el.toString()===req.params.id)
-      if(!find){
-        return res.status(400).json({
-          error:{
-            status:"Fail",
-            message:"This Macro is not yours 😠"
-          }
-        })
-      }
     const macro = await Macro.findById(req.params.id);
 
     if (!macro) {
@@ -234,6 +234,17 @@ exports.getMacro = async (req, res, next) => {
         },
       });
     }
+    const project=await Project.findById(req.params.projectid)
+    const find= project.macros.find(el=>el.toString()===req.params.id)
+      if(!find){
+        return res.status(400).json({
+          error:{
+            status:"Fail",
+            message:"This Macro is not yours 😠"
+          }
+        })
+      }
+    
 
     return res.status(201).json({
       status: "Succes",
