@@ -23,7 +23,7 @@ export default function ResetPassword() {
         { password, confirmPassword },
         config
       );
-      console.log(data.user);
+      // console.log(data.user);
       // const cookie = Cookies.get("jwt");
       // console.log(cookie);
       localStorage.setItem("authToken", data.token);

@@ -286,14 +286,14 @@ exports.addCategories = async (req, res, next) => {
 };
 exports.addParamter = async (req, res, next) => {
   try {
-    const { identifier, name, description, type, required, multiple } =
+    const { identifier, paramterName, paramterDescription, type, required, multiple } =
       req.body;
     const macro = await Macro.findById(req.params.id);
     if (req.body)
       macro.parameters.push({
         identifier,
-        name,
-        description,
+        paramterName,
+        paramterDescription,
         type,
         required,
         multiple,
@@ -338,7 +338,7 @@ exports.deleteParamter = async (req, res, next) => {
 };
 exports.updateParamter = async (req, res, next) => {
   try {
-    const { identifier, name, description, type, required, multiple } =
+    const { identifier, paramterName, paramterDescription, type, required, multiple } =
       req.body;
     const macro = await Macro.findOneAndUpdate(
       {
@@ -348,8 +348,8 @@ exports.updateParamter = async (req, res, next) => {
       {
         $set: {
           "parameters.$.identifier": identifier,
-          "parameters.$.name": name,
-          "parameters.$.description": description,
+          "parameters.$.paramterName": paramterName,
+          "parameters.$.paramterDescription": paramterDescription,
           "parameters.$.type": type,
           "parameters.$.required": required,
           "parameters.$.multiple": multiple,

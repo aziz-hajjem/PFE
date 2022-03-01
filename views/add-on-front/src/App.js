@@ -13,6 +13,7 @@ import Projects from "./components/Projects";
 import { useLocation } from "react-router";
 import UpdateMyPassword from "./components/UpdateMyPassword";
 import UpdateMyProfile from "./components/UpdateMyProfile";
+import Macro from "./components/Macro";
 
 function App() {
   const location=useLocation()
@@ -31,6 +32,7 @@ function App() {
             <Route path="/profile" element={<Profile />}/>
             <Route path="/projects" element={<Project />}/>
             <Route path="/project/:id" element={<Projects />}/>
+            <Route path="/project/:id/macro/:macroid" element={<Macro />}/>
             <Route path="/updatemypassword" element={<UpdateMyPassword />}/>
             <Route path="/updatemyprofile" element={<UpdateMyProfile />}/>
           </Route> 

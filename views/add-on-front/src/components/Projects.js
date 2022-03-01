@@ -13,6 +13,7 @@ export default function Projects() {
   const [project, setProject] = useState();
   const [name, setName] = useState();
   const [key, setKey] = useState();
+  const [macros, setMacros] = useState();
   const [description, setDescription] = useState();
   const [authentication, setAuthentication] = useState();
   const [enableLicensing, setEnableLicensing] = useState();
@@ -38,8 +39,30 @@ export default function Projects() {
         }`,
         config
       );
-      console.log(data.data.project);
+      // console.log(data.data.project);
       setProject(data.data.project);
+    } catch (error) {
+      console.log(error.response.data.error.message);
+    }
+  };
+  const getMacros = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/pfe/user/projects/macros/allMacros/${
+          location.pathname.split("/")[2]
+        }`,
+        config
+      );
+      // console.log(data.data.project);
+      // console.log(data.data.macros.macros)
+      setMacros(data.data.macros.macros);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -97,8 +120,7 @@ export default function Projects() {
         `http://localhost:5000/api/pfe/user/projects/${project._id}`,
         config
       );
-      navigate('/projects')
-      
+      navigate("/projects");
     } catch (error) {
       console.log(error.response);
     }
@@ -110,9 +132,11 @@ export default function Projects() {
     }
 
     getProject();
+    getMacros();
   }, []);
   return (
     <>
+    {console.log(macros)}
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
           <h2 className="title">Update Project</h2>
@@ -190,24 +214,24 @@ export default function Projects() {
                     Math.random() * 16777215
                   ).toString(16)}`,
                 }}
-              ><div style={{display:"flex" ,justifyContent:"space-between"}}>
-                <div className="box-header">
-                  {project.icon && (
-                    <img
-                      style={{ width: "5em", height: "5em" }}
-                      src={require(`../img/icons/${project.icon}`)}
-                      alt=""
-                    />
-                  )}
-                 
-                  <h2>{project.name}</h2>
-                 
-                </div>
-                <a
+              >
+                <div className="box-header-container">
+                  <div className="box-header">
+                    {project.icon && (
+                      <img
+                        style={{ width: "5em", height: "5em" }}
+                        src={require(`../img/icons/${project.icon}`)}
+                        alt=""
+                      />
+                    )}
+
+                    <h2>{project.name}</h2>
+                  </div>
+                  <a
                     onClick={() => project && deleteProject(project)}
                     className="close"
                   ></a>
-                  </div>
+                </div>
                 <div className="content">
                   <div className="row">
                     <h2>NAME :</h2>
@@ -237,6 +261,57 @@ export default function Projects() {
                     <h2>ENABLE LICENSING :</h2>
                     <h4>{project.enableLicensing.toString()}</h4>
                   </div>
+                  <div className="row" style={{justifyContent:"flex-start",paddingLeft:"2em"}} >
+                    <h2>Macros :</h2></div>
+                    <br/>
+                    <div
+                    style={{
+                     
+                      height: "100%",
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    {macros&&macros.length?(macros.map((el) => (
+                   
+                        <div
+                        onClick={()=>navigate(`/project/${
+                          location.pathname.split("/")[2]
+                        }/macro/${el._id}`)}
+                          className="box box-down "
+                          style={{
+                            width:"100%",
+                            border: `2px solid #${Math.floor(
+                              Math.random() * 16777215
+                            ).toString(16)}`,
+                          }}
+                          key={el._id}
+                        >
+                          <div style={{display:'flex',gap:"20%",alignItems:"center"}}>
+                          <img
+                            style={{ width: "5em", height: "5em" , }}
+                            src={require(`../img/macros/${el.icon}`)}
+                            alt=""
+                          />
+                          <h2>{el.name}</h2>
+                          {/* <GrClose className="close"/> */}
+                          
+                          </div>
+                          <div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%"}}><p>{el.description}</p></div>
+                          
+                          
+                          
+            
+                       
+                        </div>
+                      
+                 
+                      ))):(<h3>This Project didn't have any Macro , Please create one </h3>)
+                      }
+                       </div>
+                  
                 </div>
               </div>
               <div>
@@ -250,6 +325,7 @@ export default function Projects() {
               </div>
             </>
           )}
+          
         </div>
       </div>
     </>

@@ -77,7 +77,12 @@ h1:last-of-type {
   align-items: center;
   gap: 36%;
   padding-left: 3em;
-  width: 85%;
+  width: 70%;
+}
+.box-header-container{
+  display:flex ;
+  justify-content:space-between ;
+  align-items:center
 }
 .row {
   display: flex;
@@ -91,9 +96,9 @@ h4 {
   width: 40%;
   font-size: 120%;
 }
-.content {
+/* .content {
   padding-left: 4em;
-}
+} */
 .project:hover {
   transform: scale(1.02);
   transition: transform 0.6s;
@@ -146,9 +151,14 @@ img {
   .box-header {
     flex-direction: column;
     padding-left: 0;
+    width: 200%;
   }
   .box-header h2 {
     padding-top: 2em;
+  }
+  .box-header-container{
+
+    align-items:flex-start
   }
 }
 

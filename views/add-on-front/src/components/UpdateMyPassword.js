@@ -26,7 +26,7 @@ export default function UpdateMyPassword() {
                 {passwordCurrent,password,confirmPassword},
                 config
             );
-            console.log(data)
+            // console.log(data)
             localStorage.removeItem('authToken')
             navigate('/')
         } catch (error) {

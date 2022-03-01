@@ -8,12 +8,12 @@ const paramterSchema = new mongoose.Schema({
     // unique: true,
     trim: true,
   },
-  name: {
+  paramterName: {
     type: String,
     // unique: true,
     trim: true,
   },
-  description: {
+  paramterDescription: {
     type: String,
     trim: true,
   },
@@ -74,7 +74,7 @@ const macroSchema = new mongoose.Schema({
     enum: ["block", "inline"],
     default: "block",
   },
-  parameters: [{ type: paramterSchema }],
+  parameters: [paramterSchema],
 });
 
 macroSchema.pre("save", async function (next) {

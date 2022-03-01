@@ -60,7 +60,7 @@ export default function Project() {
         "http://localhost:5000/api/pfe/user/projects/allProjects",
         config
       );
-      console.log(data);
+      // console.log(data);
       setProjects(data.data.projects);
     } catch (error) {
       console.log(error.response.data.error.message);

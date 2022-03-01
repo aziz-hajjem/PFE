@@ -1,9 +1,9 @@
 modules:
   macro:
-    - key: Second macro.fr
+    - key: macro.fr
       function: main
-      title: Second Macro
-      description: azsazaz
+      title: First Macro
+      description: This is my First Macro ,Please check it
   function:
     - key: main
       handler: index.run

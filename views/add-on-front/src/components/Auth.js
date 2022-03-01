@@ -65,7 +65,7 @@ export default function Auth() {
           { userName, email, password, confirmPassword },
           config
         );
-        console.log(data);
+        // console.log(data);
  
   
         localStorage.setItem("authToken", data.data.token);

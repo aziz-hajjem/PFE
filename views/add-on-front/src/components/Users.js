@@ -41,7 +41,7 @@ export default function Users() {
         "http://localhost:5000/api/pfe/user/",
         config
       );
-      console.log(data);
+      // console.log(data);
       setUsers(data.data.users);
     } catch (error) {
       setError(error.response.data.error.message);
