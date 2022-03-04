@@ -23,8 +23,6 @@ export default function Macro() {
   const [multiple, setMultiple] = useState();
   const [paramter, setParamter] = useState();
   const [paramterName, setParamterName] = useState();
-
-
   const [bodyType, setBodyType] = useState();
   const [outputType, setOutputType] = useState();
   const [photo, setPhoto] = useState();
@@ -114,6 +112,7 @@ export default function Macro() {
     }
   };
   const updateParamter = async (id) => {
+    
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -135,6 +134,7 @@ export default function Macro() {
           },
         config
       );
+      console.log(id)
       refreshPage();
     } catch (error) {
       console.log(error.response.data.error.message);
@@ -344,6 +344,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="name"
+              defaultValue={paramter&&paramter.paramterName}
               onChange={(e) => setParamterName(e.target.value)}
             />
           </div>
@@ -352,6 +353,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="identifier"
+              defaultValue={paramter&&paramter.identifier}
               onChange={(e) => setIdentifier(e.target.value)}
             />
           </div>
@@ -360,6 +362,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="Description"
+              defaultValue={paramter&&paramter.paramterDescription}
               onChange={(e) => setParamterDescription(e.target.value)}
             />
           </div>
@@ -368,6 +371,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="Type :"
+              defaultValue={paramter&&paramter.type}
               onChange={(e) => setType(e.target.value)}
             />
           </div>
@@ -376,6 +380,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="Required:"
+              defaultValue={paramter&&paramter.required}
               onChange={(e) => setRequired(e.target.value)}
             />
           </div>
@@ -384,6 +389,7 @@ export default function Macro() {
             <input
               type="text"
               placeholder="Multiple:"
+              defaultValue={paramter&&paramter.multiple}
               onChange={(e) => setMultiple(e.target.value)}
             />
           </div>
@@ -458,7 +464,7 @@ export default function Macro() {
                   <br />
                   <div
                     style={{
-                      height: "100%",
+                      // height: "100%",
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
