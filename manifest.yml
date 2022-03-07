@@ -1,9 +1,9 @@
 modules:
   macro:
-    - key: macro.fr
+    - key: dlalkal
       function: main
-      title: First Macro
-      description: This is my First Macro ,Please check it
+      title: dali
+      description: alkzlak
   function:
     - key: main
       handler: index.run

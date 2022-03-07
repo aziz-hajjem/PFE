@@ -8,6 +8,7 @@ import "../styles/project.css";
 
 export default function Projects() {
   const [open, setOpen] = useState(false);
+  const [openAddMacro, setOpenAddMacro] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [project, setProject] = useState();
@@ -17,9 +18,14 @@ export default function Projects() {
   const [description, setDescription] = useState();
   const [authentication, setAuthentication] = useState();
   const [enableLicensing, setEnableLicensing] = useState();
+  const [bodyType, setBodyType] = useState();
+  const [outputType, setOutputType] = useState();
   const [photo, setPhoto] = useState();
   const onOpenModal = () => {
     return setOpen(true);
+  };
+  const onOpenAddModal = () => {
+    return setOpenAddMacro(true);
   };
   const onCloseModal = () => {
     setOpen(false);
@@ -104,7 +110,29 @@ export default function Projects() {
       refreshPage();
       // console.log(data)
     } catch (error) {
-      console.log(error.response);
+      console.log(error.response.data.error.message);
+    }
+  };
+  const addMacro = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/pfe/user/projects/macros/createMacro/${
+          location.pathname.split("/")[2]
+        }`,
+        {name,key,description,bodyType,outputType},
+        config
+      );
+      console.log(data);
+      refreshPage()
+    } catch (error) {
+      console.log(error.response.data.error.message);
     }
   };
   const deleteProject = async (project) => {
@@ -136,7 +164,7 @@ export default function Projects() {
   }, []);
   return (
     <>
-    {console.log(macros)}
+      {console.log(macros)}
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
           <h2 className="title">Update Project</h2>
@@ -203,6 +231,58 @@ export default function Projects() {
           />
         </form>
       </Modal>
+      <Modal open={openAddMacro} onClose={onCloseModal} center>
+        <form className="sign-in-form">
+          <h2 className="title">Add Macro</h2>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="key"
+              onChange={(e) => setKey(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="Body Type :"
+              onChange={(e) => setBodyType(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="Output Type:"
+              onChange={(e) => setOutputType(e.target.value)}
+            />
+          </div>
+          <input
+            onClick={addMacro}
+            readOnly
+            value="Add Macro"
+            className="btn solid"
+            style={{ textAlign: "center" }}
+          />
+        </form>
+      </Modal>
       <div className="Project-container">
         <div className="container-box">
           {project && (
@@ -261,57 +341,83 @@ export default function Projects() {
                     <h2>ENABLE LICENSING :</h2>
                     <h4>{project.enableLicensing.toString()}</h4>
                   </div>
-                  <div className="row" style={{justifyContent:"flex-start",paddingLeft:"2em"}} >
-                    <h2>Macros :</h2></div>
-                    <br/>
-                    <div
+                  <div
+                    className="row"
+                    style={{ justifyContent: "space-between", paddingLeft: "2em" }}
+                  >
+                    <h2>Macros :</h2>
+                    <div>
+                    <input
+                      readOnly
+                      onClick={onOpenAddModal}
+                      value="Add Macro"
+                      className="btn solid"
+                      style={{ textAlign: "center" }}
+                    />
+                  </div>
+                  </div>
+                  
+                  <br />
+                  <div
                     style={{
-                     
-                      height: "100%",
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
                       flexDirection: "column",
                     }}
                   >
-                    {macros&&macros.length?(macros.map((el) => (
-                   
+                    {macros && macros.length ? (
+                      macros.map((el) => (
                         <div
-                        onClick={()=>navigate(`/project/${
-                          location.pathname.split("/")[2]
-                        }/macro/${el._id}`)}
+                          onClick={() =>
+                            navigate(
+                              `/project/${
+                                location.pathname.split("/")[2]
+                              }/macro/${el._id}`
+                            )
+                          }
                           className="box box-down "
                           style={{
-                            width:"100%",
+                            width: "100%",
                             border: `2px solid #${Math.floor(
                               Math.random() * 16777215
                             ).toString(16)}`,
                           }}
                           key={el._id}
                         >
-                          <div style={{display:'flex',gap:"20%",alignItems:"center"}}>
-                          <img
-                            style={{ width: "5em", height: "5em" , }}
-                            src={require(`../img/macros/${el.icon}`)}
-                            alt=""
-                          />
-                          <h2>{el.name}</h2>
-                          {/* <GrClose className="close"/> */}
-                          
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "20%",
+                              alignItems: "center",
+                            }}
+                          >
+                            <img
+                              style={{ width: "5em", height: "5em" }}
+                              src={require(`../img/macros/${el.icon}`)}
+                              alt=""
+                            />
+                            <h2>{el.name}</h2>
+                            {/* <GrClose className="close"/> */}
                           </div>
-                          <div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%"}}><p>{el.description}</p></div>
-                          
-                          
-                          
-            
-                       
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: "100%",
+                            }}
+                          >
+                            <p>{el.description}</p>
+                          </div>
                         </div>
-                      
-                 
-                      ))):(<h3>This Project didn't have any Macro , Please create one </h3>)
-                      }
-                       </div>
-                  
+                      ))
+                    ) : (
+                      <h3>
+                        This Project didn't have any Macro , Please create one{" "}
+                      </h3>
+                    )}
+                  </div>
                 </div>
               </div>
               <div>
@@ -325,7 +431,6 @@ export default function Projects() {
               </div>
             </>
           )}
-          
         </div>
       </div>
     </>
