@@ -122,6 +122,7 @@ exports.updateMacro = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
+    await macro.save()
     
     if (!macro) {
       return res.status(400).json({

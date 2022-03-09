@@ -8,6 +8,7 @@ route.patch('/:id',authController.protect,projectController.uploadProjectPhoto,p
 route.delete('/:id',authController.protect,projectController.deleteProject)
 route.get('/allProjects',authController.protect,projectController.getAllProjects)
 route.get('/:id',authController.protect,projectController.getProject)
+route.get('/:id/generate',authController.protect,projectController.generate)
 
 
 

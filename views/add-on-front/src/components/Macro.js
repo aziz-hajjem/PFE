@@ -176,7 +176,7 @@ export default function Macro() {
       refreshPage();
       // console.log(data)
     } catch (error) {
-      console.log(error.response);
+      console.log(error.response.data.error.message);
     }
   };
   const deleteMacro = async () => {
@@ -194,7 +194,9 @@ export default function Macro() {
         }/${location.pathname.split("/")[4]}`,
         config
       );
-      navigate("/projects");
+      navigate(`/project/${
+        location.pathname.split("/")[2]
+      }`);
     } catch (error) {
       console.log(error.response);
     }
@@ -473,7 +475,7 @@ export default function Macro() {
                   >
                     {macro && macro.parameters.length ? (
                       macro.parameters.map((el) => (
-                        <>
+                        <div key={el._id}>
                           <div
                             className="box box-down "
                             style={{
@@ -535,7 +537,7 @@ export default function Macro() {
                           </div>
                           </div>
                          
-                        </>
+                        </div>
                       ))
                     ) : (
                       <></>

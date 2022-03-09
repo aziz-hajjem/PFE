@@ -51,6 +51,27 @@ export default function Projects() {
       console.log(error.response.data.error.message);
     }
   };
+  const generate = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/pfe/user/projects/${
+          location.pathname.split("/")[2]
+        }/generate`,
+        config
+      );
+      // console.log(data.data.project);
+      // setProject(data.data.project);
+    } catch (error) {
+      console.log(error.response.data.error.message);
+    }
+  };
   const getMacros = async () => {
     const config = {
       headers: {
@@ -425,6 +446,15 @@ export default function Projects() {
                   readOnly
                   onClick={onOpenModal}
                   value="Update"
+                  className="btn solid"
+                  style={{ textAlign: "center" }}
+                />
+              </div>
+              <div>
+                <input
+                  readOnly
+                  onClick={generate}
+                  value="Generate"
                   className="btn solid"
                   style={{ textAlign: "center" }}
                 />

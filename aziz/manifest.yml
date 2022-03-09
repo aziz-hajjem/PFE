@@ -1,9 +1,9 @@
 modules:
   macro:
-    - key: dlalkal
+    - key: Hello Dalii azaazazazaazaza
       function: main
-      title: dali
-      description: alkzlak
+      title: Aziz Macro
+      description: Hello Dalii azaazazazaazaza
   function:
     - key: main
       handler: index.run

@@ -90,11 +90,12 @@ export default function Sidebar() {
             }}
           >
             <Menu iconShape="circle" popperArrow={true}>
-              <MenuItem
+              <MenuItem 
+               onClick={() => navigate("/home")}
                 icon={
                   <FiHome
                     style={{ width: "20px", height: "20px" }}
-                    onClick={() => navigate("/home")}
+                   
                   />
                 }
               >
