@@ -7,6 +7,7 @@ const path=require('path')
 const multer = require("multer");
 const zipper = require("zip-local");
 const AdmZip = require("adm-zip");
+const indexTemplate=require('../templates/index')
 
 // const stream = require('stream');
 
@@ -299,10 +300,10 @@ exports.generate = async (req, res, next) => {
       modules: {
         macro: [
           {
-            key: `${project.macros[0].key}`,
+            key: `${project.macros[1].key}`,
             function: "main",
-            title: `${project.macros[0].name}`,
-            description: `${project.macros[0].description}`,
+            title: `${project.macros[1].name}`,
+            description: `${project.macros[1].description}`,
           },
         ],
         function: [
@@ -316,24 +317,7 @@ exports.generate = async (req, res, next) => {
         id: "ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd",
       },
     };
-    const dataIndex = `
-import ForgeUI, { render, Fragment, Macro, Text } from "@forge/ui";
 
-  const App = () => {
-    return (
-     <Fragment>
-       {/* <Text>Hello world!</Text> */}
-       <Text>${project.macros[0].name} ${project.macros[0].description} </Text>
-     </Fragment>
-    );
-};
-
-export const run = render(
-  <Macro
-    app={<App />}
-  />
-);
-    `;
     const dataPackage=`
     {
       "name": "forge-ui-starter",
@@ -381,8 +365,8 @@ export const run = render(
     .idea
     `
     const dataReadMe=`
-    this macro : ${project.macros[0].name} 
-    fonctionnality :${project.macros[0].description}
+    this macro : ${project.macros[1].name} 
+    fonctionnality :${project.macros[1].description}
     `
     // await fs.writeFileSync(`./aziz/manifest.yml`, doc.toString());
     // await fs.writeFileSync(`./aziz/package.json`, dataPackage);
@@ -398,7 +382,9 @@ export const run = render(
     // const downloadName = `${project.name}-${Date.now()}.zip`;
 
     // const data = zip.toBuffer();
-
+    const indexData={"projectName":project.macros[1].name,"projectDescription":project.macros[1].description}
+    var dataIndex = indexTemplate(indexData);
+    // console.log(result)
     
     zip.addFile("src/index.jsx", Buffer.from(dataIndex, "utf8"), "entry comment goes here");
     zip.addFile("manifest.yml", Buffer.from(doc.toString(), "utf8"), "entry comment goes here");
@@ -414,7 +400,7 @@ export const run = render(
     // zip.writeZip(`C:/Users/azizh/Downloads/test.zip`);
     // const x="/\w/"
     const userDownloadDirectory = path.join(require('os').homedir(), 'Downloads');
-    console.log(userDownloadDirectory.toString())
+    // console.log(userDownloadDirectory.toString())
 
     
     zip.writeZip(`${userDownloadDirectory}/test.zip`);
