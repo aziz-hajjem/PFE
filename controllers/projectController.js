@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const Macro = require("../models/macroModel");
 const YAML = require("yaml");
 const fs = require("fs");
+const path=require('path')
 const multer = require("multer");
 const zipper = require("zip-local");
 const AdmZip = require("adm-zip");
@@ -356,28 +357,74 @@ export const run = render(
     `
     const doc = new YAML.Document();
     doc.contents = dataManifest;
-    await fs.writeFileSync(`./aziz/manifest.yml`, doc.toString());
-    await fs.writeFileSync(`./aziz/package.json`, dataPackage);
-    await fs.writeFileSync(`./aziz/src/index.jsx`, dataIndex);
-    const manifest = await fs.readFileSync(`./aziz/manifest.yml`, "utf8");
-    console.log(manifest);
-    // convert folder to zip file
-    // zipper.sync.zip("./aziz/").compress().save(`${project.name}.zip`);
+    const dataeslint=`
+    {
+      "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 2017,
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "plugins": [
+        "react-hooks"
+      ],
+      "rules": {
+        "react-hooks/rules-of-hooks": "error"
+      }
+    }
+    `
+    const dataGitIgnore=`
+    /node_modules/
+    /dist/
+    /.vscode/
+    .idea
+    `
+    const dataReadMe=`
+    this macro : ${project.macros[0].name} 
+    fonctionnality :${project.macros[0].description}
+    `
+    // await fs.writeFileSync(`./aziz/manifest.yml`, doc.toString());
+    // await fs.writeFileSync(`./aziz/package.json`, dataPackage);
+    // await fs.writeFileSync(`./aziz/src/index.jsx`, dataIndex);
+    // const manifest = await fs.readFileSync(`./aziz/manifest.yml`, "utf8");
+    // console.log(manifest);
+    // // convert folder to zip file
+    // // zipper.sync.zip("./aziz/").compress().save(`${project.name}.zip`);
     const zip = new AdmZip();
 
-    zip.addLocalFolder("./aziz");
-    const downloadName = `${project.name}-${Date.now()}.zip`;
+    // zip.addLocalFolder("./aziz");
+    
+    // const downloadName = `${project.name}-${Date.now()}.zip`;
 
-    const data = zip.toBuffer();
+    // const data = zip.toBuffer();
+
+    
+    zip.addFile("src/index.jsx", Buffer.from(dataIndex, "utf8"), "entry comment goes here");
+    zip.addFile("manifest.yml", Buffer.from(doc.toString(), "utf8"), "entry comment goes here");
+    zip.addFile(".eslintrc", Buffer.from(dataeslint, "utf8"), "entry comment goes here");
+    zip.addFile(".gitignore", Buffer.from(dataGitIgnore, "utf8"), "entry comment goes here");
+    zip.addFile("package.json", Buffer.from(dataPackage, "utf8"), "entry comment goes here");
+    zip.addFile("README.md", Buffer.from(dataReadMe, "utf8"), "entry comment goes here");
+
+    const data=zip.toBuffer();
 
     // save file zip in root directory__dirname+"/"+downloadName
 
-    zip.writeZip(`C:/Users/azizh/Downloads/${downloadName}`);
+    // zip.writeZip(`C:/Users/azizh/Downloads/test.zip`);
+    // const x="/\w/"
+    const userDownloadDirectory = path.join(require('os').homedir(), 'Downloads');
+    console.log(userDownloadDirectory.toString())
+
+    
+    zip.writeZip(`${userDownloadDirectory}/test.zip`);
+    // C:\Users\azizh\Downloads
+
 
     // code to download zip file
 
     res.set("Content-Type", "application/octet-stream");
-    res.set("Content-Disposition", `attachment; filename=${downloadName}`);
+    res.set("Content-Disposition", `attachment; filename=test.zip`);
     res.set("Content-Length", data.length);
     res.send(data);
 
