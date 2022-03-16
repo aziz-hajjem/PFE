@@ -89,7 +89,7 @@ export default function Auth() {
       };
       try {
         const { data } = await axios.post(
-          "http://localhost:5000/api/pfe/auth/login",
+          "http://192.168.100.136:5000/api/pfe/auth/login",
           { email, password },
           config
         );

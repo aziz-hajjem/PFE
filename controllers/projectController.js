@@ -3,11 +3,14 @@ const User = require("../models/userModel");
 const Macro = require("../models/macroModel");
 const YAML = require("yaml");
 const fs = require("fs");
-const path=require('path')
+const path = require("path");
 const multer = require("multer");
 const zipper = require("zip-local");
 const AdmZip = require("adm-zip");
-const indexTemplate=require('../templates/index')
+const stream = require('stream');
+
+
+const indexTemplate = require("../templates/index");
 
 // const stream = require('stream');
 
@@ -300,10 +303,10 @@ exports.generate = async (req, res, next) => {
       modules: {
         macro: [
           {
-            key: `${project.macros[1].key}`,
+            key: `${project.macros[0].key}`,
             function: "main",
-            title: `${project.macros[1].name}`,
-            description: `${project.macros[1].description}`,
+            title: `${project.macros[0].name}`,
+            description: `${project.macros[0].description}`,
           },
         ],
         function: [
@@ -318,7 +321,7 @@ exports.generate = async (req, res, next) => {
       },
     };
 
-    const dataPackage=`
+    const dataPackage = `
     {
       "name": "forge-ui-starter",
       "version": "1.0.0",
@@ -338,10 +341,10 @@ exports.generate = async (req, res, next) => {
       }
     }
     
-    `
+    `;
     const doc = new YAML.Document();
     doc.contents = dataManifest;
-    const dataeslint=`
+    const dataeslint = `
     {
       "parserOptions": {
         "sourceType": "module",
@@ -357,17 +360,17 @@ exports.generate = async (req, res, next) => {
         "react-hooks/rules-of-hooks": "error"
       }
     }
-    `
-    const dataGitIgnore=`
+    `;
+    const dataGitIgnore = `
     /node_modules/
     /dist/
     /.vscode/
     .idea
-    `
-    const dataReadMe=`
-    this macro : ${project.macros[1].name} 
-    fonctionnality :${project.macros[1].description}
-    `
+    `;
+    const dataReadMe = `
+    this macro : ${project.macros[0].name} 
+    fonctionnality :${project.macros[0].description}
+    `;
     // await fs.writeFileSync(`./aziz/manifest.yml`, doc.toString());
     // await fs.writeFileSync(`./aziz/package.json`, dataPackage);
     // await fs.writeFileSync(`./aziz/src/index.jsx`, dataIndex);
@@ -378,34 +381,62 @@ exports.generate = async (req, res, next) => {
     const zip = new AdmZip();
 
     // zip.addLocalFolder("./aziz");
-    
+
     // const downloadName = `${project.name}-${Date.now()}.zip`;
 
     // const data = zip.toBuffer();
-    const indexData={"projectName":project.macros[1].name,"projectDescription":project.macros[1].description}
+    const indexData = {
+      projectName: project.macros[0].name,
+      projectDescription: project.macros[0].description,
+    };
     var dataIndex = indexTemplate(indexData);
     // console.log(result)
-    
-    zip.addFile("src/index.jsx", Buffer.from(dataIndex, "utf8"), "entry comment goes here");
-    zip.addFile("manifest.yml", Buffer.from(doc.toString(), "utf8"), "entry comment goes here");
-    zip.addFile(".eslintrc", Buffer.from(dataeslint, "utf8"), "entry comment goes here");
-    zip.addFile(".gitignore", Buffer.from(dataGitIgnore, "utf8"), "entry comment goes here");
-    zip.addFile("package.json", Buffer.from(dataPackage, "utf8"), "entry comment goes here");
-    zip.addFile("README.md", Buffer.from(dataReadMe, "utf8"), "entry comment goes here");
 
-    const data=zip.toBuffer();
+    zip.addFile(
+      "src/index.jsx",
+      Buffer.from(dataIndex, "utf8"),
+      "entry comment goes here"
+    );
+    zip.addFile(
+      "manifest.yml",
+      Buffer.from(doc.toString(), "utf8"),
+      "entry comment goes here"
+    );
+    zip.addFile(
+      ".eslintrc",
+      Buffer.from(dataeslint, "utf8"),
+      "entry comment goes here"
+    );
+    zip.addFile(
+      ".gitignore",
+      Buffer.from(dataGitIgnore, "utf8"),
+      "entry comment goes here"
+    );
+    zip.addFile(
+      "package.json",
+      Buffer.from(dataPackage, "utf8"),
+      "entry comment goes here"
+    );
+    zip.addFile(
+      "README.md",
+      Buffer.from(dataReadMe, "utf8"),
+      "entry comment goes here"
+    );
+
+    const data = zip.toBuffer();
 
     // save file zip in root directory__dirname+"/"+downloadName
 
     // zip.writeZip(`C:/Users/azizh/Downloads/test.zip`);
     // const x="/\w/"
-    const userDownloadDirectory = path.join(require('os').homedir(), 'Downloads');
+    const userDownloadDirectory = path.join(
+      require("os").homedir(),
+      "Downloads"
+    );
     // console.log(userDownloadDirectory.toString())
 
-    
     zip.writeZip(`${userDownloadDirectory}/test.zip`);
     // C:\Users\azizh\Downloads
-
 
     // code to download zip file
 
@@ -413,6 +444,13 @@ exports.generate = async (req, res, next) => {
     res.set("Content-Disposition", `attachment; filename=test.zip`);
     res.set("Content-Length", data.length);
     res.send(data);
+
+    
+    // res.setHeader("Content-disposition", "attachment; filename=addon.zip");
+    // res.setHeader("Content-type", "application/zip");
+
+    // var filestream = fs.createReadStream(file);
+    // filestream.pipe(res);
 
     // return res.status(200).json({
     //   status: "Succes",

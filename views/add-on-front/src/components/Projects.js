@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/project.css";
 
 export default function Projects() {
@@ -68,6 +70,15 @@ export default function Projects() {
       );
       // console.log(data.data.project);
       // setProject(data.data.project);
+      toast.success(" Succes , Please check your downloads !", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -147,11 +158,11 @@ export default function Projects() {
         `http://localhost:5000/api/pfe/user/projects/macros/createMacro/${
           location.pathname.split("/")[2]
         }`,
-        {name,key,description,bodyType,outputType},
+        { name, key, description, bodyType, outputType },
         config
       );
       console.log(data);
-      refreshPage()
+      refreshPage();
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -185,6 +196,19 @@ export default function Projects() {
   }, []);
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        
+        
+      />
       {console.log(macros)}
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -364,20 +388,23 @@ export default function Projects() {
                   </div>
                   <div
                     className="row"
-                    style={{ justifyContent: "space-between", paddingLeft: "2em" }}
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
                   >
                     <h2>Macros :</h2>
                     <div>
-                    <input
-                      readOnly
-                      onClick={onOpenAddModal}
-                      value="Add Macro"
-                      className="btn solid"
-                      style={{ textAlign: "center" }}
-                    />
+                      <input
+                        readOnly
+                        onClick={onOpenAddModal}
+                        value="Add Macro"
+                        className="btn solid"
+                        style={{ textAlign: "center" }}
+                      />
+                    </div>
                   </div>
-                  </div>
-                  
+
                   <br />
                   <div
                     style={{

@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const YAML = require("yaml");
-// const fs=require('fs')
-const {fs,vol} =require ("memfs");
+const validator = require("validator");
 
 const paramterSchema = new mongoose.Schema({
   identifier: {
@@ -36,6 +34,7 @@ const macroSchema = new mongoose.Schema({
     required: [true, "please provide name for your Macro"],
     unique: true,
     trim: true,
+    
   },
   key: {
     type: String,
@@ -78,63 +77,10 @@ const macroSchema = new mongoose.Schema({
   parameters: [paramterSchema],
 });
 
-// macroSchema.pre("save", async function (next) {
-//   const data = {
-//     modules: {
-//       macro: [
-//         {
-//           key: `${this.key}`,
-//           function: "main",
-//           title: `${this.name}`,
-//           description: `${this.description}`,
-//         },
-//       ],
-//       function: [
-//         {
-//           key: "main",
-//           handler: "index.run",
-//         },
-//       ],
-//     },
-//     app: {
-//       id: "ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd",
-//     },
-//   };
-//   const doc = new YAML.Document();
-//   doc.contents = data;
-//   await fs.writeFile("manifest.yml",doc.toString(),(err)=>console.log(err))
-//   next();
-// });
-
-// macroSchema.pre('save',  function (next) {
-//   const data = {
-//     modules: {
-//       macro: [
-//         {
-//           key: `${this.key}`,
-//           function: "main",
-//           title: `${this.name}`,
-//           description: `${this.description}`,
-//         },
-//       ],
-//       function: [
-//         {
-//           key: "main",
-//           handler: "index.run",
-//         },
-//       ],
-//     },
-//     app: {
-//       id: "ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd",
-//     },
-//   };
-//   const doc = new YAML.Document();
-//   doc.contents = data;
-//   fs.writeFileSync("/manifest.yml",doc.toString())
-//   const manifest=fs.readFileSync('/manifest.yml', 'utf8')
-//   console.log(manifest)
-//   next();
-// });
+macroSchema.pre('save',function(next){
+  this.key=this.key.split(' ').join('-')
+  next()
+})
 
 
 

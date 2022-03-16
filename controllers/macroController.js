@@ -63,6 +63,7 @@ exports.createMacro = async (req, res, next) => {
 
     await project.macros.push(newMacro);
     await project.save();
+    await newMacro.save()
     return res.status(201).json({
       status: "Succes",
       data: {
