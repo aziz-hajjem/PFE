@@ -43,7 +43,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://192.168.100.136:5000/api/pfe/user/projects/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${
           location.pathname.split("/")[2]
         }`,
         config
@@ -65,7 +65,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://192.168.100.136:5000/api/pfe/user/projects/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${
           location.pathname.split("/")[2]
         }/generate`,
         config
@@ -97,7 +97,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/allMacros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/allMacros/${
           location.pathname.split("/")[2]
         }`,
         config
@@ -138,7 +138,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.patch(
-        `http://192.168.100.136:5000/api/pfe/user/projects/${project._id}`,
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${project._id}`,
         formData,
         config
       );
@@ -159,7 +159,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.post(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/createMacro/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/createMacro/${
           location.pathname.split("/")[2]
         }`,
         { name, key, description, bodyType, outputType },
@@ -181,7 +181,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.delete(
-        `http://192.168.100.136:5000/api/pfe/user/projects/${project._id}`,
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${project._id}`,
         config
       );
       navigate("/projects");

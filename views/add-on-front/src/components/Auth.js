@@ -29,7 +29,7 @@ export default function Auth() {
     };
     try {
       const { data } = await axios.post(
-        "http://192.168.100.136:5000/api/pfe/auth/forgotpassword",
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/auth/forgotpassword`,
         {email},
         config
       );
@@ -62,7 +62,7 @@ export default function Auth() {
       };
       try {
         const { data } = await axios.post(
-          "http://192.168.100.136:5000/api/pfe/auth/signup",
+          `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/auth/signup`,
           { userName, email, password, confirmPassword },
           config
         );
@@ -90,7 +90,7 @@ export default function Auth() {
       };
       try {
         const { data } = await axios.post(
-          "http://192.168.100.136:5000/api/pfe/auth/login",
+          `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/auth/login`,
           { email, password },
           config
         );

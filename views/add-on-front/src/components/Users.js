@@ -38,7 +38,7 @@ export default function Users() {
     };
     try {
       const { data } = await axios.get(
-        "http://192.168.100.136:5000/api/pfe/user/",
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/`,
         config
       );
       // console.log(data);
@@ -69,7 +69,7 @@ export default function Users() {
     };
     try {
       const { data } = await axios.delete(
-        `http://192.168.100.136:5000/api/pfe/user/${id}`,
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/${id}`,
         config
       );
       refreshPage();
@@ -94,7 +94,7 @@ export default function Users() {
     };
     try {
       const { data } = await axios.patch(
-        `http://192.168.100.136:5000/api/pfe/user/${user._id}`,
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/${user._id}`,
         formData,
         config
       );

@@ -51,7 +51,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.get(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
@@ -73,7 +73,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.post(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/paramter/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
           location.pathname.split("/")[4]
         }`,
         {
@@ -101,7 +101,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.delete(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/paramter/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
           location.pathname.split("/")[4]
         }/${id}`,
         config
@@ -122,7 +122,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.patch(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/paramter/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
           location.pathname.split("/")[4]
         }/${id}`,{
             paramterName,
@@ -166,7 +166,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.patch(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         formData,
@@ -189,7 +189,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.delete(
-        `http://192.168.100.136:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config

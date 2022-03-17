@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import plug from '../img/image.png'
 import logo from '../img/logo.png'
+
 import '../styles/home.css'
 
 
@@ -21,7 +22,7 @@ export default function Home() {
     };
     try {
       const { data } = await axios.get(
-        "http://192.168.100.136:5000/api/pfe/user/me",
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/me`,
         config
       );
 
@@ -34,6 +35,7 @@ export default function Home() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
+    console.log(process.env.REACT_APP_IP_ADDRESS)
     
 
     getMe();

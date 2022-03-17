@@ -20,7 +20,7 @@ export default function UpdateMyProfile() {
         };
         try {
             const { data } = await axios.get(
-                "http://192.168.100.136:5000/api/pfe/user/me",
+                `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/me`,
                 config
             );
             setCurrentUser(data.data.me);
@@ -55,7 +55,7 @@ export default function UpdateMyProfile() {
         };
         try {
             const { data } = await axios.patch(
-                "http://192.168.100.136:5000/api/pfe/user/updateme",
+                `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/updateme`,
                 formData,
                 config
             );
