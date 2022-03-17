@@ -21,9 +21,10 @@ export default function Home() {
     };
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/pfe/user/me",
+        "http://192.168.100.136:5000/api/pfe/user/me",
         config
       );
+
       setCurrentUser(data.data.me);
     } catch (error) {
       console.log(error.response.data.error.message);
@@ -33,6 +34,7 @@ export default function Home() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
+    
 
     getMe();
   }, []);

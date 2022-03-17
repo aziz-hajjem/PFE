@@ -7,6 +7,7 @@ import { Modal } from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/project.css";
+const FileDownload=require('js-file-download')
 
 export default function Projects() {
   const [open, setOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/pfe/user/projects/${
+        `http://192.168.100.136:5000/api/pfe/user/projects/${
           location.pathname.split("/")[2]
         }`,
         config
@@ -55,6 +56,7 @@ export default function Projects() {
   };
   const generate = async () => {
     const config = {
+      responseType:'arraybuffer',
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -63,11 +65,12 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/pfe/user/projects/${
+        `http://192.168.100.136:5000/api/pfe/user/projects/${
           location.pathname.split("/")[2]
         }/generate`,
         config
       );
+      project&&FileDownload(data,`${project.name}.zip`)
       // console.log(data.data.project);
       // setProject(data.data.project);
       toast.success(" Succes , Please check your downloads !", {
@@ -79,8 +82,9 @@ export default function Projects() {
         draggable: true,
         progress: undefined,
       });
+
     } catch (error) {
-      console.log(error.response.data.error.message);
+      console.log(error.response.data);
     }
   };
   const getMacros = async () => {
@@ -93,7 +97,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/pfe/user/projects/macros/allMacros/${
+        `http://192.168.100.136:5000/api/pfe/user/projects/macros/allMacros/${
           location.pathname.split("/")[2]
         }`,
         config
@@ -134,7 +138,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/pfe/user/projects/${project._id}`,
+        `http://192.168.100.136:5000/api/pfe/user/projects/${project._id}`,
         formData,
         config
       );
@@ -155,7 +159,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/pfe/user/projects/macros/createMacro/${
+        `http://192.168.100.136:5000/api/pfe/user/projects/macros/createMacro/${
           location.pathname.split("/")[2]
         }`,
         { name, key, description, bodyType, outputType },
@@ -177,7 +181,7 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/pfe/user/projects/${project._id}`,
+        `http://192.168.100.136:5000/api/pfe/user/projects/${project._id}`,
         config
       );
       navigate("/projects");

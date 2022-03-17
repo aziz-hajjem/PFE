@@ -36,7 +36,7 @@ export default function Project() {
     };
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/pfe/user/projects/createProject`,
+        `http://192.168.100.136:5000/api/pfe/user/projects/createProject`,
         {name,key,authentication,description,enableLicensing,vendorName,vendorUrl},
         config
       );
@@ -57,7 +57,7 @@ export default function Project() {
     };
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/pfe/user/projects/allProjects",
+        "http://192.168.100.136:5000/api/pfe/user/projects/allProjects",
         config
       );
       // console.log(data);
@@ -79,7 +79,7 @@ export default function Project() {
     };
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/pfe/user/projects/${id}`,
+        `http://192.168.100.136:5000/api/pfe/user/projects/${id}`,
         config
       );
       navigate('/projects')

@@ -17,7 +17,7 @@ export default function Profile() {
     };
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/pfe/user/me",
+        "http://192.168.100.136:5000/api/pfe/user/me",
         config
       );
       // console.log(data)

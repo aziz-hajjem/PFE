@@ -22,7 +22,7 @@ export default function UpdateMyPassword() {
           };
         try {
             const { data } = await axios.patch(
-                "http://localhost:5000/api/pfe/user/updatemypassword",
+                "http://192.168.100.136:5000/api/pfe/user/updatemypassword",
                 {passwordCurrent,password,confirmPassword},
                 config
             );

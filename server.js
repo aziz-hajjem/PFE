@@ -22,7 +22,7 @@ mongoose.connect(URL,{
 })).catch(err=>console.log(err))
 
 app.use(morgan('dev'))
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: `http://${process.env.IP_ADDRESS}:3000`}));
 app.use(helmet())
 app.use(express.json())
 app.use('/api/pfe/auth',authRoute)

@@ -8,6 +8,7 @@ import axios from 'axios';
 
 
 
+
 export default function Auth() {
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
@@ -28,7 +29,7 @@ export default function Auth() {
     };
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/pfe/auth/forgotpassword",
+        "http://192.168.100.136:5000/api/pfe/auth/forgotpassword",
         {email},
         config
       );
@@ -61,7 +62,7 @@ export default function Auth() {
       };
       try {
         const { data } = await axios.post(
-          "http://localhost:5000/api/pfe/auth/signup",
+          "http://192.168.100.136:5000/api/pfe/auth/signup",
           { userName, email, password, confirmPassword },
           config
         );

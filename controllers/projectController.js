@@ -5,9 +5,11 @@ const YAML = require("yaml");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const zipper = require("zip-local");
 const AdmZip = require("adm-zip");
-const stream = require('stream');
+const FileSaver = require('file-saver');
+
+
+
 
 
 const indexTemplate = require("../templates/index");
@@ -299,27 +301,29 @@ exports.generate = async (req, res, next) => {
         },
       });
     }
-    const dataManifest = {
-      modules: {
-        macro: [
-          {
-            key: `${project.macros[0].key}`,
-            function: "main",
-            title: `${project.macros[0].name}`,
-            description: `${project.macros[0].description}`,
-          },
-        ],
-        function: [
-          {
-            key: "main",
-            handler: "index.run",
-          },
-        ],
-      },
-      app: {
-        id: "ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd",
-      },
-    };
+    const dataManifest = `
+    modules:
+     macro:
+       ${project.macros.map(el=>(
+        `
+      - key: ${el.key}
+        function: ${el.name}
+        title: ${el.name}
+        description: ${el.description}
+        `
+      )).join('')}
+     function:
+     ${project.macros.map(el=>(
+      `
+      - key: ${el.name}
+        handler: ${el.name}.run
+
+      `
+    )).join('')}
+    app:
+      id: ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd
+
+    `
 
     const dataPackage = `
     {
@@ -342,8 +346,8 @@ exports.generate = async (req, res, next) => {
     }
     
     `;
-    const doc = new YAML.Document();
-    doc.contents = dataManifest;
+    // const doc = new YAML.Document();
+    // doc.contents = dataManifest;
     const dataeslint = `
     {
       "parserOptions": {
@@ -371,35 +375,30 @@ exports.generate = async (req, res, next) => {
     this macro : ${project.macros[0].name} 
     fonctionnality :${project.macros[0].description}
     `;
-    // await fs.writeFileSync(`./aziz/manifest.yml`, doc.toString());
-    // await fs.writeFileSync(`./aziz/package.json`, dataPackage);
-    // await fs.writeFileSync(`./aziz/src/index.jsx`, dataIndex);
-    // const manifest = await fs.readFileSync(`./aziz/manifest.yml`, "utf8");
-    // console.log(manifest);
-    // // convert folder to zip file
-    // // zipper.sync.zip("./aziz/").compress().save(`${project.name}.zip`);
     const zip = new AdmZip();
-
-    // zip.addLocalFolder("./aziz");
-
-    // const downloadName = `${project.name}-${Date.now()}.zip`;
-
-    // const data = zip.toBuffer();
-    const indexData = {
-      projectName: project.macros[0].name,
-      projectDescription: project.macros[0].description,
-    };
-    var dataIndex = indexTemplate(indexData);
-    // console.log(result)
-
-    zip.addFile(
-      "src/index.jsx",
+    project.macros.map(el=>{
+      var indexData = {
+        projectName: el.name,
+        projectDescription: el.description,
+      };
+      var dataIndex = indexTemplate(indexData);
+      zip.addFile(
+      `src/${el.name}.jsx`,
       Buffer.from(dataIndex, "utf8"),
       "entry comment goes here"
     );
+  })
+    // const indexData = {
+    //   projectName: project.macros[0].name,
+    //   projectDescription: project.macros[0].description,
+    // };
+    // var dataIndex = indexTemplate(indexData);
+    // console.log(result)
+    
+   
     zip.addFile(
       "manifest.yml",
-      Buffer.from(doc.toString(), "utf8"),
+      Buffer.from(dataManifest, "utf8"),
       "entry comment goes here"
     );
     zip.addFile(
@@ -423,41 +422,20 @@ exports.generate = async (req, res, next) => {
       "entry comment goes here"
     );
 
+    
     const data = zip.toBuffer();
+    // console.log(data)
+    
 
-    // save file zip in root directory__dirname+"/"+downloadName
-
-    // zip.writeZip(`C:/Users/azizh/Downloads/test.zip`);
-    // const x="/\w/"
-    const userDownloadDirectory = path.join(
-      require("os").homedir(),
-      "Downloads"
-    );
-    // console.log(userDownloadDirectory.toString())
-
-    zip.writeZip(`${userDownloadDirectory}/test.zip`);
-    // C:\Users\azizh\Downloads
 
     // code to download zip file
-
-    res.set("Content-Type", "application/octet-stream");
-    res.set("Content-Disposition", `attachment; filename=test.zip`);
+      
+    res.set("Content-type", "application/octet-stream");
+    res.set("Content-disposition", `attachment; filename=${project.name}.zip`);
     res.set("Content-Length", data.length);
     res.send(data);
-
-    
-    // res.setHeader("Content-disposition", "attachment; filename=addon.zip");
-    // res.setHeader("Content-type", "application/zip");
-
-    // var filestream = fs.createReadStream(file);
-    // filestream.pipe(res);
-
-    // return res.status(200).json({
-    //   status: "Succes",
-    //   data: {
-    //     project,
-    //   },
-    // });
+ 
+ 
   } catch (error) {
     res.status(400).json({
       error: {
@@ -468,4 +446,3 @@ exports.generate = async (req, res, next) => {
   }
   next();
 };
-// console.log(fs.readFileSync('/manifest.yml', 'utf8'))
