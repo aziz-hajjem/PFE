@@ -32,6 +32,8 @@ export default function Projects() {
   };
   const onCloseModal = () => {
     setOpen(false);
+    setOpenAddMacro(false)
+    
   };
   const getProject = async () => {
     const config = {

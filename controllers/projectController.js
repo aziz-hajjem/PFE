@@ -13,6 +13,8 @@ const FileSaver = require('file-saver');
 
 
 const indexTemplate = require("../templates/index");
+const spaceTemplate = require("../templates/spaceSetting");
+
 
 // const stream = require('stream');
 
@@ -312,6 +314,18 @@ exports.generate = async (req, res, next) => {
         description: ${el.description}
         `
       )).join('')}
+      ${project.spaceSettings.length&&
+      `
+     confluence:spaceSettings:
+      ${project.spaceSettings.map(el=>(
+        `
+      - key: ${el.key}
+        function: ${el.name}
+        title: ${el.name}
+        description: ${el.description}
+        `
+      )).join('')}
+      `}
      function:
      ${project.macros.map(el=>(
       `
@@ -320,8 +334,15 @@ exports.generate = async (req, res, next) => {
 
       `
     )).join('')}
+    ${project.spaceSettings.length&&project.spaceSettings.map(el=>(
+      `
+      - key: ${el.name}
+        handler: ${el.name}.run
+
+      `
+    )).join('')}
     app:
-      id: ari:cloud:ecosystem::app/6e5ebfab-29c8-428b-817c-1a991912cbcd
+      id: 'Please run forge register'
 
     `
 
@@ -388,12 +409,19 @@ exports.generate = async (req, res, next) => {
       "entry comment goes here"
     );
   })
-    // const indexData = {
-    //   projectName: project.macros[0].name,
-    //   projectDescription: project.macros[0].description,
-    // };
-    // var dataIndex = indexTemplate(indexData);
-    // console.log(result)
+  project.spaceSettings.length&&project.spaceSettings.map(el=>{
+    var spaceData = {
+      spaceName: el.name,
+      spaceLabel: el.name,
+    };
+    var dataSpace= spaceTemplate(spaceData);
+    zip.addFile(
+    `src/${el.name}.jsx`,
+    Buffer.from(dataSpace, "utf8"),
+    "entry comment goes here"
+  );
+})
+   
     
    
     zip.addFile(
