@@ -1,31 +1,31 @@
 const mongoose = require("mongoose");
 
-const paramterSchema = new mongoose.Schema({
-  identifier: {
-    type: String,
-    // unique: true,
-    trim: true,
-  },
-  paramterName: {
-    type: String,
-    // unique: true,
-    trim: true,
-  },
-  paramterDescription: {
-    type: String,
-    trim: true,
-  },
-  type: {
-    type: String,
-    trim: true,
-  },
-  required: {
-    type: Boolean,
-  },
-  multiple: {
-    type: Boolean,
-  },
-});
+// const paramterSchema = new mongoose.Schema({
+//   identifier: {
+//     type: String,
+//     // unique: true,
+//     trim: true,
+//   },
+//   paramterName: {
+//     type: String,
+//     // unique: true,
+//     trim: true,
+//   },
+//   paramterDescription: {
+//     type: String,
+//     trim: true,
+//   },
+//   type: {
+//     type: String,
+//     trim: true,
+//   },
+//   required: {
+//     type: Boolean,
+//   },
+//   multiple: {
+//     type: Boolean,
+//   },
+// });
 
 const macroSchema = new mongoose.Schema({
   name: {
@@ -45,35 +45,42 @@ const macroSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  categories: {
-    type: [String],
-    enum: [
-      "administration",
-      "communication",
-      "confluence content",
-      "Development",
-      "external content",
-      "media",
-      "navigation",
-      "reporting",
-      "visuals & images",
-    ],
-  },
+  // categories: {
+  //   type: [String],
+  //   enum: [
+  //     "administration",
+  //     "communication",
+  //     "confluence content",
+  //     "Development",
+  //     "external content",
+  //     "media",
+  //     "navigation",
+  //     "reporting",
+  //     "visuals & images",
+  //   ],
+  // },
   icon: {
     type: String,
     default: "default.jpeg",
   },
-  bodyType: {
-    type: String,
-    enum: ["PLAIN_TEXT", "RICH_TEXT", "none"],
-    default: "none",
-  },
-  outputType: {
-    type: String,
-    enum: ["block", "inline"],
-    default: "block",
-  },
-  parameters: [paramterSchema],
+  // bodyType: {
+  //   type: String,
+  //   enum: ["PLAIN_TEXT", "RICH_TEXT", "none"],
+  //   default: "none",
+  // },
+  // outputType: {
+  //   type: String,
+  //   enum: ["block", "inline"],
+  //   default: "block",
+  // },
+  parameter:{
+      type: String,
+      enum: [
+        "String",
+        "Select",
+        "both",
+      ],
+    }, 
 });
 
 macroSchema.pre('save',function(next){

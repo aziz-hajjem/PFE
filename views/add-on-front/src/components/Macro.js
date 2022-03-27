@@ -5,41 +5,33 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import "../styles/project.css";
+import Select from 'react-select';
+
 
 export default function Macro() {
   const [open, setOpen] = useState(false); 
-   const [openAddParamter, setOpenAddParamter] = useState(false);
-   const [openUpdateParamter, setOpenUpdateParamter] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [macro, setMacro] = useState();
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
-  const [identifier, setIdentifier] = useState();
-  const [paramterDescription, setParamterDescription] = useState();
-  const [type, setType] = useState();
-  const [required, setRequired] = useState();
-  const [multiple, setMultiple] = useState();
-  const [paramter, setParamter] = useState();
-  const [paramterName, setParamterName] = useState();
-  const [bodyType, setBodyType] = useState();
-  const [outputType, setOutputType] = useState();
+  
+  const [parameter, setParameter] = useState("");
+  
   const [photo, setPhoto] = useState();
+
+  const options = [
+    { value: 'String', label: 'String' },
+    { value: 'Select', label: 'Select' },
+    { value: 'both', label: 'Both' },
+  ];
   const onOpenModal = () => {
     return setOpen(true);
   };
-  const onOpenAddParamterModal = () => {
-    return setOpenAddParamter(true);
-  };
-  const onOpenUpdateParamterModal = (el) => {
-      setParamter(el);
-    return setOpenUpdateParamter(true);
-  };
+  
   const onCloseModal = () => {
     setOpen(false);
-    setOpenAddParamter(false);
-    setOpenUpdateParamter(false)
   };
   const getMacro = async () => {
     const config = {
@@ -63,83 +55,7 @@ export default function Macro() {
     }
   };
 
-  const addParamter = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      withCredentials: true,
-    };
-    try {
-      const { data } = await axios.post(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
-          location.pathname.split("/")[4]
-        }`,
-        {
-          paramterName,
-          paramterDescription,
-          identifier,
-          type,
-          required,
-          multiple,
-        },
-        config
-      );
-      refreshPage();
-    } catch (error) {
-      console.log(error.response.data.error.message);
-    }
-  };
-  const deleteParamter = async (id) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      withCredentials: true,
-    };
-    try {
-      const { data } = await axios.delete(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
-          location.pathname.split("/")[4]
-        }/${id}`,
-        config
-      );
-      refreshPage();
-    } catch (error) {
-      console.log(error.response.data.error.message);
-    }
-  };
-  const updateParamter = async (id) => {
-    
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      withCredentials: true,
-    };
-    try {
-      const { data } = await axios.patch(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/paramter/${
-          location.pathname.split("/")[4]
-        }/${id}`,{
-            paramterName,
-            paramterDescription,
-            identifier,
-            type,
-            required,
-            multiple,
-          },
-        config
-      );
-      console.log(id)
-      refreshPage();
-    } catch (error) {
-      console.log(error.response.data.error.message);
-    }
-  };
+  
   const onInputChange = (e) => {
     setPhoto(e.target.files[0]);
   };
@@ -153,9 +69,9 @@ export default function Macro() {
     formData.append("name", name || macro.name);
     formData.append("key", key || macro.key);
     formData.append("description", description || macro.description);
-    formData.append("bodyType", bodyType || macro.bodyType);
-    formData.append("outputType", outputType || macro.outputType);
+    formData.append("parameter", parameter.value || macro.parameter);
     formData.append("icon", photo);
+    console.log(typeof parameter.value,parameter)
 
     const config = {
       headers: {
@@ -241,24 +157,16 @@ export default function Macro() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+          
           <div className="input-field">
             <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Body Type :"
-              defaultValue={macro && macro.bodyType}
-              onChange={(e) => setBodyType(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Output Type:"
-              defaultValue={macro && macro.outputType}
-              onChange={(e) => setOutputType(e.target.value)}
-            />
-          </div>
+            <Select
+             
+          defaultValue={parameter}
+        onChange={setParameter}
+        options={options}
+      />
+      </div>
 
           <div
             className="input-field"
@@ -277,134 +185,8 @@ export default function Macro() {
           />
         </form>
       </Modal>
-      <Modal open={openAddParamter} onClose={onCloseModal} center>
-        <form className="sign-in-form">
-          <h2 className="title">Add Paramter</h2>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="name"
-              onChange={(e) => setParamterName(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="identifier"
-              onChange={(e) => setIdentifier(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Description"
-              onChange={(e) => setParamterDescription(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Type :"
-              onChange={(e) => setType(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Required:"
-              onChange={(e) => setRequired(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Multiple:"
-              onChange={(e) => setMultiple(e.target.value)}
-            />
-          </div>
-
-          <input
-            onClick={addParamter}
-            readOnly
-            value="Update Macro"
-            className="btn solid"
-            style={{ textAlign: "center" }}
-          />
-        </form>
-      </Modal>
-      <Modal open={openUpdateParamter} onClose={onCloseModal} center>
-        <form className="sign-in-form">
-          <h2 className="title">Update Paramter</h2>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="name"
-              defaultValue={paramter&&paramter.paramterName}
-              onChange={(e) => setParamterName(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="identifier"
-              defaultValue={paramter&&paramter.identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Description"
-              defaultValue={paramter&&paramter.paramterDescription}
-              onChange={(e) => setParamterDescription(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Type :"
-              defaultValue={paramter&&paramter.type}
-              onChange={(e) => setType(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Required:"
-              defaultValue={paramter&&paramter.required}
-              onChange={(e) => setRequired(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Multiple:"
-              defaultValue={paramter&&paramter.multiple}
-              onChange={(e) => setMultiple(e.target.value)}
-            />
-          </div>
-
-          <input
-            onClick={()=>paramter&&updateParamter(paramter._id)}
-            readOnly
-            value="Update Paramter"
-            className="btn solid"
-            style={{ textAlign: "center" }}
-          />
-        </form>
-      </Modal>
+     
+      
       <div className="Project-container">
         <div className="container-box">
           {macro && (
@@ -445,104 +227,12 @@ export default function Macro() {
                     <h4>{macro.description}</h4>
                   </div>
                   <div className="row">
-                    <h2>BODY TYPE :</h2>
-                    <h4>{macro.bodyType}</h4>
-                  </div>
-                  <div className="row">
-                    <h2>OUTPUT TYPE :</h2>
-                    <h4>{macro.outputType}</h4>
+                    <h2>Paramter :</h2>
+                    <h4>{macro.parameter}</h4>
                   </div>
 
-                  <div className="row">
-                    <h2>Paramters :</h2>
-                    <input
-                      readOnly
-                      onClick={onOpenAddParamterModal}
-                      value="Add Paramter"
-                      className="btn solid"
-                      style={{ textAlign: "center" }}
-                    />
-                  </div>
                   <br />
-                  <div
-                    style={{
-                      // height: "100%",
-                      display: "flex",
-                      gap: "2em",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {macro && macro.parameters.length ? (
-                      macro.parameters.map((el) => (
-                        <div key={el._id}>
-                          <div
-                            className="box box-down "
-                            style={{
-                              paddingTop: "1em",
-                              paddingLeft: "0",
-                              paddingBottom:"0",
-                              width: "100%",
-                              border: `2px solid #${Math.floor(
-                                Math.random() * 16777215
-                              ).toString(16)}`,
-                            }}
-                            key={el._id}
-                          >
-                            <div
-                              className="row"
-                              style={{
-                                width: "100%",
-                                justifyContent: "flex-end",
-                                height: "2em",
-                              }}
-                            >
-                              <a
-                                onClick={() => deleteParamter(el._id)}
-                                className="close"
-                              ></a>
-                            </div>
-                            <div className="row">
-                              <h2>Name :</h2>
-                              <h4>{el.paramterName}</h4>
-                            </div>
-                            <div className="row">
-                              <h2>identifier :</h2>
-                              <h4>{el.identifier}</h4>
-                            </div>
-                            <div className="row">
-                              <h2>Description :</h2>
-                              <h4>{el.paramterDescription}</h4>
-                            </div>
-                            <div className="row">
-                              <h2>Type :</h2>
-                              <h4>{el.type}</h4>
-                            </div>
-                            <div className="row">
-                              <h2>Required :</h2>
-                              <h4>{el.required.toString()}</h4>
-                            </div>
-                            <div className="row">
-                              <h2>multiple :</h2>
-                              <h4>{el.multiple.toString()}</h4>
-                            </div>
-                            <div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%"}}>
-                            <input
-                              readOnly
-                              onClick={()=>onOpenUpdateParamterModal(el)}
-                              value="Update Paramter"
-                              className="btn solid"
-                              style={{ textAlign: "center" }}
-                            />
-                          </div>
-                          </div>
-                         
-                        </div>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+
                 </div>
               </div>
 

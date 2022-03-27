@@ -31,7 +31,7 @@ exports.uploadMacroPhoto = upload.single("icon");
 
 exports.createMacro = async (req, res, next) => {
   try {
-    const { name, key, description, icon, categories, bodyType, outputType } =
+    const { name, key, description, icon, parameter } =
       req.body;
     const project = await Project.findById(req.params.id).populate("macros");
     if (!project) {
@@ -48,9 +48,7 @@ exports.createMacro = async (req, res, next) => {
       key: key,
       description: description,
       icon: icon,
-      categories: [categories],
-      bodyType: bodyType,
-      outputType: outputType,
+      parameter:parameter
     });
     if (!newMacro) {
       return res.status(400).json({
@@ -96,8 +94,8 @@ exports.updateMacro = async (req, res, next) => {
       "name",
       "key",
       "description",
-      "bodyType",
-      "outputType"
+      "parameter",
+    
     );
     const project=await Project.findById(req.params.projectid)
     const find= project.macros.find(el=>el.toString()===req.params.id)
@@ -264,116 +262,116 @@ exports.getMacro = async (req, res, next) => {
   }
   next();
 };
-exports.addCategories = async (req, res, next) => {
-  try {
-    const { categorie } = req.body;
-    const macro = await Macro.findById(req.params.id);
-    if (categorie) macro.categories.push(categorie);
-    await macro.save();
-    res.status(200).json({
-      status: "Succes",
-      data: {
-        message: "Categorie is added succesfully",
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error.message,
-      },
-    });
-  }
-  next();
-};
-exports.addParamter = async (req, res, next) => {
-  try {
-    const { identifier, paramterName, paramterDescription, type, required, multiple } =
-      req.body;
-    const macro = await Macro.findById(req.params.id);
-    if (req.body)
-      macro.parameters.push({
-        identifier,
-        paramterName,
-        paramterDescription,
-        type,
-        required,
-        multiple,
-      });
-    await macro.save();
-    res.status(200).json({
-      status: "Succes",
-      data: {
-        macro,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error.message,
-      },
-    });
-  }
-  next();
-};
-exports.deleteParamter = async (req, res, next) => {
-  try {
-    const macro = await Macro.findById(req.params.id);
-    macro.parameters.pull({ _id: req.params.paramid });
-    await macro.save();
-    res.status(200).json({
-      status: "Succes",
-      data: {
-        macro,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error.message,
-      },
-    });
-  }
-  next();
-};
-exports.updateParamter = async (req, res, next) => {
-  try {
-    const { identifier, paramterName, paramterDescription, type, required, multiple } =
-      req.body;
-    const macro = await Macro.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        parameters: { $elemMatch: { _id: req.params.paramid } },
-      }, 
-      {
-        $set: {
-          "parameters.$.identifier": identifier,
-          "parameters.$.paramterName": paramterName,
-          "parameters.$.paramterDescription": paramterDescription,
-          "parameters.$.type": type,
-          "parameters.$.required": required,
-          "parameters.$.multiple": multiple,
-        },
+// exports.addCategories = async (req, res, next) => {
+//   try {
+//     const { categorie } = req.body;
+//     const macro = await Macro.findById(req.params.id);
+//     if (categorie) macro.categories.push(categorie);
+//     await macro.save();
+//     res.status(200).json({
+//       status: "Succes",
+//       data: {
+//         message: "Categorie is added succesfully",
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       error: {
+//         status: "Fail",
+//         message: error.message,
+//       },
+//     });
+//   }
+//   next();
+// };
+// exports.addParamter = async (req, res, next) => {
+//   try {
+//     const { identifier, paramterName, paramterDescription, type, required, multiple } =
+//       req.body;
+//     const macro = await Macro.findById(req.params.id);
+//     if (req.body)
+//       macro.parameters.push({
+//         identifier,
+//         paramterName,
+//         paramterDescription,
+//         type,
+//         required,
+//         multiple,
+//       });
+//     await macro.save();
+//     res.status(200).json({
+//       status: "Succes",
+//       data: {
+//         macro,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       error: {
+//         status: "Fail",
+//         message: error.message,
+//       },
+//     });
+//   }
+//   next();
+// };
+// exports.deleteParamter = async (req, res, next) => {
+//   try {
+//     const macro = await Macro.findById(req.params.id);
+//     macro.parameters.pull({ _id: req.params.paramid });
+//     await macro.save();
+//     res.status(200).json({
+//       status: "Succes",
+//       data: {
+//         macro,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       error: {
+//         status: "Fail",
+//         message: error.message,
+//       },
+//     });
+//   }
+//   next();
+// };
+// exports.updateParamter = async (req, res, next) => {
+//   try {
+//     const { identifier, paramterName, paramterDescription, type, required, multiple } =
+//       req.body;
+//     const macro = await Macro.findOneAndUpdate(
+//       {
+//         _id: req.params.id,
+//         parameters: { $elemMatch: { _id: req.params.paramid } },
+//       }, 
+//       {
+//         $set: {
+//           "parameters.$.identifier": identifier,
+//           "parameters.$.paramterName": paramterName,
+//           "parameters.$.paramterDescription": paramterDescription,
+//           "parameters.$.type": type,
+//           "parameters.$.required": required,
+//           "parameters.$.multiple": multiple,
+//         },
         
-      },
-      {new:true}
-    );
+//       },
+//       {new:true}
+//     );
  
-    res.status(200).json({
-      status: "Succes",
-      data: {
-        macro,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error.message,
-      },
-    });
-  }
-  next();
-};
+//     res.status(200).json({
+//       status: "Succes",
+//       data: {
+//         macro,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       error: {
+//         status: "Fail",
+//         message: error.message,
+//       },
+//     });
+//   }
+//   next();
+// };

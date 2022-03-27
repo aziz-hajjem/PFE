@@ -312,29 +312,34 @@ exports.generate = async (req, res, next) => {
         function: ${el.name}
         title: ${el.name}
         description: ${el.description}
+        config:
+          function: ${el.name}-config
         `
       )).join('')}
-      ${project.spaceSettings.length&&
+      ${project.spaceSettings.length?
       `
-     confluence:spaceSettings:
+     confluence:spaceSettings:`:""}
       ${project.spaceSettings.map(el=>(
         `
       - key: ${el.key}
         function: ${el.name}
         title: ${el.name}
         description: ${el.description}
+
         `
       )).join('')}
-      `}
+      
      function:
      ${project.macros.map(el=>(
       `
       - key: ${el.name}
         handler: ${el.name}.run
+      - key: ${el.name}-config
+        handler: ${el.name}.config
 
       `
     )).join('')}
-    ${project.spaceSettings.length&&project.spaceSettings.map(el=>(
+    ${project.spaceSettings.map(el=>(
       `
       - key: ${el.name}
         handler: ${el.name}.run
@@ -398,10 +403,37 @@ exports.generate = async (req, res, next) => {
     `;
     const zip = new AdmZip();
     project.macros.map(el=>{
-      var indexData = {
-        projectName: el.name,
-        projectDescription: el.description,
-      };
+      const paramter=el.parameter;
+      var defaultConfig;
+      var data;
+      var config;
+      paramter==="String"&&(defaultConfig=`Text:"${el.description}"`)&&(data=`<Text>{config.Text}</Text>`)&&(config=`<TextField
+        name="Text"
+        label="Text"
+        defaultValue={defaultConfig.Text}
+      />`)
+      paramter==="Select"&&(defaultConfig=`Color:"red"`)&&(data=`<Tag text="${el.description}" color={config.Color}/>`)&&(config=`<TextField
+       name="Color"
+       label="Color"
+       defaultValue={defaultConfig.Color}
+       />`)
+       paramter==="both"&&(defaultConfig=`Color:"red",
+       Text:"${el.description}"`)&&(data=`<Tag text={config.Text} color={config.Color}/>`)&&(config=`<TextField
+       name="Text"
+       label="Text"
+       defaultValue={defaultConfig.Text}
+     />
+       <TextField
+       name="Color"
+       label="Color"
+       defaultValue={defaultConfig.Color}
+     />`)
+      const indexData = {
+        defaultConfig:defaultConfig,
+        data: data,
+        config:config
+      }
+      
       var dataIndex = indexTemplate(indexData);
       zip.addFile(
       `src/${el.name}.jsx`,

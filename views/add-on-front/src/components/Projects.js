@@ -7,6 +7,7 @@ import { Modal } from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/project.css";
+import Select from 'react-select';
 const FileDownload=require('js-file-download')
 
 export default function Projects() {
@@ -21,9 +22,14 @@ export default function Projects() {
   const [description, setDescription] = useState();
   const [authentication, setAuthentication] = useState();
   const [enableLicensing, setEnableLicensing] = useState();
-  const [bodyType, setBodyType] = useState();
-  const [outputType, setOutputType] = useState();
+ 
+  const [parameter, setParamter] = useState();
   const [photo, setPhoto] = useState();
+  const options = [
+    { value: 'String', label: 'String' },
+    { value: 'Select', label: 'Select' },
+    { value: 'both', label: 'Both' },
+  ];
   const onOpenModal = () => {
     return setOpen(true);
   };
@@ -152,6 +158,7 @@ export default function Projects() {
     }
   };
   const addMacro = async () => {
+    setParamter(parameter.value)
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -164,7 +171,7 @@ export default function Projects() {
         `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/createMacro/${
           location.pathname.split("/")[2]
         }`,
-        { name, key, description, bodyType, outputType },
+        { name, key, description, parameter },
         config
       );
       console.log(data);
@@ -303,28 +310,22 @@ export default function Projects() {
           </div>
           <div className="input-field">
             <i className="fas fa-user"></i>
+            <Select
+             
+          defaultValue={parameter}
+        onChange={setParamter}
+        options={options}
+      />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
             <input
               type="text"
               placeholder="Description"
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Body Type :"
-              onChange={(e) => setBodyType(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Output Type:"
-              onChange={(e) => setOutputType(e.target.value)}
-            />
-          </div>
+         
           <input
             onClick={addMacro}
             readOnly

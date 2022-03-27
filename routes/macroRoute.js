@@ -8,10 +8,10 @@ route.patch('/:projectid/:id',authController.protect,macroController.uploadMacro
 route.delete('/:projectid/:id',authController.protect,macroController.deleteMacro)
 route.get('/allMacros/:id',authController.protect,macroController.getAllMacro)
 route.get('/:projectid/:id',authController.protect,macroController.getMacro)
-route.patch('/addCategorie/:id',authController.protect,macroController.addCategories)
-route.post('/paramter/:id',authController.protect,macroController.addParamter)
-route.delete('/paramter/:id/:paramid',authController.protect,macroController.deleteParamter)
-route.patch('/paramter/:id/:paramid',authController.protect,macroController.updateParamter)
+// route.patch('/addCategorie/:id',authController.protect,macroController.addCategories)
+// route.post('/paramter/:id',authController.protect,macroController.addParamter)
+// route.delete('/paramter/:id/:paramid',authController.protect,macroController.deleteParamter)
+// route.patch('/paramter/:id/:paramid',authController.protect,macroController.updateParamter)
 
 
 
