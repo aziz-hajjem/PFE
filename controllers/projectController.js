@@ -412,22 +412,30 @@ exports.generate = async (req, res, next) => {
         label="Text"
         defaultValue={defaultConfig.Text}
       />`)
-      paramter==="Select"&&(defaultConfig=`Color:"red"`)&&(data=`<Tag text="${el.description}" color={config.Color}/>`)&&(config=`<TextField
-       name="Color"
-       label="Color"
-       defaultValue={defaultConfig.Color}
-       />`)
+      paramter==="Select"&&(defaultConfig=`Color:"red"`)&&(data=`<Tag text="${el.description}" color={config.Color}/>`)&&(config=`<Select label="colors" name="Color" >
+      <Option defaultSelected label="red" value="red" />
+      <Option label="green" value="green" />
+      <Option label="blue" value="blue" />
+      <Option label="purple" value="purple" />
+      <Option label="yellow" value="yellow" />
+      <Option label="teal" value="teal" />
+      <Option label="red-light" value="red-light" />
+  </Select>`)
        paramter==="both"&&(defaultConfig=`Color:"red",
        Text:"${el.description}"`)&&(data=`<Tag text={config.Text} color={config.Color}/>`)&&(config=`<TextField
        name="Text"
        label="Text"
        defaultValue={defaultConfig.Text}
      />
-       <TextField
-       name="Color"
-       label="Color"
-       defaultValue={defaultConfig.Color}
-     />`)
+     <Select label="colors" name="color" >
+     <Option defaultSelected label="red" value="red" />
+     <Option label="green" value="green" />
+     <Option label="blue" value="blue" />
+     <Option label="purple" value="purple" />
+     <Option label="yellow" value="yellow" />
+     <Option label="teal" value="teal" />
+     <Option label="red-light" value="red-light" />
+ </Select>`)
       const indexData = {
         defaultConfig:defaultConfig,
         data: data,
@@ -442,10 +450,30 @@ exports.generate = async (req, res, next) => {
     );
   })
   project.spaceSettings.length&&project.spaceSettings.map(el=>{
-    var spaceData = {
-      spaceName: el.name,
-      spaceLabel: el.name,
-    };
+    var spaceData;
+    var dat=[];
+    el.paramter.find(el=>el==="Text")&&(dat.push(`<Text>${el.text}</Text>`))
+    el.paramter.find(el=>el==="Tag")&&(dat.push(`<Tag text="${el.tag}" color="red" />`))
+    el.paramter.find(el=>el==="Image")&&(dat.push(`<Image size='medium' src="${el.image}" alt="image" /> `))
+    el.paramter.find(el=>el==="CheckBox")&&(dat.push(`
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox.map(el=>`<Checkbox value="${el}" label="${el}" />`).join('')}
+        </CheckboxGroup>
+    </Form>
+    `))
+    el.paramter.find(el=>el==="Select")&&(dat.push(`
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select.map(el=>`<Option value="${el}" label="${el}" />`).join('')}
+        </Select>
+    </Form>
+    `))
+
+
+    spaceData = {
+      data:dat.join('')
+    }
     var dataSpace= spaceTemplate(spaceData);
     zip.addFile(
     `src/${el.name}.jsx`,

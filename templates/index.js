@@ -1,7 +1,8 @@
 const handlebars=require("handlebars")
 var source = 
 `
-import ForgeUI, { render, Fragment, Macro, Text, MacroConfig, useConfig,Tag,TextField
+import ForgeUI, { render, Fragment, Macro, Text, MacroConfig, useConfig,Tag,TextField,Select,
+  Option
 } from "@forge/ui";
 
 const defaultConfig = {

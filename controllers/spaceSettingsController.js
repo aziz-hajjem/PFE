@@ -2,7 +2,7 @@ const Project = require("../models/projectModel");
 
 exports.createSpaceSettings=async(req,res,next)=>{
     try {
-        const { name, key, description, text } =
+        const { name, key, description, text,paramter,image,select,checkBox,tag} =
           req.body;
         const project = await Project.findById(req.params.id);
         if (req.body)
@@ -10,7 +10,12 @@ exports.createSpaceSettings=async(req,res,next)=>{
             name,
             key,
             description,
-            text
+            paramter:[...paramter],
+            text:text,
+            tag:tag,
+            image:image,
+            select:[...select],
+            checkBox:[...checkBox]
           });
         await project.save();
         return res.status(200).json({
@@ -32,7 +37,7 @@ exports.createSpaceSettings=async(req,res,next)=>{
 
 exports.updateSpaceSettings = async (req, res, next) => {
     try {
-      const { name,key,description,text } =
+      const {  name, key, description, text,paramter,image,select,checkBox,tag } =
         req.body;
       const project = await Project.findOneAndUpdate(
         {
@@ -44,6 +49,11 @@ exports.updateSpaceSettings = async (req, res, next) => {
             "spaceSettings.$.key": key,
             "spaceSettings.$.name": name,
             "spaceSettings.$.description": description,
+            "spaceSettings.$.paramter": [...paramter],
+            "spaceSettings.$.select": [...select],
+            "spaceSettings.$.checkBox": [...checkBox],
+            "spaceSettings.$.image": image,
+            "spaceSettings.$.tag": tag,
             "spaceSettings.$.text": text,
 
           },

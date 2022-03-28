@@ -22,6 +22,31 @@ const SpaceSettingsSchema = new mongoose.Schema({
     type:String,
     trim:true,
   },
+  paramter:{
+    type:[String],
+    enum:[
+      "Text",
+      "Tag",
+      "Image",
+      "CheckBox",
+      "Select",    
+    ]
+  },
+  text:{
+    type:String
+  },
+  tag:{
+    type:String
+  },
+  image:{
+    type:String
+  },
+  checkBox:{
+    type:[String]
+  },
+  select:{
+    type:[String]
+  }
   
   
 });
