@@ -1,7 +1,7 @@
 const handlebars=require("handlebars")
 var source = 
 `
-import ForgeUI, { render, Form, TextField, SpaceSettings,useProductContext,Fragment,Avatar,useState,Image,CheckboxGroup,Text,Checkbox,Select,Option,Tag   } from '@forge/ui';
+import ForgeUI, { render, Form, TextField, SpaceSettings,useProductContext,Fragment,Avatar,useState,Image,CheckboxGroup,Text,Checkbox,Select,Option,Tag,DateLozenge    } from '@forge/ui';
 
 const App = () => {
   const onSubmit = (formData) => {

@@ -7,28 +7,44 @@ import { Modal } from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/project.css";
-import Select from 'react-select';
-const FileDownload=require('js-file-download')
+import Select from "react-select";
+const FileDownload = require("js-file-download");
 
 export default function Projects() {
   const [open, setOpen] = useState(false);
   const [openAddMacro, setOpenAddMacro] = useState(false);
+  const [openAddSpace, setOpenAddSpace] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [project, setProject] = useState();
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [macros, setMacros] = useState();
+  const [spaceSettings, setSpaceSettings] = useState();
   const [description, setDescription] = useState();
   const [authentication, setAuthentication] = useState();
   const [enableLicensing, setEnableLicensing] = useState();
- 
+  const [spaceParameter, setSpaceParameter] = useState();
+  const [text, setText] = useState();
+  const [select, setSelect] = useState(null);
+  const [tag, setTag] = useState();
+  const [image, setImage] = useState();
+  const [checkBox, setCheckBox] = useState(null);
   const [parameter, setParamter] = useState();
   const [photo, setPhoto] = useState();
+  const spaceOptions = [
+    { value: "Text", label: "Text" },
+    { value: "Tag", label: "Tag" },
+    { value: "Select", label: "Both" },
+    { value: "CheckBox", label: "CheckBox" },
+    { value: "Select", label: "Select" },
+    { value: "Image", label: "Image" },
+  ];
   const options = [
-    { value: 'String', label: 'String' },
-    { value: 'Select', label: 'Select' },
-    { value: 'both', label: 'Both' },
+    { value: "String", label: "String" },
+    { value: "Select", label: "Select" },
+    { value: "both", label: "Both" },
   ];
   const onOpenModal = () => {
     return setOpen(true);
@@ -36,10 +52,13 @@ export default function Projects() {
   const onOpenAddModal = () => {
     return setOpenAddMacro(true);
   };
+  const onOpenAddSpace = () => {
+    return setOpenAddSpace(true);
+  };
   const onCloseModal = () => {
     setOpen(false);
-    setOpenAddMacro(false)
-    
+    setOpenAddMacro(false);
+    setOpenAddSpace(false);
   };
   const getProject = async () => {
     const config = {
@@ -51,9 +70,9 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${
-          location.pathname.split("/")[2]
-        }`,
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/${location.pathname.split("/")[2]}`,
         config
       );
       // console.log(data.data.project);
@@ -64,7 +83,7 @@ export default function Projects() {
   };
   const generate = async () => {
     const config = {
-      responseType:'arraybuffer',
+      responseType: "arraybuffer",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -73,12 +92,14 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/${
           location.pathname.split("/")[2]
         }/generate`,
         config
       );
-      project&&FileDownload(data,`${project.name}.zip`)
+      project && FileDownload(data, `${project.name}.zip`);
       // console.log(data.data.project);
       // setProject(data.data.project);
       toast.success(" Succes , Please check your downloads !", {
@@ -90,7 +111,6 @@ export default function Projects() {
         draggable: true,
         progress: undefined,
       });
-
     } catch (error) {
       console.log(error.response.data);
     }
@@ -105,7 +125,9 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/allMacros/${
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/macros/allMacros/${
           location.pathname.split("/")[2]
         }`,
         config
@@ -113,6 +135,29 @@ export default function Projects() {
       // console.log(data.data.project);
       // console.log(data.data.macros.macros)
       setMacros(data.data.macros.macros);
+    } catch (error) {
+      console.log(error.response.data.error.message);
+    }
+  };
+  const getSpaceSettings = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.get(
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/spaceSettings/allSpaceSettings/${
+          location.pathname.split("/")[2]
+        }`,
+        config
+      );
+      console.log(data.data.spaceSettings);
+      setSpaceSettings(data.data.spaceSettings);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -158,7 +203,7 @@ export default function Projects() {
     }
   };
   const addMacro = async () => {
-    setParamter(parameter.value)
+    setParamter(parameter.value);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -168,7 +213,9 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.post(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/createMacro/${
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/macros/createMacro/${
           location.pathname.split("/")[2]
         }`,
         { name, key, description, parameter },
@@ -178,6 +225,40 @@ export default function Projects() {
       refreshPage();
     } catch (error) {
       console.log(error.response.data.error.message);
+    }
+  };
+  const addSpace = async () => {
+    var arr=[];
+   
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      withCredentials: true,
+    };
+    try {
+      spaceParameter&&(spaceParameter.map(el=>arr.push(el.value)))
+      var input={name,key,description}
+      arr&&(input.paramter =arr)
+      text&&(input.text=text);
+      image&&(input.image=image);
+      checkBox&&(input.checkBox=checkBox);
+      tag&&(input.tag=tag);
+      
+      select&&(input.select=select);
+      console.log(input)
+      const { data } = await axios.post(
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/spaceSettings/createSpaceSetting/${
+          location.pathname.split("/")[2]
+        }`,
+        input,
+        config
+      );
+      console.log(data);
+      refreshPage();
+    } catch (error) {
+      console.log(error.response.data.error);
     }
   };
   const deleteProject = async (project) => {
@@ -206,6 +287,7 @@ export default function Projects() {
 
     getProject();
     getMacros();
+    getSpaceSettings();
   }, []);
   return (
     <>
@@ -219,8 +301,6 @@ export default function Projects() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        
-        
       />
       {console.log(macros)}
       <Modal open={open} onClose={onCloseModal} center>
@@ -311,11 +391,10 @@ export default function Projects() {
           <div className="input-field">
             <i className="fas fa-user"></i>
             <Select
-             
-          defaultValue={parameter}
-        onChange={setParamter}
-        options={options}
-      />
+              defaultValue={parameter}
+              onChange={setParamter}
+              options={options}
+            />
           </div>
           <div className="input-field">
             <i className="fas fa-user"></i>
@@ -325,11 +404,116 @@ export default function Projects() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-         
+          {/* {parameter&&(<div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="azzaaz"
+              
+            />
+          </div>)} */}
+
           <input
             onClick={addMacro}
             readOnly
             value="Add Macro"
+            className="btn solid"
+            style={{ textAlign: "center" }}
+          />
+        </form>
+      </Modal>
+      <Modal open={openAddSpace} onClose={onCloseModal} center>
+        <form className="sign-in-form">
+          <h2 className="title">Add Space Setting </h2>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="key"
+              onChange={(e) => setKey(e.target.value)}
+            />
+          </div>
+
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <Select
+              isMulti
+              defaultValue={spaceParameter}
+              onChange={setSpaceParameter}
+              options={spaceOptions}
+            />
+            {spaceParameter &&
+              spaceParameter.map((el) => (
+                <div className="input-field">
+                  <i className="fas fa-user"></i>
+                  {el.value === "Text" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setText(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Select" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setSelect(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "CheckBox" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "Image" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setImage(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Tag" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setTag(e.target.value)}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
+
+          {/* {parameter&&(<div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="azzaaz"
+              
+            />
+          </div>)} */}
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <input
+              type="text"
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <input
+            onClick={addSpace}
+            readOnly
+            value="Add Space Setting"
             className="btn solid"
             style={{ textAlign: "center" }}
           />
@@ -470,6 +654,81 @@ export default function Projects() {
                     ) : (
                       <h3>
                         This Project didn't have any Macro , Please create one{" "}
+                      </h3>
+                    )}
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Space Settings :</h2>
+                    <div>
+                      <input
+                        readOnly
+                        onClick={onOpenAddSpace}
+                        value="Space Setting "
+                        className="btn solid"
+                        style={{ textAlign: "center" }}
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    {spaceSettings && spaceSettings.length ? (
+                      spaceSettings.map((el) => (
+                        <div
+                          onClick={() =>
+                            navigate(
+                              `/project/${
+                                location.pathname.split("/")[2]
+                              }/spaceSetting/${el._id}`
+                            )
+                          }
+                          className="box box-down "
+                          style={{
+                            width: "100%",
+                            border: `2px solid #${Math.floor(
+                              Math.random() * 16777215
+                            ).toString(16)}`,
+                          }}
+                          key={el._id}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "20%",
+                              alignItems: "center",
+                            }}
+                          >
+                            <h2>{el.name}</h2>
+                            {/* <GrClose className="close"/> */}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: "100%",
+                            }}
+                          >
+                            <p>{el.description}</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <h3>
+                        This Project didn't have any Space Settings , Please
+                        create one
                       </h3>
                     )}
                   </div>

@@ -5,18 +5,15 @@ exports.createSpaceSettings=async(req,res,next)=>{
         const { name, key, description, text,paramter,image,select,checkBox,tag} =
           req.body;
         const project = await Project.findById(req.params.id);
-        if (req.body)
-          project.spaceSettings.push({
-            name,
-            key,
-            description,
-            paramter:[...paramter],
-            text:text,
-            tag:tag,
-            image:image,
-            select:[...select],
-            checkBox:[...checkBox]
-          });
+        const data={name,key,description};
+        paramter&&(data.paramter=[...paramter]);
+        select&&(data.select=[...select]);
+        checkBox&&(data.checkBox=[...checkBox]);
+        text&&(data.text=text);
+        tag&&(data.tag=tag);
+        image&&(data.image=image);
+        if (data)
+          project.spaceSettings.push(data);
         await project.save();
         return res.status(200).json({
           status: "Succes",
@@ -49,9 +46,9 @@ exports.updateSpaceSettings = async (req, res, next) => {
             "spaceSettings.$.key": key,
             "spaceSettings.$.name": name,
             "spaceSettings.$.description": description,
-            "spaceSettings.$.paramter": [...paramter],
-            "spaceSettings.$.select": [...select],
-            "spaceSettings.$.checkBox": [...checkBox],
+            "spaceSettings.$.paramter": paramter&&[...paramter],
+            "spaceSettings.$.select": select&&[...select],
+            "spaceSettings.$.checkBox": checkBox&&[...checkBox],
             "spaceSettings.$.image": image,
             "spaceSettings.$.tag": tag,
             "spaceSettings.$.text": text,

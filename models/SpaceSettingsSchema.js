@@ -29,7 +29,8 @@ const SpaceSettingsSchema = new mongoose.Schema({
       "Tag",
       "Image",
       "CheckBox",
-      "Select",    
+      "Select",
+      "Date",    
     ]
   },
   text:{
@@ -45,7 +46,8 @@ const SpaceSettingsSchema = new mongoose.Schema({
     type:[String]
   },
   select:{
-    type:[String]
+    type:[String],
+    required:false
   }
   
   

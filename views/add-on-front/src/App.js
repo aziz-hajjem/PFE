@@ -14,6 +14,7 @@ import { useLocation } from "react-router";
 import UpdateMyPassword from "./components/UpdateMyPassword";
 import UpdateMyProfile from "./components/UpdateMyProfile";
 import Macro from "./components/Macro";
+import SpaceSetting from "./components/SpaceSetting"
 
 function App() {
   const location=useLocation()
@@ -33,6 +34,7 @@ function App() {
             <Route path="/projects" element={<Project />}/>
             <Route path="/project/:id" element={<Projects />}/>
             <Route path="/project/:id/macro/:macroid" element={<Macro />}/>
+            <Route path="/project/:id/spaceSetting/:SpaceSettingid" element={<SpaceSetting />}/>
             <Route path="/updatemypassword" element={<UpdateMyPassword />}/>
             <Route path="/updatemyprofile" element={<UpdateMyProfile />}/>
           </Route> 

@@ -455,6 +455,10 @@ exports.generate = async (req, res, next) => {
     el.paramter.find(el=>el==="Text")&&(dat.push(`<Text>${el.text}</Text>`))
     el.paramter.find(el=>el==="Tag")&&(dat.push(`<Tag text="${el.tag}" color="red" />`))
     el.paramter.find(el=>el==="Image")&&(dat.push(`<Image size='medium' src="${el.image}" alt="image" /> `))
+    el.paramter.find(el=>el==="Date")&&(dat.push(`
+    <Text>
+      Date of now is : <DateLozenge value={new Date().getTime()} />
+    </Text> `))
     el.paramter.find(el=>el==="CheckBox")&&(dat.push(`
     <Form onSubmit={onSubmit} >
       <CheckboxGroup name="CheckBox" label="CheckBox">

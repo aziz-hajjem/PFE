@@ -12,22 +12,25 @@ export default function Macro() {
   const [open, setOpen] = useState(false); 
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const [spaceSetting, setSpaceSetting] = useState();
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
+  const [spaceParameter, setSpaceParameter] = useState();
   const [text, setText] = useState();
-  const [select, setSelect] = useState();
+  const [select, setSelect] = useState(null);
+  const [tag, setTag] = useState();
+  const [image, setImage] = useState(); 
+  const [checkBox, setCheckBox] = useState(null);
 
 
-  const [parameter, setParameter] = useState("");
-  
-  const [photo, setPhoto] = useState();
-
-  const options = [
-    { value: 'String', label: 'String' },
-    { value: 'Select', label: 'Select' },
-    { value: 'both', label: 'Both' },
+  const spaceOptions = [
+    { value: "Text", label: "Text" },
+    { value: "Tag", label: "Tag" },
+    { value: "Select", label: "Both" },
+    { value: "CheckBox", label: "CheckBox" },
+    { value: "Select", label: "Select" },
+    { value: "Image", label: "Image" },
   ];
   const onOpenModal = () => {
     return setOpen(true);
@@ -36,7 +39,7 @@ export default function Macro() {
   const onCloseModal = () => {
     setOpen(false);
   };
-  const getMacro = async () => {
+  const getSpaceSetting = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -46,63 +49,60 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/spaceSettings/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
       );
-      console.log(data.data.macro);
-      setMacro(data.data.macro);
+      console.log(data.data.spaceSetting);
+      setSpaceSetting(data.data.spaceSetting);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
   };
 
   
-  const onInputChange = (e) => {
-    setPhoto(e.target.files[0]);
-  };
+
 
   function refreshPage() {
     window.location.reload(false);
   }
   
-  const updateMacro = async () => {
-    var data=[];
-    console.log(text,select.split('/'))
-    console.log(parameter)
-    console.log(parameter.map(el=>data.push(el.value)))
-
-    const formData = new FormData();
-    formData.append("name", name || macro.name);
-    formData.append("key", key || macro.key);
-    formData.append("description", description || macro.description);
-    formData.append("parameter", parameter.value || macro.parameter);
-    formData.append("icon", photo);
-
+  const updateSpaceSetting = async () => {
+    var arr=[];
+   
     const config = {
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
-      // withCredentials: true,
+      withCredentials: true,
     };
     try {
+      spaceParameter&&(spaceParameter.map(el=>arr.push(el.value)))
+      var input={name,key,description}
+      arr&&(input.paramter =arr)
+      text&&(input.text=text);
+      image&&(input.image=image);
+      checkBox&&(input.checkBox=checkBox);
+      tag&&(input.tag=tag);
+      
+      select&&(input.select=select);
+      console.log(input)
       const { data } = await axios.patch(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
-          location.pathname.split("/")[2]
-        }/${location.pathname.split("/")[4]}`,
-        formData,
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/spaceSettings/${
+            location.pathname.split("/")[2]
+          }/${location.pathname.split("/")[4]}`,
+        input,
         config
       );
-
-      // refreshPage();
-      // console.log(data)
+      console.log(data);
+      refreshPage();
     } catch (error) {
-      console.log(error.response.data.error.message);
+      console.log(error.response.data.error);
     }
   };
-  const deleteMacro = async () => {
+  const deleteSpaceSetting = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.delete(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/spaceSettings/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
@@ -130,19 +130,19 @@ export default function Macro() {
       navigate("/auth");
     }
 
-    getMacro();
+    getSpaceSetting();
   }, []);
   return (
     <>
-      <Modal open={open} onClose={onCloseModal} center>
+       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
-          <h2 className="title">Update Macro</h2>
+          <h2 className="title">Update Space Setting </h2>
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
               type="text"
               placeholder="name"
-              defaultValue={macro && macro.name}
+              defaultValue={spaceSetting && spaceSetting.name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -151,63 +151,77 @@ export default function Macro() {
             <input
               type="text"
               placeholder="key"
-              defaultValue={macro && macro.key}
+              defaultValue={spaceSetting && spaceSetting.key}
               onChange={(e) => setKey(e.target.value)}
             />
           </div>
+
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <Select
+              isMulti
+              defaultValue={spaceParameter}
+              onChange={setSpaceParameter}
+              options={spaceOptions}
+            />
+            {spaceParameter &&
+              spaceParameter.map((el) => (
+                <div className="input-field">
+                  <i className="fas fa-user"></i>
+                  {el.value === "Text" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setText(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Select" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setSelect(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "CheckBox" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "Image" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setImage(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Tag" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setTag(e.target.value)}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
+
+
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
               type="text"
               placeholder="Description"
-              defaultValue={macro && macro.description}
+              defaultValue={spaceSetting && spaceSetting.description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-         
-          
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <Select
-             isMulti
-          defaultValue={parameter}
-        onChange={setParameter}
-        options={options}
-      />
-      </div>
-      {parameter&&parameter.map(el=>
-        (<div className="input-field">
-        <i className="fas fa-user"></i>
-        {el.value==="String"&& <input
-          type="text"
-          placeholder={el.value}
-          onChange={(e)=>setText(e.target.value)}
-        />}
-        {el.value==="Select"&& <input
-          type="text"
-          placeholder={el.value}
-          onChange={(e)=>setSelect(e.target.value)}
-        />}
-      </div>)
-      
-      
-        
-      
-      
-        )}
-
-          <div
-            className="input-field"
-            style={{ display: "flex", alignItems: "center", gap: "2em" }}
-          >
-            <i className="fas fa-lock"></i>
-            <input type="file" onChange={onInputChange} />
-          </div>
 
           <input
-            onClick={updateMacro}
+            onClick={updateSpaceSetting}
             readOnly
-            value="Update Macro"
+            value="Update Space Setting"
             className="btn solid"
             style={{ textAlign: "center" }}
           />
@@ -217,7 +231,7 @@ export default function Macro() {
       
       <div className="Project-container">
         <div className="container-box">
-          {macro && (
+          {spaceSetting && (
             <>
               <div
                 className="project  "
@@ -229,34 +243,28 @@ export default function Macro() {
               >
                 <div className="box-header-container">
                   <div className="box-header">
-                    {macro.icon && (
-                      <img
-                        style={{ width: "5em", height: "5em" }}
-                        src={require(`../img/macros/${macro.icon}`)}
-                        alt=""
-                      />
-                    )}
+                    
 
-                    <h2>{macro.name}</h2>
+                    <h2>{spaceSetting.name}</h2>
                   </div>
-                  <a onClick={deleteMacro} className="close"></a>
+                  <a onClick={deleteSpaceSetting} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
                     <h2>NAME :</h2>
-                    <h4>{macro.name}</h4>
+                    <h4>{spaceSetting.name}</h4>
                   </div>
                   <div className="row">
                     <h2>KEY :</h2>
-                    <h4>{macro.key}</h4>
+                    <h4>{spaceSetting.key}</h4>
                   </div>
                   <div className="row">
                     <h2>DESCRIPTION :</h2>
-                    <h4>{macro.description}</h4>
+                    <h4>{spaceSetting.description}</h4>
                   </div>
                   <div className="row">
                     <h2>Paramter :</h2>
-                    <h4>{macro.parameter}</h4>
+                    <h4>{spaceSetting.paramter.map(el=>`[${el} ]`)}</h4>
                   </div>
 
                   <br />
