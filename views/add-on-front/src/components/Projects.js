@@ -36,7 +36,6 @@ export default function Projects() {
   const spaceOptions = [
     { value: "Text", label: "Text" },
     { value: "Tag", label: "Tag" },
-    { value: "Select", label: "Both" },
     { value: "CheckBox", label: "CheckBox" },
     { value: "Select", label: "Select" },
     { value: "Image", label: "Image" },
@@ -450,6 +449,7 @@ export default function Projects() {
               onChange={setSpaceParameter}
               options={spaceOptions}
             />
+            </div>
             {spaceParameter &&
               spaceParameter.map((el) => (
                 <div className="input-field">
@@ -491,7 +491,7 @@ export default function Projects() {
                   )}
                 </div>
               ))}
-          </div>
+          
 
           {/* {parameter&&(<div className="input-field">
             <i className="fas fa-user"></i>

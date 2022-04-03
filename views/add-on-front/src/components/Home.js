@@ -67,7 +67,7 @@ export default function Home() {
             <input
               readOnly
               value="Learn More"
-              
+              onClick={() => navigate('/projects')}
               className="btn solid"
               style={{ textAlign: "center" }}
             />

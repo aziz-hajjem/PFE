@@ -27,7 +27,6 @@ export default function Macro() {
   const spaceOptions = [
     { value: "Text", label: "Text" },
     { value: "Tag", label: "Tag" },
-    { value: "Select", label: "Both" },
     { value: "CheckBox", label: "CheckBox" },
     { value: "Select", label: "Select" },
     { value: "Image", label: "Image" },
@@ -164,9 +163,10 @@ export default function Macro() {
               onChange={setSpaceParameter}
               options={spaceOptions}
             />
+            </div>
             {spaceParameter &&
               spaceParameter.map((el) => (
-                <div className="input-field">
+                <div className="input-field" >
                   <i className="fas fa-user"></i>
                   {el.value === "Text" && (
                     <input
@@ -178,14 +178,14 @@ export default function Macro() {
                   {el.value === "Select" && (
                     <input
                       type="text"
-                      placeholder={el.value}
+                      placeholder={`${el.value} : sperate options with '/'`}
                       onChange={(e) => setSelect(e.target.value.split("/"))}
                     />
                   )}
                   {el.value === "CheckBox" && (
                     <input
                       type="text"
-                      placeholder={el.value}
+                      placeholder={`${el.value} : sperate options with '/'`}
                       onChange={(e) => setCheckBox(e.target.value.split("/"))}
                     />
                   )}
@@ -205,7 +205,7 @@ export default function Macro() {
                   )}
                 </div>
               ))}
-          </div>
+          
 
 
           <div className="input-field">
