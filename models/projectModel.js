@@ -1,6 +1,7 @@
 const mongoose=require('mongoose');
 const macro=require('./macroModel');
 const SpaceSettings=require('./SpaceSettingsSchema')
+const SpacePage=require('./SpacePageSchema')
 
 const projectSchema=new mongoose.Schema({
     name: {
@@ -47,7 +48,9 @@ const projectSchema=new mongoose.Schema({
         required:[true,"Please provide the enableLicensing "]
     },
     macros:[{ type: mongoose.Schema.Types.ObjectId, ref: 'macro' } ],
-    spaceSettings:[SpaceSettings]
+    spaceSettings:[SpaceSettings],
+    spacePages:[SpacePage]
+
 
 })
 

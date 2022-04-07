@@ -4,7 +4,7 @@ import axios from "axios";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { useNavigate } from "react-router";
-import "../styles/projects.css";
+import "../../styles/projects.css";
 
 export default function Project() {
   const navigate = useNavigate();
@@ -166,11 +166,6 @@ export default function Project() {
           />
         </form>
       </Modal>
-      {/* {projects&&projects.length||<h1>This user didn't have any project ,Please Create one 😄</h1>}     */}
-
-      {/* {projects&&projects.length?projects.map(el=>(
-            <div>{el.name}{el._id}</div>
-        )):(<h1>This user didn't have projects</h1>)} */}
        
       <div
         style={{
@@ -209,7 +204,7 @@ export default function Project() {
               <p>{el.description}</p>
               <img
                 style={{ width: "5em", height: "5em" }}
-                src={require(`../img/icons/${el.icon}`)}
+                src={require(`../../img/icons/${el.icon}`)}
                 alt=""
               />
               

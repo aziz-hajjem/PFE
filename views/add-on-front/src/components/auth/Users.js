@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { MdDelete, MdMode } from "react-icons/md";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import "../styles/auth.css";
+import "../../styles/auth.css";
 
 export default function Users() {
   const navigate = useNavigate();
@@ -187,7 +187,7 @@ export default function Users() {
                             backgroundPosition: "center",
                             borderRadius: "50%",
                           }}
-                          src={require(`../img/users/${el.photo}`)}
+                          src={require(`../../img/users/${el.photo}`)}
                         />
                       </div>
                       <div style={{ width: "20%" }}>

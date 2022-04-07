@@ -14,6 +14,8 @@ const FileSaver = require('file-saver');
 
 const indexTemplate = require("../templates/index");
 const spaceTemplate = require("../templates/spaceSetting");
+const spacePageTemplate = require("../templates/spacePage");
+
 
 
 // const stream = require('stream');
@@ -328,6 +330,18 @@ exports.generate = async (req, res, next) => {
 
         `
       )).join('')}
+      ${project.spacePages.length?
+        `
+     confluence:spacePage:`:""}
+      ${project.spacePages.map(el=>(
+      `
+     - key: ${el.key}
+       function: ${el.name}
+       title: ${el.name}
+       route: ${el.name}
+
+      `
+    )).join('')}
       
      function:
      ${project.macros.map(el=>(
@@ -340,6 +354,13 @@ exports.generate = async (req, res, next) => {
       `
     )).join('')}
     ${project.spaceSettings.map(el=>(
+      `
+      - key: ${el.name}
+        handler: ${el.name}.run
+
+      `
+    )).join('')}
+    ${project.spacePages.map(el=>(
       `
       - key: ${el.name}
         handler: ${el.name}.run
@@ -485,7 +506,42 @@ exports.generate = async (req, res, next) => {
     "entry comment goes here"
   );
 })
-   
+project.spacePages.length&&project.spacePages.map(el=>{
+  var spaceData;
+  var dat=[];
+  el.paramter.find(el=>el==="Text")&&(dat.push(`<Text>${el.text}</Text>`))
+  el.paramter.find(el=>el==="Tag")&&(dat.push(`<Tag text="${el.tag}" color="red" />`))
+  el.paramter.find(el=>el==="Image")&&(dat.push(`<Image size='medium' src="${el.image}" alt="image" /> `))
+  el.paramter.find(el=>el==="Date")&&(dat.push(`
+  <Text>
+    Date of now is : <DateLozenge value={new Date().getTime()} />
+  </Text> `))
+  el.paramter.find(el=>el==="CheckBox")&&(dat.push(`
+  <Form onSubmit={onSubmit} >
+    <CheckboxGroup name="CheckBox" label="CheckBox">
+        ${el.checkBox.map(el=>`<Checkbox value="${el}" label="${el}" />`).join('')}
+      </CheckboxGroup>
+  </Form>
+  `))
+  el.paramter.find(el=>el==="Select")&&(dat.push(`
+  <Form onSubmit={onSubmit} >
+      <Select label="Select" name="select">
+        ${el.select.map(el=>`<Option value="${el}" label="${el}" />`).join('')}
+      </Select>
+  </Form>
+  `))
+
+
+  spaceData = {
+    data:dat.join('')
+  }
+  var dataSpace= spacePageTemplate(spaceData);
+  zip.addFile(
+  `src/${el.name}.jsx`,
+  Buffer.from(dataSpace, "utf8"),
+  "entry comment goes here"
+);
+})  
     
    
     zip.addFile(

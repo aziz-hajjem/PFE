@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/profile.css";
+import "../../styles/profile.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -43,7 +43,7 @@ export default function Profile() {
               <div className="avatar">
                 {currentUser.photo && (
                   <img
-                    src={require(`../img/users/${currentUser.photo}`)}
+                    src={require(`../../img/users/${currentUser.photo}`)}
                     alt=""
                   />
                 )}
