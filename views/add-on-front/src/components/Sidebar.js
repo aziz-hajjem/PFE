@@ -8,13 +8,11 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { FcBarChart } from "react-icons/fc";
 import { MdLogout, MdSecurity, MdBuild, MdMenu } from "react-icons/md";
-import { DiApple, DiAndroid, DiAtlassian } from "react-icons/di";
 import { FaUsers } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
 import { GoSettings,GoProject } from "react-icons/go";
-
+import bg1 from "../img/bg1.jpg" ;
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -49,7 +47,6 @@ export default function Sidebar() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-
     getMe();
   }, []);
   return (
@@ -59,7 +56,7 @@ export default function Sidebar() {
           className="side"
           collapsed={collapsed}
           style={{ height: "auto", margin: "0px" }}
-          image="https://www.freecodecamp.org/news/content/images/size/w2000/2021/06/w-qjCHPZbeXCQ-unsplash.jpg"
+          image={bg1}
         >
           <SidebarHeader>
             <Menu>
@@ -135,62 +132,6 @@ export default function Sidebar() {
               >
                 Projects
               </MenuItem>
-              <MenuItem
-                icon={<DiAtlassian style={{ width: "20px", height: "20px" }} />}
-              >
-                Attlassian
-              </MenuItem>
-              <SubMenu
-                title="Components"
-                icon={<DiApple style={{ width: "20px", height: "20px" }} />}
-              >
-                <MenuItem
-                  icon={<DiAndroid style={{ width: "20px", height: "20px" }} />}
-                >
-                  Component 1
-                </MenuItem>
-                <MenuItem
-                  icon={
-                    <DiAtlassian style={{ width: "20px", height: "20px" }} />
-                  }
-                >
-                  Component 2
-                </MenuItem>
-              </SubMenu>
-              <SubMenu
-                title="Components"
-                icon={<DiAndroid style={{ width: "20px", height: "20px" }} />}
-              >
-                <MenuItem
-                  icon={<DiApple style={{ width: "20px", height: "20px" }} />}
-                >
-                  Component 1
-                </MenuItem>
-                <MenuItem
-                  icon={<DiApple style={{ width: "20px", height: "20px" }} />}
-                >
-                  Component 2
-                </MenuItem>
-              </SubMenu>
-              <SubMenu
-                title="Components"
-                icon={<DiAtlassian style={{ width: "20px", height: "20px" }} />}
-              >
-                <MenuItem
-                  icon={
-                    <FcBarChart style={{ width: "20px", height: "20px" }} />
-                  }
-                >
-                  Dali
-                </MenuItem>
-                <MenuItem
-                  icon={
-                    <FcBarChart style={{ width: "20px", height: "20px" }} />
-                  }
-                >
-                  Aziz
-                </MenuItem>
-              </SubMenu>
             </Menu>
             <Menu>
               <SubMenu

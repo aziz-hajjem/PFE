@@ -1,7 +1,14 @@
 const mongoose=require('mongoose');
-const macro=require('./macroModel');
+const Macros=require('./macroModel');
 const SpaceSettings=require('./SpaceSettingsSchema')
-const SpacePage=require('./SpacePageSchema')
+const SpacePage=require('./SpacePageSchema');
+const HomePageFeed=require('./homePageFeedSchema')
+const GlobalSettings=require('./globalSettingSchema')
+const GlobalPages=require('./globalPageSchema')
+const ContextMenu=require('./contextMenuSchema')
+
+
+
 
 const projectSchema=new mongoose.Schema({
     name: {
@@ -47,9 +54,14 @@ const projectSchema=new mongoose.Schema({
         type:Boolean,
         required:[true,"Please provide the enableLicensing "]
     },
-    macros:[{ type: mongoose.Schema.Types.ObjectId, ref: 'macro' } ],
+    macros:[Macros],
     spaceSettings:[SpaceSettings],
-    spacePages:[SpacePage]
+    spacePages:[SpacePage],
+    homePageFeeds:[HomePageFeed],
+    globalSettings:[GlobalSettings],
+    globalPages:[GlobalPages],
+    contextMenu:[ContextMenu]
+
 
 
 })

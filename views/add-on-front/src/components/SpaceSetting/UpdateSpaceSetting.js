@@ -28,6 +28,9 @@ export default function SpaceSetting() {
     { value: "CheckBox", label: "CheckBox" },
     { value: "Select", label: "Select" },
     { value: "Image", label: "Image" },
+    { value: "User", label: "User" },
+    { value: "Date", label: "Date" }
+
   ];
   const onOpenModal = () => {
     return setOpen(true);

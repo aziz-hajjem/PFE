@@ -28,6 +28,10 @@ export default function UpdateSpacePage() {
     { value: "CheckBox", label: "CheckBox" },
     { value: "Select", label: "Select" },
     { value: "Image", label: "Image" },
+    { value: "Date", label: "Date" },
+    { value: "User", label: "User" }
+
+
   ];
   const onOpenModal = () => {
     return setOpen(true);
@@ -143,44 +147,45 @@ export default function UpdateSpacePage() {
           </div>
           {spaceParameter &&
             spaceParameter.map((el) => (
-              <div className="input-field">
-                <i className="fas fa-user"></i>
-                {el.value === "Text" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                )}
-                {el.value === "Select" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setSelect(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "CheckBox" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setCheckBox(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "Image" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                )}
-                {el.value === "Tag" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setTag(e.target.value)}
-                  />
-                )}
-              </div>
+              (el.value==="Date"||el.value==="User")?" ":
+              (<div className="input-field">
+              <i className="fas fa-user"></i>
+              {el.value === "Text" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              )}
+              {el.value === "Select" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setSelect(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "CheckBox" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "Image" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setImage(e.target.value)}
+                />
+              )}
+              {el.value === "Tag" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setTag(e.target.value)}
+                />
+              )}
+            </div>)
             ))}
 
           <div className="input-field">

@@ -4,16 +4,16 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
-import UpdateMacro from "./UpdateMacro";
+import UpdateHomePageFeed from "./UpdateHomePageFeed";
 
 
-export default function Macro() {
+export default function HomePageFeed() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setmacro] = useState();
+  const [homePageFeed, sethomePageFeed] = useState();
 
 
-  const getmacro = async () => {
+  const gethomePageFeed = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -23,19 +23,19 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/homePageFeeds/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
       );
-      console.log(data.data.macro);
-      setmacro(data.data.macro);
+      console.log(data.data.homePageFeed);
+      sethomePageFeed(data.data.homePageFeed);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
   };
   
-  const deletemacro = async () => {
+  const deletehomePageFeed = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function Macro() {
     };
     try {
       const { data } = await axios.delete(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/homePageFeeds/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
@@ -61,13 +61,13 @@ export default function Macro() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    getmacro();
+    gethomePageFeed();
   }, []);
   return (
     <>
       <div className="Project-container">
         <div className="container-box">
-          {macro && (
+          {homePageFeed && (
             <>
               <div
                 className="project  "
@@ -79,31 +79,31 @@ export default function Macro() {
               >
                 <div className="box-header-container">
                   <div className="box-header">
-                    <h2>{macro.name}</h2>
+                    <h2>{homePageFeed.name}</h2>
                   </div>
-                  <a onClick={deletemacro} className="close"></a>
+                  <a onClick={deletehomePageFeed} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
                     <h2>NAME :</h2>
-                    <h4>{macro.name}</h4>
+                    <h4>{homePageFeed.name}</h4>
                   </div>
                   <div className="row">
                     <h2>KEY :</h2>
-                    <h4>{macro.key}</h4>
+                    <h4>{homePageFeed.key}</h4>
                   </div>
                   <div className="row">
                     <h2>DESCRIPTION :</h2>
-                    <h4>{macro.description}</h4>
+                    <h4>{homePageFeed.description}</h4>
                   </div>
                   <div className="row">
                     <h2>Paramter :</h2>
-                    <h4>{macro.paramter.map(el=>`[${el} ]`)}</h4>
+                    <h4>{homePageFeed.paramter.map(el=>`[${el} ]`)}</h4>
                   </div>
                   <br />               
                 </div>
               </div>
-             <UpdateMacro/>
+             <UpdateHomePageFeed/>
             </>
           )}
         </div>

@@ -1,40 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import axios from "axios";
+import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import { useNavigate } from "react-router";
-
-
+import "../../styles/project.css";
 import Select from "react-select";
 
-export default function Projects() {
+export default function UpdateMacro() {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [macro, setMacro] = useState();
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
-  const [parameter, setParameter] = useState("");
-  const [photo, setPhoto] = useState();
-  const [macro, setMacro] = useState();
+  const [macroParamter, setMacroParamter] = useState();
+  const [text, setText] = useState();
+  const [select, setSelect] = useState(null);
+  const [tag, setTag] = useState();
+  const [image, setImage] = useState();
+  const [checkBox, setCheckBox] = useState(null);
 
-  const options = [
-    { value: "String", label: "String" },
+  const spaceOptions = [
+    { value: "Text", label: "Text" },
+    { value: "Tag", label: "Tag" },
+    { value: "CheckBox", label: "CheckBox" },
     { value: "Select", label: "Select" },
-    { value: "both", label: "Both" },
+    { value: "Image", label: "Image" },
+    { value: "Date", label: "Date" },
+    { value: "User", label: "User" }
+
   ];
   const onOpenModal = () => {
     return setOpen(true);
   };
+
   const onCloseModal = () => {
     setOpen(false);
-  };
-  function refreshPage() {
-    window.location.reload(false);
-  }
-  const onInputChange = (e) => {
-    setPhoto(e.target.files[0]);
   };
   const getMacro = async () => {
     const config = {
@@ -46,7 +49,9 @@ export default function Projects() {
     };
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/macros/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
         config
@@ -57,36 +62,48 @@ export default function Projects() {
       console.log(error.response.data.error.message);
     }
   };
-  const updateMacro = async () => {
-    const formData = new FormData();
-    formData.append("name", name || macro.name);
-    formData.append("key", key || macro.key);
-    formData.append("description", description || macro.description);
-    formData.append("parameter", parameter.value || macro.parameter);
-    formData.append("icon", photo);
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
+
+  const updatemacro = async () => {
+    var arr = [];
 
     const config = {
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
-      // withCredentials: true,
+      withCredentials: true,
     };
     try {
+      macroParamter && macroParamter.map((el) => arr.push(el.value));
+      var input = { name, key, description };
+      arr && (input.paramter = arr);
+      text && (input.text = text);
+      image && (input.image = image);
+      checkBox && (input.checkBox = checkBox);
+      tag && (input.tag = tag);
+
+      select && (input.select = select);
+      console.log(input);
       const { data } = await axios.patch(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/macros/${
+        `http://${
+          process.env.REACT_APP_IP_ADDRESS
+        }:5000/api/pfe/user/projects/macros/${
           location.pathname.split("/")[2]
         }/${location.pathname.split("/")[4]}`,
-        formData,
+        input,
         config
       );
-
+      console.log(data);
       refreshPage();
-      // console.log(data)
     } catch (error) {
-      console.log(error.response.data.error.message);
+      console.log(error.response.data.error);
     }
   };
+
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
@@ -96,19 +113,9 @@ export default function Projects() {
   }, []);
   return (
     <>
-      <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Update"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
-      </div>
-
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
-          <h2 className="title">Update Macro</h2>
+          <h2 className="title">Update Home Page Feed </h2>
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
@@ -127,6 +134,60 @@ export default function Projects() {
               onChange={(e) => setKey(e.target.value)}
             />
           </div>
+
+          <div className="input-field">
+            <i className="fas fa-user"></i>
+            <Select
+              isMulti
+              defaultValue={macroParamter}
+              onChange={setMacroParamter}
+              options={spaceOptions}
+            />
+          </div>
+          {macroParamter &&
+            macroParamter.map((el) => (
+              (el.value==="Date"||el.value==="User")?" ":
+              (<div className="input-field">
+              <i className="fas fa-user"></i>
+              {el.value === "Text" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              )}
+              {el.value === "Select" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setSelect(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "CheckBox" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "Image" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setImage(e.target.value)}
+                />
+              )}
+              {el.value === "Tag" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setTag(e.target.value)}
+                />
+              )}
+            </div>)
+              
+            ))}
+
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
@@ -137,24 +198,8 @@ export default function Projects() {
             />
           </div>
 
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <Select
-              defaultValue={parameter}
-              onChange={setParameter}
-              options={options}
-            />
-          </div>
-          <div
-            className="input-field"
-            style={{ display: "flex", alignItems: "center", gap: "2em" }}
-          >
-            <i className="fas fa-lock"></i>
-            <input type="file" onChange={onInputChange} />
-          </div>
-
           <input
-            onClick={updateMacro}
+            onClick={updatemacro}
             readOnly
             value="Update Macro"
             className="btn solid"
@@ -162,6 +207,16 @@ export default function Projects() {
           />
         </form>
       </Modal>
+
+      <div>
+        <input
+          readOnly
+          onClick={onOpenModal}
+          value="Update"
+          className="btn solid"
+          style={{ textAlign: "center" }}
+        />
+      </div>
     </>
   );
 }

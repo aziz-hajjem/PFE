@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const SpaceSettingsSchema = new mongoose.Schema({
+const ContextMenuSchema = new mongoose.Schema({
   key:{
       type:String,
       trim:true,
@@ -31,7 +31,7 @@ const SpaceSettingsSchema = new mongoose.Schema({
       "CheckBox",
       "Select",
       "Date",
-      "User"       
+      "User"   
     ]
   },
   text:{
@@ -48,9 +48,8 @@ const SpaceSettingsSchema = new mongoose.Schema({
   },
   select:{
     type:[String],
-    required:false
   }
   
   
 });
-module.exports= SpaceSettingsSchema
+module.exports= ContextMenuSchema

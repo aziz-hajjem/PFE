@@ -30,7 +30,8 @@ const SpacePageSchema = new mongoose.Schema({
       "Image",
       "CheckBox",
       "Select",
-      "Date",    
+      "Date",
+      "User"      
     ]
   },
   text:{

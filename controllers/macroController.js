@@ -1,114 +1,46 @@
 const Project = require("../models/projectModel");
-const Macro = require("../models/macroModel");
-const multer = require("multer");
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./views/add-on-front/src/img/macros");
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split("/")[1];
-    cb(null, `Macro_icon-${req.user.id}-${Date.now()}.${ext}`);
-  },
-});
-// const multerStorage=multer.memoryStorage();
 
-// test if the upload file is an image
-const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb(new Error("Not an image ! Please upload only images"), false);
-  }
-};
-
-// upload image
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-});
-exports.uploadMacroPhoto = upload.single("icon");
-
-exports.createMacro = async (req, res, next) => {
+exports.createMacro=async(req,res,next)=>{
   try {
-    const { name, key, description, icon, parameter } =
-      req.body;
-    const project = await Project.findById(req.params.id).populate("macros");
-    if (!project) {
-      return res.status(400).json({
+      const { name, key, description, text,paramter,image,select,checkBox,tag} =
+        req.body;
+      const project = await Project.findById(req.params.id);
+      const data={name,key,description};
+      paramter&&(data.paramter=[...paramter]);
+      select&&(data.select=[...select]);
+      checkBox&&(data.checkBox=[...checkBox]);
+      text&&(data.text=text);
+      tag&&(data.tag=tag);
+      image&&(data.image=image);
+      if (data)
+        project.macros.push(data);
+      await project.save();
+      return res.status(200).json({
+        status: "Succes",
+        data: {
+          project,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
         error: {
           status: "Fail",
-          message: "There is no project to add this Macro",
+          message: error.message,
         },
       });
     }
-
-    const newMacro = await Macro.create({
-      name: name,
-      key: key,
-      description: description,
-      icon: icon,
-      parameter:parameter
-    });
-    if (!newMacro) {
-      return res.status(400).json({
-        error: {
-          status: "Fail",
-          message: "Failed to create new macro :confounded:",
-        },
-      });
-    }
-
-    await project.macros.push(newMacro);
-    await project.save();
-    await newMacro.save()
-    return res.status(201).json({
-      status: "Succes",
-      data: {
-        newMacro,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error,
-      },
-    });
-  }
-  next();
+    next();
 };
 
-const filterObj = (obj, ...params) => {
-  const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (params.includes(el)) newObj[el] = obj[el];
-  });
-  return newObj;
-};
+
 
 exports.updateMacro = async (req, res, next) => {
   try {
-    const filteredBody = filterObj(
-      req.body,
-      "name",
-      "key",
-      "description",
-      "parameter",
+    const {  name, key, description, text,paramter,image,select,checkBox,tag } =
+        req.body;
     
-    );
-    const project=await Project.findById(req.params.projectid)
-    const find= project.macros.find(el=>el.toString()===req.params.id)
-      if(!find){
-        return res.status(400).json({
-          error:{
-            status:"Fail",
-            message:"This Macro is not yours 😠"
-          }
-        })
-      }
-
-    if (req.file) filteredBody.icon = req.file.filename;
+    // if (req.file) filteredBody.icon = req.file.filename;
     if (!req.body) {
       return res.status(400).json({
         error: {
@@ -117,13 +49,30 @@ exports.updateMacro = async (req, res, next) => {
         },
       });
     }
-    const macro = await Macro.findByIdAndUpdate(req.params.id, filteredBody, {
-      new: true,
-      runValidators: true,
-    });
-    await macro.save()
+    const project = await Project.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        macros: { $elemMatch: { _id: req.params.paramid } },
+      }, 
+      {
+        $set: {
+          "macros.$.key": key,
+          "macros.$.name": name,
+          "macros.$.description": description,
+          "macros.$.paramter": paramter&&[...paramter],
+          "macros.$.select": select&&[...select],
+          "macros.$.checkBox": checkBox&&[...checkBox],
+          "macros.$.image": image,
+          "macros.$.tag": tag,
+          "macros.$.text": text,
+
+        },
+        
+      },
+      {new:true}
+    );
     
-    if (!macro) {
+    if (!project) {
       return res.status(400).json({
         error: {
           status: "Fail",
@@ -131,48 +80,6 @@ exports.updateMacro = async (req, res, next) => {
         },
       });
     }
-
-    return res.status(201).json({
-      status: "Succes",
-      data: {
-        currentUser: req.user,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: {
-        status: "Fail",
-        message: error.message,
-      },
-    });
-  }
-  next();
-};
-exports.deleteMacro = async (req, res, next) => {
-  try {
-    const macro=await Macro.findByIdAndDelete(req.params.id);
-    if(!macro){
-      return res.status(400).json({
-        error: {
-          status: "Fail",
-          message: "Macro does not exist 😠",
-        },
-      });
-    }
-    const project=await Project.findById(req.params.projectid)
-    const find= project.macros.find(el=>el.toString()===req.params.id)
-      if(!find){
-        return res.status(400).json({
-          error:{
-            status:"Fail",
-            message:"This Macro is not yours 😠"
-          }
-        })
-      }
-
-      
-    project.macros.pull({ _id: req.params.id });
-    await project.save();
 
     return res.status(201).json({
       status: "Succes",
@@ -190,25 +97,15 @@ exports.deleteMacro = async (req, res, next) => {
   }
   next();
 };
-
-exports.getAllMacro = async (req, res, next) => {
+exports.deleteMacro = async (req, res, next) => {
   try {
-    const macros = await Project.findById(req.params.id)
-      .populate("macros")
-      .select("macros");
-    if (!macros) {
-      return res.status(400).json({
-        error: {
-          status: "Fail",
-          message: "This user have not macros !! ",
-        },
-      });
-    }
-
-    return res.status(201).json({
+    const project = await Project.findById(req.params.id);
+    project.macros.pull({ _id: req.params.paramid });
+    await project.save();
+    return res.status(200).json({
       status: "Succes",
       data: {
-        macros,
+        project,
       },
     });
   } catch (error) {
@@ -222,31 +119,46 @@ exports.getAllMacro = async (req, res, next) => {
   next();
 };
 
-exports.getMacro = async (req, res, next) => {
+exports.getAll = async (req, res, next) => {
   try {
-    const macro = await Macro.findById(req.params.id);
-
-    if (!macro) {
+    const project = await Project.findById(req.params.id);
+    if(!project.macros.length){
       return res.status(400).json({
-        error: {
-          status: "Fail",
-          message: "Macro not found !! ",
-        },
+        status: "Fail",
+        error: "This Project didn't have any Macro",
       });
     }
-    const project=await Project.findById(req.params.projectid)
-    const find= project.macros.find(el=>el.toString()===req.params.id)
-      if(!find){
-        return res.status(400).json({
-          error:{
-            status:"Fail",
-            message:"This Macro is not yours 😠"
-          }
-        })
-      }
-    
+ 
+    return res.status(200).json({
+      status: "Succes",
+      data: {
+        macros:project.macros,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: {
+        status: "Fail",
+        message: error.message,
+      },
+    });
+  }
+  next();
+};
 
-    return res.status(201).json({
+
+exports.getMacro = async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    var macro
+      project.macros&&(macro=project.macros.find(el=>el._id.toString()===req.params.paramid))
+      if(!macro){
+          return res.status(400).json({
+              status: "Fail",
+              message:"Macro  is not found !"
+            });
+      }
+    return res.status(200).json({
       status: "Succes",
       data: {
         macro,

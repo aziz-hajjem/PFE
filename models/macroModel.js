@@ -59,28 +59,35 @@ const macroSchema = new mongoose.Schema({
   //     "visuals & images",
   //   ],
   // },
-  icon: {
-    type: String,
-    default: "default.jpeg",
+
+
+  paramter:{
+    type:[String],
+    enum:[
+      "Text",
+      "Tag",
+      "Image",
+      "CheckBox",
+      "Select",
+      "Date",
+      "User"   
+    ]
   },
-  // bodyType: {
-  //   type: String,
-  //   enum: ["PLAIN_TEXT", "RICH_TEXT", "none"],
-  //   default: "none",
-  // },
-  // outputType: {
-  //   type: String,
-  //   enum: ["block", "inline"],
-  //   default: "block",
-  // },
-  parameter:{
-      type: String,
-      enum: [
-        "String",
-        "Select",
-        "both",
-      ],
-    }, 
+  text:{
+    type:String
+  },
+  tag:{
+    type:String
+  },
+  image:{
+    type:String
+  },
+  checkBox:{
+    type:[String]
+  },
+  select:{
+    type:[String],
+  }
 });
 
 macroSchema.pre('save',function(next){
@@ -90,5 +97,5 @@ macroSchema.pre('save',function(next){
 
 
 
-const macroModel = mongoose.model("macro", macroSchema);
-module.exports = macroModel;
+// const macroModel = mongoose.model("macro", macroSchema);
+module.exports = macroSchema;

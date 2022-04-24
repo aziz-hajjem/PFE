@@ -7,14 +7,14 @@ import { Modal } from "react-responsive-modal";
 import "../../styles/project.css";
 import Select from "react-select";
 
-export default function AddSpacePage() {
+export default function AddGlobalSetting() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
-  const [spaceParameter, setSpaceParameter] = useState();
+  const [globSettingParamter, setglobSettingParamter] = useState();
   const [text, setText] = useState();
   const [select, setSelect] = useState(null);
   const [tag, setTag] = useState();
@@ -30,7 +30,6 @@ export default function AddSpacePage() {
     { value: "Date", label: "Date" },
     { value: "User", label: "User" }
 
-
   ];
   const onOpenModal = () => {
     return setOpen(true);
@@ -44,7 +43,7 @@ export default function AddSpacePage() {
     window.location.reload(false);
   }
 
-  const addSpacePage = async () => {
+  const addGlobalSetting = async () => {
     var arr = [];
 
     const config = {
@@ -55,20 +54,19 @@ export default function AddSpacePage() {
       withCredentials: true,
     };
     try {
-      spaceParameter && spaceParameter.map((el) => arr.push(el.value));
+      globSettingParamter && globSettingParamter.map((el) => arr.push(el.value));
       var input = { name, key, description };
       arr && (input.paramter = arr);
       text && (input.text = text);
       image && (input.image = image);
       checkBox && (input.checkBox = checkBox);
       tag && (input.tag = tag);
-
       select && (input.select = select);
       console.log(input);
       const { data } = await axios.post(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
-        }:5000/api/pfe/user/projects/spacePages/createSpacePage/${
+        }:5000/api/pfe/user/projects/globalSettings/createGlobalSetting/${
           location.pathname.split("/")[2]
         }`,
         input,
@@ -92,15 +90,14 @@ export default function AddSpacePage() {
         <input
           readOnly
           onClick={onOpenModal}
-          value="Add Space Page "
+          value="Add Home Page Feed"
           className="btn solid"
           style={{ textAlign: "center" }}
         />
       </div>
-      <Modal open={open} onClose={onCloseModal} center >
-        
+      <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
-          <h2 className="title">Add Space Page </h2>
+          <h2 className="title">Add Home Page Feed </h2>
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
@@ -118,56 +115,56 @@ export default function AddSpacePage() {
             />
           </div>
 
-          <div className="input-field" >
+          <div className="input-field">
             <i className="fas fa-user"></i>
             <Select
               isMulti
-              defaultValue={spaceParameter}
-              onChange={setSpaceParameter}
+              defaultValue={globSettingParamter}
+              onChange={setglobSettingParamter}
               options={spaceOptions}
             />
           </div>
-          {spaceParameter &&
-            spaceParameter.map((el) => (
-              (el.value==="Date"||el.value==="User")?" ":
-              (<div className="input-field">
-              <i className="fas fa-user"></i>
-              {el.value === "Text" && (
-                <input
-                  type="text"
-                  placeholder={el.value}
-                  onChange={(e) => setText(e.target.value)}
-                />
-              )}
-              {el.value === "Select" && (
-                <input
-                  type="text"
-                  placeholder={`${el.value} : sperate options with '/'`}
-                  onChange={(e) => setSelect(e.target.value.split("/"))}
-                />
-              )}
-              {el.value === "CheckBox" && (
-                <input
-                  type="text"
-                  placeholder={`${el.value} : sperate options with '/'`}
-                  onChange={(e) => setCheckBox(e.target.value.split("/"))}
-                />
-              )}
-              {el.value === "Image" && (
-                <input
-                  type="text"
-                  placeholder={el.value}
-                  onChange={(e) => setImage(e.target.value)}
-                />
-              )}
-              {el.value === "Tag" && (
-                <input
-                  type="text"
-                  placeholder={el.value}
-                  onChange={(e) => setTag(e.target.value)}
-                />
-              )}
-            </div>)
+          {globSettingParamter &&
+            globSettingParamter.map((el) => (
+                (el.value==="Date"||el.value==="User")?" ":
+                (<div className="input-field">
+                <i className="fas fa-user"></i>
+                {el.value === "Text" && (
+                  <input
+                    type="text"
+                    placeholder={el.value}
+                    onChange={(e) => setText(e.target.value)}
+                  />
+                )}
+                {el.value === "Select" && (
+                  <input
+                    type="text"
+                    placeholder={`${el.value} : sperate options with '/'`}
+                    onChange={(e) => setSelect(e.target.value.split("/"))}
+                  />
+                )}
+                {el.value === "CheckBox" && (
+                  <input
+                    type="text"
+                    placeholder={`${el.value} : sperate options with '/'`}
+                    onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                  />
+                )}
+                {el.value === "Image" && (
+                  <input
+                    type="text"
+                    placeholder={el.value}
+                    onChange={(e) => setImage(e.target.value)}
+                  />
+                )}
+                {el.value === "Tag" && (
+                  <input
+                    type="text"
+                    placeholder={el.value}
+                    onChange={(e) => setTag(e.target.value)}
+                  />
+                )}
+              </div>)
             ))}
           <div className="input-field">
             <i className="fas fa-user"></i>
@@ -179,9 +176,9 @@ export default function AddSpacePage() {
           </div>
 
           <input
-            onClick={addSpacePage}
+            onClick={addGlobalSetting}
             readOnly
-            value="Add Space Page"
+            value="Add Global Setting"
             className="btn solid"
             style={{ textAlign: "center" }}
           />

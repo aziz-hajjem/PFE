@@ -5,12 +5,12 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 
-export default function AllMacro() {
+export default function AllglobalSetting() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const [globalSetting, setGlobalSetting] = useState();
 
-  const getMacro = async () => {
+  const getGlobalSetting = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,13 +22,13 @@ export default function AllMacro() {
       const { data } = await axios.get(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
-        }:5000/api/pfe/user/projects/macros/allMacros/${
+        }:5000/api/pfe/user/projects/globalSettings/allGlobalSettings/${
           location.pathname.split("/")[2]
         }`,
         config
       );
-      console.log(data.data.macros);
-      setMacro(data.data.macros);
+      console.log(data.data.globalSettings);
+      setGlobalSetting(data.data.globalSettings);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -38,16 +38,16 @@ export default function AllMacro() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    getMacro();
+    getGlobalSetting();
   }, []);
   return (
     <>
-      {macro && macro.length ? (
-        macro.map((el) => (
+      {globalSetting && globalSetting.length ? (
+        globalSetting.map((el) => (
           <div
             onClick={() =>
               navigate(
-                `/project/${location.pathname.split("/")[2]}/macro/${
+                `/project/${location.pathname.split("/")[2]}/globalSetting/${
                   el._id
                 }`
               )
@@ -83,7 +83,7 @@ export default function AllMacro() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Macros , Please create one</h3>
+        <h3>This Project didn't have any Global Settings , Please create one</h3>
       )}
     </>
   );

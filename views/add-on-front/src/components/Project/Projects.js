@@ -6,20 +6,25 @@ import "react-responsive-modal/styles.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../styles/project.css";
-import AddMacro from "../Macro/AddMacro"
-import AddSpaceSetting from "../SpaceSetting/AddSpaceSetting"
-import AllSpacePage from "../SpacePage/AllSpacePage"
-import AddSpacePage from "../SpacePage/AddSpacePage"
+import AddMacro from "../Macro/AddMacro";
+import AddSpaceSetting from "../SpaceSetting/AddSpaceSetting";
+import AllSpacePage from "../SpacePage/AllSpacePage";
+import AddSpacePage from "../SpacePage/AddSpacePage";
 import AllSpaceSetting from "../SpaceSetting/AllSpaceSetting";
 import AllMacro from "../Macro/AllMacro";
 import UpdateProject from "./UpdateProject";
-
+import AddHomePageFeed from "../HomePageFeed/AddHomePageFeed";
+import AllHomePageFeed from "../HomePageFeed/AllHomePageFeed";
+import AddGlobalSetting from "../GlobalSetting/AddGlobalSetting";
+import AllGlobalSetting from "../GlobalSetting/AllGlobalSetting";
+import AddGlobalPage from "../GlobalPage/AddGlobalPage";
+import AllGlobalPage from "../GlobalPage/AllGlobalPage";
+import AddContextMenu from "../ContextMenu/AddContextMenu";
+import AllContextMenu from "../ContextMenu/AllContextMenu";
 
 const FileDownload = require("js-file-download");
 
 export default function Projects() {
-
-
   const navigate = useNavigate();
   const location = useLocation();
   const [project, setProject] = useState();
@@ -73,7 +78,7 @@ export default function Projects() {
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response);
     }
   };
 
@@ -102,7 +107,6 @@ export default function Projects() {
     }
 
     getProject();
-
   }, []);
   return (
     <>
@@ -116,7 +120,7 @@ export default function Projects() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />  
+      />
       <div className="Project-container">
         <div className="container-box">
           {project && (
@@ -182,7 +186,7 @@ export default function Projects() {
                     }}
                   >
                     <h2>Macros :</h2>
-                   <AddMacro/>
+                    <AddMacro />
                   </div>
 
                   <br />
@@ -194,7 +198,7 @@ export default function Projects() {
                       flexDirection: "column",
                     }}
                   >
-                   <AllMacro/>
+                    <AllMacro />
                   </div>
                   <div
                     className="row"
@@ -204,7 +208,7 @@ export default function Projects() {
                     }}
                   >
                     <h2>Space Settings :</h2>
-                    <AddSpaceSetting/>
+                    <AddSpaceSetting />
                   </div>
                   <br />
                   <div
@@ -215,7 +219,7 @@ export default function Projects() {
                       flexDirection: "column",
                     }}
                   >
-                    <AllSpaceSetting/>
+                    <AllSpaceSetting />
                   </div>
                   <div
                     className="row"
@@ -225,7 +229,7 @@ export default function Projects() {
                     }}
                   >
                     <h2>Space Pages :</h2>
-                    <AddSpacePage/>
+                    <AddSpacePage />
                   </div>
                   <br />
                   <div
@@ -236,12 +240,95 @@ export default function Projects() {
                       flexDirection: "column",
                     }}
                   >
-                  <AllSpacePage/>
+                    <AllSpacePage />
                   </div>
-                  
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Home Page Feed :</h2>
+                    <AddHomePageFeed />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllHomePageFeed />
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Global Setting :</h2>
+                    <AddGlobalSetting />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllGlobalSetting />
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Global Page :</h2>
+                    <AddGlobalPage />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllGlobalPage />
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Context Menu :</h2>
+                    <AddContextMenu />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllContextMenu />
+                  </div>
                 </div>
               </div>
-              <UpdateProject/>
+              <UpdateProject />
               <div>
                 <input
                   readOnly

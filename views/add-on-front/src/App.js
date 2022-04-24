@@ -15,6 +15,12 @@ import UpdateMyProfile from "./components/auth/UpdateMyProfile";
 import Macro from "./components/Macro/Macro";
 import SpaceSetting from "./components/SpaceSetting/SpaceSetting"
 import SpacePage from "./components/SpacePage/SpacePage"
+import HomePageFeed from "./components/HomePageFeed/HomePageFeed"
+import GlobalSetting from "./components/GlobalSetting/GlobalSetting"
+import GlobalPage from "./components/GlobalPage/GlobalPage"
+import ContextMenu from "./components/ContextMenu/ContextMenu";
+
+
 
 
 function App() {
@@ -36,6 +42,14 @@ function App() {
             <Route path="/project/:id/macro/:macroid" element={<Macro />}/>
             <Route path="/project/:id/spaceSetting/:SpaceSettingid" element={<SpaceSetting />}/>
             <Route path="/project/:id/spacePage/:SpacePageid" element={<SpacePage />}/>
+            <Route path="/project/:id/homePageFeed/:HomePageFeedid" element={<HomePageFeed />}/>
+            <Route path="/project/:id/globalSetting/:GlobalSettingId" element={<GlobalSetting />}/>
+            <Route path="/project/:id/globalPage/:GlobalPageId" element={<GlobalPage />}/>
+            <Route path="/project/:id/contextMenu/:ContextMenuId" element={<ContextMenu />}/>
+
+
+
+
             <Route path="/updatemypassword" element={<UpdateMyPassword />}/>
             <Route path="/updatemyprofile" element={<UpdateMyProfile />}/>
           </Route> 

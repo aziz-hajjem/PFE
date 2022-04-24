@@ -5,12 +5,12 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 
-export default function AllMacro() {
+export default function AllContextMenu() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const [contextMenu, setContextMenu] = useState();
 
-  const getMacro = async () => {
+  const getcontextMenu = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,13 +22,13 @@ export default function AllMacro() {
       const { data } = await axios.get(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
-        }:5000/api/pfe/user/projects/macros/allMacros/${
+        }:5000/api/pfe/user/projects/contextMenu/allcontextMenu/${
           location.pathname.split("/")[2]
         }`,
         config
       );
-      console.log(data.data.macros);
-      setMacro(data.data.macros);
+      console.log(data.data.contextMenu);
+      setContextMenu(data.data.contextMenu);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -38,16 +38,16 @@ export default function AllMacro() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    getMacro();
+    getcontextMenu();
   }, []);
   return (
     <>
-      {macro && macro.length ? (
-        macro.map((el) => (
+      {contextMenu && contextMenu.length ? (
+        contextMenu.map((el) => (
           <div
             onClick={() =>
               navigate(
-                `/project/${location.pathname.split("/")[2]}/macro/${
+                `/project/${location.pathname.split("/")[2]}/contextMenu/${
                   el._id
                 }`
               )
@@ -83,7 +83,7 @@ export default function AllMacro() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Macros , Please create one</h3>
+        <h3>This Project didn't have any Context Menu , Please create one</h3>
       )}
     </>
   );

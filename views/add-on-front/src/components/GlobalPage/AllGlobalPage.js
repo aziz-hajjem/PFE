@@ -5,12 +5,12 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 
-export default function AllMacro() {
+export default function AllglobalPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const [globalPage, setGlobalPage] = useState();
 
-  const getMacro = async () => {
+  const getglobalPage = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,13 +22,13 @@ export default function AllMacro() {
       const { data } = await axios.get(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
-        }:5000/api/pfe/user/projects/macros/allMacros/${
+        }:5000/api/pfe/user/projects/globalPages/allglobalPages/${
           location.pathname.split("/")[2]
         }`,
         config
       );
-      console.log(data.data.macros);
-      setMacro(data.data.macros);
+      console.log(data.data.globalPages);
+      setGlobalPage(data.data.globalPages);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -38,16 +38,16 @@ export default function AllMacro() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    getMacro();
+    getglobalPage();
   }, []);
   return (
     <>
-      {macro && macro.length ? (
-        macro.map((el) => (
+      {globalPage && globalPage.length ? (
+        globalPage.map((el) => (
           <div
             onClick={() =>
               navigate(
-                `/project/${location.pathname.split("/")[2]}/macro/${
+                `/project/${location.pathname.split("/")[2]}/globalPage/${
                   el._id
                 }`
               )
@@ -83,7 +83,7 @@ export default function AllMacro() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Macros , Please create one</h3>
+        <h3>This Project didn't have any Global Pages , Please create one</h3>
       )}
     </>
   );

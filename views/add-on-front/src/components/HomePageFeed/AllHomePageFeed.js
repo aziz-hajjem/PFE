@@ -3,14 +3,16 @@ import { useLocation } from "react-router";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
 import "../../styles/project.css";
+import Select from "react-select";
 
-export default function AllMacro() {
+export default function AllHomePageFeed() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const [homePageFeed, setHomePageFeed] = useState();
 
-  const getMacro = async () => {
+  const getHomePageFeed = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,13 +24,13 @@ export default function AllMacro() {
       const { data } = await axios.get(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
-        }:5000/api/pfe/user/projects/macros/allMacros/${
+        }:5000/api/pfe/user/projects/homePageFeeds/allHomePageFeeds/${
           location.pathname.split("/")[2]
         }`,
         config
       );
-      console.log(data.data.macros);
-      setMacro(data.data.macros);
+      console.log(data.data.homePageFeeds);
+      setHomePageFeed(data.data.homePageFeeds);
     } catch (error) {
       console.log(error.response.data.error.message);
     }
@@ -38,16 +40,16 @@ export default function AllMacro() {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    getMacro();
+    getHomePageFeed();
   }, []);
   return (
     <>
-      {macro && macro.length ? (
-        macro.map((el) => (
+      {homePageFeed && homePageFeed.length ? (
+        homePageFeed.map((el) => (
           <div
             onClick={() =>
               navigate(
-                `/project/${location.pathname.split("/")[2]}/macro/${
+                `/project/${location.pathname.split("/")[2]}/homePageFeed/${
                   el._id
                 }`
               )
@@ -83,7 +85,7 @@ export default function AllMacro() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Macros , Please create one</h3>
+        <h3>This Project didn't have any Home Page Feeds , Please create one</h3>
       )}
     </>
   );
