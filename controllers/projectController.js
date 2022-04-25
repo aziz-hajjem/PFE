@@ -7,7 +7,7 @@ const path = require("path");
 const multer = require("multer");
 const AdmZip = require("adm-zip");
 const FileSaver = require("file-saver");
-
+const dataPackage=require('../templates/dataPackage')
 const indexTemplate = require("../templates/index");
 const spaceTemplate = require("../templates/spaceSetting");
 const spacePageTemplate = require("../templates/spacePage");
@@ -15,6 +15,8 @@ const homePageFeedTemplate = require("../templates/homePageFeed");
 const globalSettingTemplate = require("../templates/globalSetting");
 const globalPageTemplate = require("../templates/globalPage");
 const contextMenuTemplate = require("../templates/contextMenu");
+const contentActionTemplate = require("../templates/contentAction");
+const contentByLineItemTemplate = require("../templates/contentByLineItem");
 
 
 
@@ -53,23 +55,12 @@ exports.createProject = async (req, res, next) => {
       name,
       key,
       description,
-      vendorName,
-      vendorUrl,
-      authentication,
-      enableLicensing,
     } = req.body;
 
     const newProject = await Project.create({
       name: name,
       key: key,
       description: description,
-      // icon:icon,
-      vendor: {
-        name: vendorName,
-        url: vendorUrl,
-      },
-      authentication: authentication,
-      enableLicensing: enableLicensing,
     });
     if (!newProject) {
       return res.status(400).json({
@@ -114,8 +105,6 @@ exports.updateProject = async (req, res, next) => {
       "name",
       "key",
       "description",
-      "authentication",
-      "enableLicensing"
     );
     if (req.file) filteredBody.icon = req.file.filename;
     if (!req.body) {
@@ -296,7 +285,8 @@ exports.getProject = async (req, res, next) => {
 
 exports.generate = async (req, res, next) => {
   try {
-    const project = await Project.findById(req.params.id).populate("macros");
+    const project = await Project.findById(req.params.id).populate('macros');
+    console.log(project)
     if (!project) {
       return res.status(400).json({
         error: {
@@ -307,7 +297,12 @@ exports.generate = async (req, res, next) => {
     }
     const dataManifest = `
     modules:
-     macro:
+    ${
+      project.macros.length
+        ? `
+     macro:`
+        : ""
+    }
        ${project.macros
          .map(
            (el) =>
@@ -319,7 +314,6 @@ exports.generate = async (req, res, next) => {
         ${(el.text||el.tag)?(`
         config:
           function: ${el.name}-config`):""}
-        
         `
          )
          .join("")}
@@ -379,7 +373,7 @@ exports.generate = async (req, res, next) => {
           )
           .join("")}
           ${
-            project.globalSettings.length
+            project.globalPages.length
               ? `
      confluence:globalPage:`
               : ""
@@ -431,6 +425,41 @@ exports.generate = async (req, res, next) => {
       `
         )
         .join("")}
+        ${
+          project.contentByLineItems.length
+            ? `
+     confluence:contentBylineItem:`
+            : ""
+        }
+        ${project.contentByLineItems
+          .map(
+            (el) =>
+              `
+      - key: ${el.key}
+        function: ${el.name}
+        title: ${el.name}
+        tooltip: ${el.tooltip}
+        description: ${el.description}
+        `
+          )
+          .join("")}
+          ${
+            project.contentActions.length
+              ? `
+     confluence:contentAction:`
+              : ""
+          }
+          ${project.contentActions
+            .map(
+              (el) =>
+                `
+      - key: ${el.key}
+        function: ${el.name}
+        title: ${el.name}
+          `
+            )
+            .join("")}
+          
       
      function:
      ${project.macros
@@ -506,33 +535,31 @@ exports.generate = async (req, res, next) => {
             `
             )
             .join("")}
+            ${project.contentByLineItems
+              .map(
+                (el) =>
+                  `
+      - key: ${el.name}
+        handler: ${el.name}.run
+        
+              `
+              )
+              .join("")}
+              ${project.contentActions
+                .map(
+                  (el) =>
+                    `
+      - key: ${el.name}
+        handler: ${el.name}.run
+          
+                `
+                )
+                .join("")}
     app:
       id: 'Please run forge register'
     `;
 
-    const dataPackage = `
   
-      {
-        "name": "forge-ui-starter",
-        "version": "1.0.0",
-        "main": "index.js",
-        "license": "MIT",
-        "private": true,
-        "scripts": {
-              "lint": "./node_modules/.bin/eslint src/**/* || npm run --silent hook-errors",
-              "hook-errors": "echo 'x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.' && exit 1"
-        },
-        "devDependencies": {
-              "eslint": "^6.5.1",
-              "eslint-plugin-react-hooks": "^2.1.2"
-        },
-        "dependencies": {
-              "@forge/ui": "^1.1.0"
-        }
-  }
-  
-    
-    `;
     // const doc = new YAML.Document();
     // doc.contents = dataManifest;
     const dataeslint = `
@@ -559,13 +586,12 @@ exports.generate = async (req, res, next) => {
     .idea
     `;
     const dataReadMe = `
-    this macro : ${project.macros[0].name} 
-    fonctionnality :${project.macros[0].description}
+    this macro : ffff} 
+    fonctionnality :ffff}
     `;
     const zip = new AdmZip();
 
-project.macros.length &&
-      project.macros.map((el) => {
+project.macros.map((el) => {
         var macro;
         var dat = [];
         var conf=[];
@@ -728,6 +754,8 @@ export const config = render(<Config />);
           "entry comment goes here"
         );
       });
+      //////////
+
     project.spacePages.length &&
       project.spacePages.map((el) => {
         var spaceData;
@@ -788,6 +816,9 @@ export const config = render(<Config />);
           "entry comment goes here"
         );
       });
+
+
+      //////////////
     project.homePageFeeds.length &&
       project.homePageFeeds.map((el) => {
         var homePageFeed;
@@ -844,6 +875,127 @@ export const config = render(<Config />);
           "entry comment goes here"
         );
       });
+
+
+      ///////
+       project.contentByLineItems.length &&
+      project.contentByLineItems.map((el) => {
+        var contentByLineItem;
+        var dat = [];
+
+        el.paramter.find((el) => el === "User") &&
+          dat.push(`<User accountId={context.accountId} />
+  `);
+        el.paramter.find((el) => el === "Date") &&
+          dat.push(`
+  <Text>
+    Date of now is : <DateLozenge value={new Date().getTime()} />
+  </Text> 
+  `);
+        el.paramter.find((el) => el === "Tag") &&
+          dat.push(`<Tag text="${el.tag}" color="red" />
+  `);
+        el.paramter.find((el) => el === "Text") &&
+          dat.push(`<Text>${el.text}</Text>
+  `);
+
+        el.paramter.find((el) => el === "Image") &&
+          dat.push(`<Image size='medium' src="${el.image}" alt="image" /> 
+  `);
+
+        el.paramter.find((el) => el === "CheckBox") &&
+          dat.push(`
+  <Form onSubmit={onSubmit} >
+    <CheckboxGroup name="CheckBox" label="CheckBox">
+        ${el.checkBox
+          .map((el) => `<Checkbox value="${el}" label="${el}" />`)
+          .join("")}
+      </CheckboxGroup>
+  </Form>
+  `);
+        el.paramter.find((el) => el === "Select") &&
+          dat.push(`
+  <Form onSubmit={onSubmit} >
+      <Select label="Select" name="select">
+        ${el.select
+          .map((el) => `<Option value="${el}" label="${el}" />`)
+          .join("")}
+      </Select>
+  </Form>
+  `);
+
+        contentByLineItem = {
+          data: dat.join(""),
+        };
+        var dataContentByLineItem = contentByLineItemTemplate(contentByLineItem);
+        zip.addFile(
+          `src/${el.name}.jsx`,
+          Buffer.from(dataContentByLineItem, "utf8"),
+          "entry comment goes here"
+        );
+      });
+
+
+      /////
+      project.contentActions.length &&
+      project.contentActions.map((el) => {
+        var contentAction;
+        var dat = [];
+
+        el.paramter.find((el) => el === "User") &&
+          dat.push(`<User accountId={context.accountId} />
+  `);
+        el.paramter.find((el) => el === "Date") &&
+          dat.push(`
+  <Text>
+    Date of now is : <DateLozenge value={new Date().getTime()} />
+  </Text> 
+  `);
+        el.paramter.find((el) => el === "Tag") &&
+          dat.push(`<Tag text="${el.tag}" color="red" />
+  `);
+        el.paramter.find((el) => el === "Text") &&
+          dat.push(`<Text>${el.text}</Text>
+  `);
+
+        el.paramter.find((el) => el === "Image") &&
+          dat.push(`<Image size='medium' src="${el.image}" alt="image" /> 
+  `);
+
+        el.paramter.find((el) => el === "CheckBox") &&
+          dat.push(`
+  <Form onSubmit={onSubmit} >
+    <CheckboxGroup name="CheckBox" label="CheckBox">
+        ${el.checkBox
+          .map((el) => `<Checkbox value="${el}" label="${el}" />`)
+          .join("")}
+      </CheckboxGroup>
+  </Form>
+  `);
+        el.paramter.find((el) => el === "Select") &&
+          dat.push(`
+  <Form onSubmit={onSubmit} >
+      <Select label="Select" name="select">
+        ${el.select
+          .map((el) => `<Option value="${el}" label="${el}" />`)
+          .join("")}
+      </Select>
+  </Form>
+  `);
+
+        contentAction = {
+          title:el.name,
+          data: dat.join(""),
+        };
+        var dataContentAction = contentActionTemplate(contentAction);
+        zip.addFile(
+          `src/${el.name}.jsx`,
+          Buffer.from(dataContentAction, "utf8"),
+          "entry comment goes here"
+        );
+      });
+
+      /////////
       project.globalSettings.length &&
       project.globalSettings.map((el) => {
         var spaceData;
@@ -905,6 +1057,9 @@ export const config = render(<Config />);
         );
       });
 
+
+
+/////////
       project.globalPages.length &&
       project.globalPages.map((el) => {
         var spaceData;
@@ -965,6 +1120,8 @@ export const config = render(<Config />);
           "entry comment goes here"
         );
       });
+
+      //////////
       project.contextMenu.length &&
       project.contextMenu.map((el) => {
         var contextData;

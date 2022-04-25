@@ -18,9 +18,6 @@ export default function UpdateProject() {
   const [key, setKey] = useState();
 
   const [description, setDescription] = useState();
-  const [authentication, setAuthentication] = useState();
-  const [enableLicensing, setEnableLicensing] = useState();
-
   const [photo, setPhoto] = useState();
 
   const onOpenModal = () => {
@@ -63,11 +60,6 @@ export default function UpdateProject() {
     formData.append("name", name || project.name);
     formData.append("key", key || project.key);
     formData.append("description", description || project.description);
-    formData.append("authentication", authentication || project.authentication);
-    formData.append(
-      "enableLicensing",
-      enableLicensing || project.enableLicensing
-    );
     formData.append("icon", photo);
 
     const config = {
@@ -132,25 +124,7 @@ export default function UpdateProject() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Authentication"
-              defaultValue={project && project.authentication}
-              onChange={(e) => setAuthentication(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Enable Licensing"
-              defaultValue={project && project.enableLicensing}
-              onChange={(e) => setEnableLicensing(e.target.value)}
-            />
-          </div>
-
+          
           <div
             className="input-field"
             style={{ display: "flex", alignItems: "center", gap: "2em" }}

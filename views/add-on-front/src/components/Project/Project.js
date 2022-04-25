@@ -13,10 +13,6 @@ export default function Project() {
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
-  const [authentication, setAuthentication] = useState();
-  const [enableLicensing, setEnableLicensing] = useState();
-  const [vendorName, setVendorName] = useState();
-  const [vendorUrl, setVendorUrl] = useState();
   const onOpenModal = () => {
     return setOpen(true);
   };
@@ -37,7 +33,7 @@ export default function Project() {
     try {
       const { data } = await axios.post(
         `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/createProject`,
-        {name,key,authentication,description,enableLicensing,vendorName,vendorUrl},
+        { name, key, description },
         config
       );
 
@@ -82,8 +78,7 @@ export default function Project() {
         `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${id}`,
         config
       );
-      navigate('/projects')
-      
+      navigate("/projects");
     } catch (error) {
       console.log(error.response);
     }
@@ -124,38 +119,6 @@ export default function Project() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Authentication"
-              onChange={(e) => setAuthentication(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Enable Licensing"
-              onChange={(e) => setEnableLicensing(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Vendor Name"
-              onChange={(e) => setVendorName(e.target.value)}
-            />
-          </div>
-          <div className="input-field">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Vendor Url"
-              onChange={(e) => setVendorUrl(e.target.value)}
-            />
-          </div>
 
           <input
             onClick={addProject}
@@ -166,7 +129,7 @@ export default function Project() {
           />
         </form>
       </Modal>
-       
+
       <div
         style={{
           padding: "2em",
@@ -178,16 +141,16 @@ export default function Project() {
         }}
       >
         <input
-       onClick={onOpenModal}
-            readOnly
-            value="Add Project"
-            className="btn solid"
-            style={{ textAlign: "center" }}
-          />
+          onClick={onOpenModal}
+          readOnly
+          value="Add Project"
+          className="btn solid"
+          style={{ textAlign: "center" }}
+        />
         {projects &&
           projects.map((el) => (
             <div
-            onClick={()=>navigate(`/project/${el._id}`)}
+              onClick={() => navigate(`/project/${el._id}`)}
               className="box box-down "
               style={{
                 borderTop: `3px solid #${Math.floor(
@@ -196,10 +159,15 @@ export default function Project() {
               }}
               key={el._id}
             >
-              <div style={{display:'flex',justifyContent:"space-between",alignItems:"center"}}>
-              <h2>{el.name}</h2>
-              {/* <GrClose className="close"/> */}
-              
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <h2>{el.name}</h2>
+                {/* <GrClose className="close"/> */}
               </div>
               <p>{el.description}</p>
               <img
@@ -207,9 +175,6 @@ export default function Project() {
                 src={require(`../../img/icons/${el.icon}`)}
                 alt=""
               />
-              
-
-           
             </div>
           ))}
       </div>

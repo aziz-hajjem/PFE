@@ -21,6 +21,10 @@ import AddGlobalPage from "../GlobalPage/AddGlobalPage";
 import AllGlobalPage from "../GlobalPage/AllGlobalPage";
 import AddContextMenu from "../ContextMenu/AddContextMenu";
 import AllContextMenu from "../ContextMenu/AllContextMenu";
+import AddContentByLineItem from "../ContentByLineItem/AddContentByLineItem";
+import AllContentByLineItem from "../ContentByLineItem/AllContentByLineItem";
+import AddContentAction from "../ContentAction/AddContentAction";
+import AllContentAction from "../ContentAction/AllContentAction";
 
 const FileDownload = require("js-file-download");
 
@@ -78,7 +82,7 @@ export default function Projects() {
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response);
+      console.log(error.message);
     }
   };
 
@@ -161,22 +165,6 @@ export default function Projects() {
                   <div className="row">
                     <h2>DESCRIPTION :</h2>
                     <h4>{project.description}</h4>
-                  </div>
-                  <div className="row">
-                    <h2>VENDOR NAME :</h2>
-                    <h4>{project.vendor.name}</h4>
-                  </div>
-                  <div className="row">
-                    <h2>VENDOR URL :</h2>
-                    <h4>{project.vendor.url}</h4>
-                  </div>
-                  <div className="row">
-                    <h2>AUTHENTICATION :</h2>
-                    <h4>{project.authentication}</h4>
-                  </div>
-                  <div className="row">
-                    <h2>ENABLE LICENSING :</h2>
-                    <h4>{project.enableLicensing.toString()}</h4>
                   </div>
                   <div
                     className="row"
@@ -325,6 +313,48 @@ export default function Projects() {
                     }}
                   >
                     <AllContextMenu />
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>Content By Line Item :</h2>
+                    <AddContentByLineItem />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllContentByLineItem />
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      justifyContent: "space-between",
+                      paddingLeft: "2em",
+                    }}
+                  >
+                    <h2>ContentAction :</h2>
+                    <AddContentAction />
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <AllContentAction />
                   </div>
                 </div>
               </div>

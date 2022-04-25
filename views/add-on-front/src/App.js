@@ -19,6 +19,9 @@ import HomePageFeed from "./components/HomePageFeed/HomePageFeed"
 import GlobalSetting from "./components/GlobalSetting/GlobalSetting"
 import GlobalPage from "./components/GlobalPage/GlobalPage"
 import ContextMenu from "./components/ContextMenu/ContextMenu";
+import ContentAction from "./components/ContentAction/ContentAction";
+import ContentByLineItem from "./components/ContentByLineItem/ContentByLineItem";
+
 
 
 
@@ -46,6 +49,10 @@ function App() {
             <Route path="/project/:id/globalSetting/:GlobalSettingId" element={<GlobalSetting />}/>
             <Route path="/project/:id/globalPage/:GlobalPageId" element={<GlobalPage />}/>
             <Route path="/project/:id/contextMenu/:ContextMenuId" element={<ContextMenu />}/>
+            <Route path="/project/:id/contentAction/:ContentActionId" element={<ContentAction />}/>
+
+            <Route path="/project/:id/contentByLineItem/:ContentByLineItemId" element={<ContentByLineItem />}/>
+
 
 
 
