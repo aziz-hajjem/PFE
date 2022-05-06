@@ -87,13 +87,12 @@ export default function AddContextMenu() {
   return (
     <>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Context Menu"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/> Context Menu</div>
+          </button>
+        </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -179,7 +178,7 @@ export default function AddContextMenu() {
             onClick={addContextMenu}
             readOnly
             value="Add Context Menu"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

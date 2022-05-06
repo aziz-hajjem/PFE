@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { CgAdd } from "react-icons/cg";
 import "../../styles/project.css";
 import Select from "react-select";
 
@@ -28,9 +29,7 @@ export default function AddMacro() {
     { value: "Select", label: "Select" },
     { value: "Image", label: "Image" },
     { value: "Date", label: "Date" },
-    { value: "User", label: "User" }
-
-
+    { value: "User", label: "User" },
   ];
   const onOpenModal = () => {
     return setOpen(true);
@@ -76,7 +75,7 @@ export default function AddMacro() {
       console.log(data);
       refreshPage();
     } catch (error) {
-      console.log(error.response.data.error);
+      console.log(error.response.error.message);
     }
   };
 
@@ -87,15 +86,15 @@ export default function AddMacro() {
   }, []);
   return (
     <>
-      <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Macro"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+<div>
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/> Macro</div>
+          </button>
+        </div>
       </div>
+
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
           <h2 className="title">Add Macro </h2>
@@ -126,47 +125,50 @@ export default function AddMacro() {
             />
           </div>
           {macroParamter &&
-            macroParamter.map((el) => (
-                (el.value==="Date"||el.value==="User")?" ":
-                (<div className="input-field">
-                <i className="fas fa-user"></i>
-                {el.value === "Text" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                )}
-                {el.value === "Select" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setSelect(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "CheckBox" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setCheckBox(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "Image" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                )}
-                {el.value === "Tag" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setTag(e.target.value)}
-                  />
-                )}
-              </div>)
-            ))}
+            macroParamter.map((el) =>
+              el.value === "Date" || el.value === "User" ? (
+                " "
+              ) : (
+                <div className="input-field">
+                  <i className="fas fa-user"></i>
+                  {el.value === "Text" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setText(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Select" && (
+                    <input
+                      type="text"
+                      placeholder={`${el.value} : sperate options with '/'`}
+                      onChange={(e) => setSelect(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "CheckBox" && (
+                    <input
+                      type="text"
+                      placeholder={`${el.value} : sperate options with '/'`}
+                      onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                    />
+                  )}
+                  {el.value === "Image" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setImage(e.target.value)}
+                    />
+                  )}
+                  {el.value === "Tag" && (
+                    <input
+                      type="text"
+                      placeholder={el.value}
+                      onChange={(e) => setTag(e.target.value)}
+                    />
+                  )}
+                </div>
+              )
+            )}
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
@@ -175,14 +177,14 @@ export default function AddMacro() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-
           <input
-            onClick={addMacro}
-            readOnly
-            value="Add Macro"
-            className="btn solid"
-            style={{ textAlign: "center" }}
-          />
+          readOnly
+          onClick={addMacro}
+          value="Add Macro"
+          className="btns solid"
+          style={{ textAlign: "center" }}
+        />
+        
         </form>
       </Modal>
     </>

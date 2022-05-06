@@ -15,7 +15,7 @@ export default function ResetPassword() {
     e.preventDefault();
     const config = {
       headers: { "Content-Type": "application/json" },
-      // withCredentials:true
+      withCredentials:true
     };
     try {
       const { data } = await axios.patch(
@@ -34,8 +34,8 @@ export default function ResetPassword() {
       //   navigate('/home')
       // }
     } catch (error) {
-      setError(error.response.data.error.message);
-      console.log(error.response.data.error.message);
+      setError(error.response.data.message);
+      console.log(error.response.data.message);
       setTimeout(() => {
         setError("");
       }, 5000);
@@ -66,7 +66,7 @@ export default function ResetPassword() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <input type="submit" value="Reset" className="btn solid" />
+        <input type="submit" value="Reset" className="btns solid" />
       </form>
     
   

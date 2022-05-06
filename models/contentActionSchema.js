@@ -4,13 +4,11 @@ const GlobalPageSchema = new mongoose.Schema({
   key:{
       type:String,
       trim:true,
-      unique:[true,"Key is already used "],
       required:[true,"Please provide a key "]
   },
   name:{
     type:String,
     trim:true,
-    unique:[true,"Name is already used "],
     required:[true,"Please provide a name "]
   },
   text:{

@@ -151,7 +151,7 @@ export default function Users() {
             onClick={() => updatedUser && updateHandler(updatedUser)}
             readOnly
             value="Update"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

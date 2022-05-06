@@ -137,19 +137,20 @@ export default function UpdateProject() {
             onClick={() => project && updateHandler(project)}
             readOnly
             value="Update"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>
       </Modal>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Update"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div id="container" onClick={onOpenModal}>
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">Update</span>
+              </button>
+            </div>
       </div>
     </>
   );

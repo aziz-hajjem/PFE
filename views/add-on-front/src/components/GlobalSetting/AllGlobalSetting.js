@@ -54,7 +54,8 @@ export default function AllglobalSetting() {
             }
             className="box box-down "
             style={{
-              width: "100%",
+              width: "auto",
+              height:"auto",
               border: `2px solid #${Math.floor(
                 Math.random() * 16777215
               ).toString(16)}`,
@@ -64,21 +65,11 @@ export default function AllglobalSetting() {
             <div
               style={{
                 display: "flex",
-                gap: "20%",
+                fontSize:"70%",
                 alignItems: "center",
               }}
             >
               <h2>{el.name}</h2>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <p>{el.description}</p>
             </div>
           </div>
         ))

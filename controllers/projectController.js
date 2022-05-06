@@ -182,14 +182,10 @@ exports.deleteProject = async (req, res, next) => {
         },
       });
     }
-    await Project.deleteOne(project);
+    await Project.findByIdAndDelete(req.params.id);
     user.projects.pull({ _id: req.params.id });
     await user.save();
-    if (project.macros) {
-      project.macros.map(
-        async (el) => await Macro.findByIdAndDelete(el._id.toString())
-      );
-    }
+    
 
     return res.status(201).json({
       status: "Succes",

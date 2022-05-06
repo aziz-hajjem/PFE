@@ -87,13 +87,12 @@ export default function AddGlobalSetting() {
   return (
     <>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Home Page Feed"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/> Global Setting</div>
+          </button>
+        </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -179,7 +178,7 @@ export default function AddGlobalSetting() {
             onClick={addGlobalSetting}
             readOnly
             value="Add Global Setting"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

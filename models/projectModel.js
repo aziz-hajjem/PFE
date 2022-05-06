@@ -18,14 +18,11 @@ const projectSchema=new mongoose.Schema({
     name: {
         type:String,
         required:[true,'please provide name for your project'],
-        unique:true,
-        trim:true
     },
     key:{
         type:String,
         required:[true,'please provide key for your project'],
-        unique:true,
-        trim:true
+        trim:true,
     },
     description:{
         type:String,
@@ -48,6 +45,13 @@ const projectSchema=new mongoose.Schema({
 
 
 
+})
+
+projectSchema.pre('save',function(next){
+    if(this.macros.length){
+        this.macros
+    }
+    next()
 })
 
 const projectModel=mongoose.model("project",projectSchema);

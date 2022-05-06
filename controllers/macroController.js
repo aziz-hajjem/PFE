@@ -1,4 +1,5 @@
 const Project = require("../models/projectModel");
+const verif=require('./verif')
 
 
 exports.createMacro=async(req,res,next)=>{
@@ -6,15 +7,27 @@ exports.createMacro=async(req,res,next)=>{
       const { name, key, description, text,paramter,image,select,checkBox,tag} =
         req.body;
       const project = await Project.findById(req.params.id);
-      const data={name,key,description};
+
+    const data={name,key,description};
       paramter&&(data.paramter=[...paramter]);
       select&&(data.select=[...select]);
       checkBox&&(data.checkBox=[...checkBox]);
       text&&(data.text=text);
       tag&&(data.tag=tag);
       image&&(data.image=image);
+
+
+      if(verif(project,data))
+      return res.status(400).json({
+        error: {
+          status: "Fail",
+          message: "Key or Name is already Used",
+        },
+      });
       if (data)
         project.macros.push(data);
+  
+
       await project.save();
       return res.status(200).json({
         status: "Succes",
@@ -49,7 +62,19 @@ exports.updateMacro = async (req, res, next) => {
         },
       });
     }
-    const project = await Project.findOneAndUpdate(
+    var project=await Project.findOne( {
+      _id: req.params.id,
+      macros: { $elemMatch: { _id: req.params.paramid } },
+    }, )
+    const data={name,key}
+    if(verif(project,data))
+      return res.status(400).json({
+        error: {
+          status: "Fail",
+          message: "Key or Name is already Used",
+        },
+      });
+     project = await Project.findOneAndUpdate(
       {
         _id: req.params.id,
         macros: { $elemMatch: { _id: req.params.paramid } },
@@ -69,7 +94,7 @@ exports.updateMacro = async (req, res, next) => {
         },
         
       },
-      {new:true}
+      {new:true,runValidators:true}
     );
     
     if (!project) {

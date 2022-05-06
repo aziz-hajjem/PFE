@@ -80,13 +80,18 @@ export default function UpdateGlobalSetting() {
     try {
       globalSettingParamter && globalSettingParamter.map((el) => arr.push(el.value));
       var input = { name, key, description };
-      arr && (input.paramter = arr);
+      arr.length ? (input.paramter = arr):input.paramter=globalSetting.paramter;
       text && (input.text = text);
       image && (input.image = image);
       checkBox && (input.checkBox = checkBox);
       tag && (input.tag = tag);
 
       select && (input.select = select);
+      !input.paramter.find(el=>el=="CheckBox")&&(input.checkBox = [])
+      !input.paramter.find(el=>el=="Select")&&(input.select = [])
+      !input.paramter.find(el=>el=="Text")&&(input.text ="")
+      !input.paramter.find(el=>el=="Tag")&&(input.tag ="")
+      !input.paramter.find(el=>el=="Image")&&(input.image ="")
       console.log(input);
       const { data } = await axios.patch(
         `http://${
@@ -202,7 +207,7 @@ export default function UpdateGlobalSetting() {
             onClick={updateGlobalSetting}
             readOnly
             value="Update Home Page Feed"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>
@@ -213,7 +218,7 @@ export default function UpdateGlobalSetting() {
           readOnly
           onClick={onOpenModal}
           value="Update"
-          className="btn solid"
+          className="btns solid"
           style={{ textAlign: "center" }}
         />
       </div>

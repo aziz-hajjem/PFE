@@ -55,7 +55,7 @@ export default function UpdateMyPassword() {
                 <input
                     defaultValue="Update"
                     readOnly
-                    className="btn solid"
+                    className="btns solid"
                     style={{ textAlign: "center" }}
                     // type="submit"
                     onClick={updateHandler}

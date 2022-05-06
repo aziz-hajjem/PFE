@@ -87,7 +87,6 @@ h1:last-of-type {
 .row {
   display: flex;
   align-items: center;
-  justify-content: space-around;
 }
 h4 {
   width: 40%;
@@ -137,9 +136,10 @@ img {
     padding: 1.2em;
   }
   .row {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 0.5em;
     padding-bottom: 1em;
+    padding-left: 0;
   }
   .content {
     padding: 0;
@@ -197,3 +197,4 @@ h2 {
 
     
 } */
+

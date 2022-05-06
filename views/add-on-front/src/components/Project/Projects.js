@@ -126,6 +126,7 @@ export default function Projects() {
         pauseOnHover
       />
       <div className="Project-container">
+        <div></div>
         <div className="container-box">
           {project && (
             <>
@@ -154,15 +155,15 @@ export default function Projects() {
                   ></a>
                 </div>
                 <div className="content">
-                  <div className="row">
+                  <div className="row" style={{gap:"6em"}}>
                     <h2>NAME :</h2>
                     <h4>{project.name}</h4>
                   </div>
-                  <div className="row">
+                  <div className="row" style={{gap:"6em"}}>
                     <h2>KEY :</h2>
                     <h4>{project.key}</h4>
                   </div>
-                  <div className="row">
+                  <div className="row" style={{gap:"6em"}}>
                     <h2>DESCRIPTION :</h2>
                     <h4>{project.description}</h4>
                   </div>
@@ -170,7 +171,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Macros :</h2>
@@ -183,7 +184,8 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllMacro />
@@ -192,7 +194,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Space Settings :</h2>
@@ -204,7 +206,8 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllSpaceSetting />
@@ -213,7 +216,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Space Pages :</h2>
@@ -225,7 +228,8 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllSpacePage />
@@ -234,7 +238,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Home Page Feed :</h2>
@@ -246,7 +250,8 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllHomePageFeed />
@@ -255,7 +260,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Global Setting :</h2>
@@ -267,7 +272,8 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllGlobalSetting />
@@ -276,7 +282,7 @@ export default function Projects() {
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Global Page :</h2>
@@ -288,16 +294,17 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllGlobalPage />
                   </div>
-                  <div
+                  {/* <div
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Context Menu :</h2>
@@ -309,16 +316,17 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllContextMenu />
-                  </div>
-                  <div
+                  </div> 
+                   <div
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>Content By Line Item :</h2>
@@ -330,16 +338,17 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllContentByLineItem />
-                  </div>
+                  </div> 
                   <div
                     className="row"
                     style={{
                       justifyContent: "space-between",
-                      paddingLeft: "2em",
+                      
                     }}
                   >
                     <h2>ContentAction :</h2>
@@ -351,22 +360,24 @@ export default function Projects() {
                       display: "flex",
                       gap: "2em",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      flexFlow:"wrap"
                     }}
                   >
                     <AllContentAction />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <UpdateProject />
               <div>
-                <input
-                  readOnly
-                  onClick={generate}
-                  value="Generate"
-                  className="btn solid"
-                  style={{ textAlign: "center" }}
-                />
+              <div id="container" onClick={generate}>
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">Generate</span>
+              </button>
+            </div>
               </div>
             </>
           )}

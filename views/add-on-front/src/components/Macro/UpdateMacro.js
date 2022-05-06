@@ -19,6 +19,7 @@ export default function UpdateMacro() {
   const [text, setText] = useState();
   const [select, setSelect] = useState(null);
   const [tag, setTag] = useState();
+
   const [image, setImage] = useState();
   const [checkBox, setCheckBox] = useState(null);
 
@@ -79,15 +80,21 @@ export default function UpdateMacro() {
     };
     try {
       macroParamter && macroParamter.map((el) => arr.push(el.value));
+      
       var input = { name, key, description };
-      arr && (input.paramter = arr);
+      arr.length ? (input.paramter = arr):input.paramter=macro.paramter;
       text && (input.text = text);
       image && (input.image = image);
       checkBox && (input.checkBox = checkBox);
       tag && (input.tag = tag);
-
       select && (input.select = select);
-      console.log(input);
+      !input.paramter.find(el=>el=="CheckBox")&&(input.checkBox = [])
+      !input.paramter.find(el=>el=="Select")&&(input.select = [])
+      !input.paramter.find(el=>el=="Text")&&(input.text ="")
+      !input.paramter.find(el=>el=="Tag")&&(input.tag ="")
+      !input.paramter.find(el=>el=="Image")&&(input.image ="")
+
+
       const { data } = await axios.patch(
         `http://${
           process.env.REACT_APP_IP_ADDRESS
@@ -202,7 +209,7 @@ export default function UpdateMacro() {
             onClick={updatemacro}
             readOnly
             value="Update Macro"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>
@@ -213,7 +220,7 @@ export default function UpdateMacro() {
           readOnly
           onClick={onOpenModal}
           value="Update"
-          className="btn solid"
+          className="btns solid"
           style={{ textAlign: "center" }}
         />
       </div>

@@ -84,13 +84,12 @@ export default function SpaceSetting() {
   return (
     <>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Space Setting "
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/> Space Setting</div>
+          </button>
+        </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -123,45 +122,46 @@ export default function SpaceSetting() {
           </div>
           {spaceParameter &&
             spaceParameter.map((el) => (
-              <div className="input-field">
-                <i className="fas fa-user"></i>
-                {el.value === "Text" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                )}
-                {el.value === "Select" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setSelect(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "CheckBox" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setCheckBox(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "Image" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                )}
-                {el.value === "Tag" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setTag(e.target.value)}
-                  />
-                )}
-              </div>
-            ))}
+              (el.value==="Date"||el.value==="User")?" ":
+              (<div className="input-field">
+              <i className="fas fa-user"></i>
+              {el.value === "Text" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              )}
+              {el.value === "Select" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setSelect(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "CheckBox" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "Image" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setImage(e.target.value)}
+                />
+              )}
+              {el.value === "Tag" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setTag(e.target.value)}
+                />
+              )}
+            </div>)
+          ))}
 
           <div className="input-field">
             <i className="fas fa-user"></i>
@@ -176,7 +176,7 @@ export default function SpaceSetting() {
             onClick={addSpace}
             readOnly
             value="Add Space Setting"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

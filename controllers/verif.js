@@ -1,0 +1,4 @@
+const verif=(project,data)=>{
+    return (project.macros.find(el=>el.key==data.key||el.name==data.name))||project.spaceSettings.find(el=>el.key==data.key||el.name==data.name)||project.spacePages.find(el=>el.key==data.key||el.name==data.name)||project.homePageFeeds.find(el=>el.key==data.key||el.name==data.name)||project.globalSettings.find(el=>el.key==data.key||el.name==data.name)||project.globalPages.find(el=>el.key==data.key||el.name==data.name)||project.spaceSettings.find(el=>el.key==data.key||el.name==data.name)||project.contextMenu.find(el=>el.key==data.key||el.name==data.name)||project.contentByLineItems.find(el=>el.key==data.key||el.name==data.name)||project.contentActions.find(el=>el.key==data.key||el.name==data.name)
+}
+module.exports=verif

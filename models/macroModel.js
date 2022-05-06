@@ -31,14 +31,12 @@ const macroSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "please provide name for your Macro"],
-    unique: true,
     trim: true,
     
   },
   key: {
     type: String,
     required: [true, "please provide key for your macro"],
-    unique: true,
     trim: true,
   },
   description: {

@@ -81,13 +81,18 @@ export default function SpaceSetting() {
     try {
       spaceParameter && spaceParameter.map((el) => arr.push(el.value));
       var input = { name, key, description };
-      arr && (input.paramter = arr);
+      arr.length ? (input.paramter = arr):input.paramter=spaceSetting.paramter;
       text && (input.text = text);
       image && (input.image = image);
       checkBox && (input.checkBox = checkBox);
       tag && (input.tag = tag);
 
       select && (input.select = select);
+      !input.paramter.find(el=>el=="CheckBox")&&(input.checkBox = [])
+      !input.paramter.find(el=>el=="Select")&&(input.select = [])
+      !input.paramter.find(el=>el=="Text")&&(input.text ="")
+      !input.paramter.find(el=>el=="Tag")&&(input.tag ="")
+      !input.paramter.find(el=>el=="Image")&&(input.image ="")
       console.log(input);
       const { data } = await axios.patch(
         `http://${
@@ -118,7 +123,7 @@ export default function SpaceSetting() {
           readOnly
           onClick={onOpenModal}
           value="Update Space Setting "
-          className="btn solid"
+          className="btns solid"
           style={{ textAlign: "center" }}
         />
       </div>
@@ -155,45 +160,46 @@ export default function SpaceSetting() {
           </div>
           {spaceParameter &&
             spaceParameter.map((el) => (
-              <div className="input-field">
-                <i className="fas fa-user"></i>
-                {el.value === "Text" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                )}
-                {el.value === "Select" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setSelect(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "CheckBox" && (
-                  <input
-                    type="text"
-                    placeholder={`${el.value} : sperate options with '/'`}
-                    onChange={(e) => setCheckBox(e.target.value.split("/"))}
-                  />
-                )}
-                {el.value === "Image" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                )}
-                {el.value === "Tag" && (
-                  <input
-                    type="text"
-                    placeholder={el.value}
-                    onChange={(e) => setTag(e.target.value)}
-                  />
-                )}
-              </div>
-            ))}
+              (el.value==="Date"||el.value==="User")?" ":
+              (<div className="input-field">
+              <i className="fas fa-user"></i>
+              {el.value === "Text" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              )}
+              {el.value === "Select" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setSelect(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "CheckBox" && (
+                <input
+                  type="text"
+                  placeholder={`${el.value} : sperate options with '/'`}
+                  onChange={(e) => setCheckBox(e.target.value.split("/"))}
+                />
+              )}
+              {el.value === "Image" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setImage(e.target.value)}
+                />
+              )}
+              {el.value === "Tag" && (
+                <input
+                  type="text"
+                  placeholder={el.value}
+                  onChange={(e) => setTag(e.target.value)}
+                />
+              )}
+            </div>)
+          ))}
           <div className="input-field">
             <i className="fas fa-user"></i>
             <input
@@ -208,7 +214,7 @@ export default function SpaceSetting() {
             onClick={updateSpaceSetting}
             readOnly
             value="Update Space Setting"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

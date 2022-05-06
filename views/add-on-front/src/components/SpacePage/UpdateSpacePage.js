@@ -81,13 +81,18 @@ export default function UpdateSpacePage() {
     try {
       spaceParameter && spaceParameter.map((el) => arr.push(el.value));
       var input = { name, key, description };
-      arr && (input.paramter = arr);
+      arr.length ? (input.paramter = arr):input.paramter=spacePage.paramter;
       text && (input.text = text);
       image && (input.image = image);
       checkBox && (input.checkBox = checkBox);
       tag && (input.tag = tag);
 
       select && (input.select = select);
+      !input.paramter.find(el=>el=="CheckBox")&&(input.checkBox = [])
+      !input.paramter.find(el=>el=="Select")&&(input.select = [])
+      !input.paramter.find(el=>el=="Text")&&(input.text ="")
+      !input.paramter.find(el=>el=="Tag")&&(input.tag ="")
+      !input.paramter.find(el=>el=="Image")&&(input.image ="")
       console.log(input);
       const { data } = await axios.patch(
         `http://${
@@ -202,7 +207,7 @@ export default function UpdateSpacePage() {
             onClick={updatespacePage}
             readOnly
             value="Update Space Setting"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>
@@ -213,7 +218,7 @@ export default function UpdateSpacePage() {
           readOnly
           onClick={onOpenModal}
           value="Update"
-          className="btn solid"
+          className="btns solid"
           style={{ textAlign: "center" }}
         />
       </div>

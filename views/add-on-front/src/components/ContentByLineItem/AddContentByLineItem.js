@@ -88,13 +88,12 @@ export default function AddContentByLineItem() {
   return (
     <>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Content By Line Item"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/> Content By Line Item</div>
+          </button>
+        </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -188,7 +187,7 @@ export default function AddContentByLineItem() {
             onClick={addContentByLineItem}
             readOnly
             value="Add Content By Line Item"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

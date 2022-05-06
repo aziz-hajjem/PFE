@@ -41,9 +41,9 @@ export default function Auth() {
       
 
     } catch (error) {
-      setError(error.response.data.error.message);
+      setError(error.response.data.message);
 
-      console.log(error.response.data.error.message);
+      console.log(error.response);
       setTimeout(() => {
         setError("");
       }, 5000);

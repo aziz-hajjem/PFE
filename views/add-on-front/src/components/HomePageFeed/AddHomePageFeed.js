@@ -88,13 +88,12 @@ export default function AddHomePageFeed() {
   return (
     <>
       <div>
-        <input
-          readOnly
-          onClick={onOpenModal}
-          value="Add Home Page Feed"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        />
+      <div  style={{textAlign:"center",marginTop:"5%"}} onClick={onOpenModal} >
+          <button className="icon-btn add-btn">
+            <div className="add-icon" />
+            <div className="btn-txt">Add <br/>Home Page Feed</div>
+          </button>
+        </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
@@ -180,7 +179,7 @@ export default function AddHomePageFeed() {
             onClick={addHomePageFeed}
             readOnly
             value="Add Home Page Feed"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>

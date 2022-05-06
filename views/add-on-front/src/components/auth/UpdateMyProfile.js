@@ -101,7 +101,7 @@ export default function UpdateMyProfile() {
                     <input
                         value="Update"
                         readOnly
-                        className="btn solid"
+                        className="btns solid"
                         style={{ textAlign: "center" }}
                         onClick={updateHandler}
                     />

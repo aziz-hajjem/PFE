@@ -8,8 +8,7 @@ import "../../styles/project.css";
 export default function AllSpaceSetting() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [spaceSettings,setSpaceSettings]=useState();
- 
+  const [spaceSettings, setSpaceSettings] = useState();
 
   const getSpaceSettings = async () => {
     const config = {
@@ -44,51 +43,39 @@ export default function AllSpaceSetting() {
   return (
     <>
       {spaceSettings && spaceSettings.length ? (
-                      spaceSettings.map((el) => (
-                        <div
-                          onClick={() =>
-                            navigate(
-                              `/project/${
-                                location.pathname.split("/")[2]
-                              }/spaceSetting/${el._id}`
-                            )
-                          }
-                          className="box box-down "
-                          style={{
-                            width: "100%",
-                            border: `2px solid #${Math.floor(
-                              Math.random() * 16777215
-                            ).toString(16)}`,
-                          }}
-                          key={el._id}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "20%",
-                              alignItems: "center",
-                            }}
-                          >
-                            <h2>{el.name}</h2>
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              width: "100%",
-                            }}
-                          >
-                            <p>{el.description}</p>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <h3>
-                        This Project didn't have any Space Settings , Please
-                        create one
-                      </h3>
-                    )}
+        spaceSettings.map((el) => (
+          <div
+            onClick={() =>
+              navigate(
+                `/project/${location.pathname.split("/")[2]}/spaceSetting/${
+                  el._id
+                }`
+              )
+            }
+            className="box box-down "
+            style={{
+              width: "auto",
+              height: "auto",
+              border: `2px solid #${Math.floor(
+                Math.random() * 16777215
+              ).toString(16)}`,
+            }}
+            key={el._id}
+          >
+            <div
+              style={{
+                display: "flex",
+                fontSize:"70%",
+                alignItems: "center",
+              }}
+            >
+              <h2>{el.name}</h2>
+            </div>
+          </div>
+        ))
+      ) : (
+        <h3>This Project didn't have any Space Settings , Please create one</h3>
+      )}
     </>
   );
 }

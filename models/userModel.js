@@ -55,7 +55,7 @@ const userSchema= new mongoose.Schema({
     passwordChangedAt:Date,
     passwordResetToken:String,
     passwordResetExpires:Date,
-    projects:[{ type: mongoose.Schema.Types.ObjectId, ref: 'project' } ]
+    projects:[{ type: mongoose.Schema.Types.ObjectId, ref: project,unique:true} ]
 
 })
 // middleware : to crypt password for more security

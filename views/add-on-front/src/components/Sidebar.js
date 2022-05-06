@@ -11,8 +11,8 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { MdLogout, MdSecurity, MdBuild, MdMenu } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
-import { GoSettings,GoProject } from "react-icons/go";
-import bg1 from "../img/bg1.jpg" ;
+import { GoSettings, GoProject } from "react-icons/go";
+import bg1 from "../img/bg1.jpg";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -70,7 +70,7 @@ export default function Sidebar() {
                     alignItems: "center",
                     textAlign: "center",
                     justifyContent: "center",
-                    color:"hsl(0, 0%, 98%)"
+                    color: "hsl(0, 0%, 98%)",
                   }}
                 >
                   Addons <br /> Generator
@@ -87,14 +87,9 @@ export default function Sidebar() {
             }}
           >
             <Menu iconShape="circle" popperArrow={true}>
-              <MenuItem 
-               onClick={() => navigate("/home")}
-                icon={
-                  <FiHome
-                    style={{ width: "20px", height: "20px" }}
-                   
-                  />
-                }
+              <MenuItem
+                onClick={() => navigate("/home")}
+                icon={<FiHome style={{ width: "20px", height: "20px" }} />}
               >
                 Home
               </MenuItem>
@@ -127,8 +122,8 @@ export default function Sidebar() {
                 </MenuItem>
               )}
               <MenuItem
-              onClick={() => navigate("/projects")}
-                icon={<GoProject  style={{ width: "20px", height: "20px" }} />}
+                onClick={() => navigate("/projects")}
+                icon={<GoProject style={{ width: "20px", height: "20px" }} />}
               >
                 Projects
               </MenuItem>
@@ -139,7 +134,7 @@ export default function Sidebar() {
                 icon={<GoSettings style={{ width: "20px", height: "20px" }} />}
               >
                 <MenuItem
-                onClick={() => navigate("/updatemyprofile")}
+                  onClick={() => navigate("/updatemyprofile")}
                   icon={<MdBuild style={{ width: "20px", height: "20px" }} />}
                 >
                   Confidientiality
@@ -157,6 +152,7 @@ export default function Sidebar() {
           </SidebarContent>
           <SidebarFooter>
             <Menu>
+  
               <MenuItem
                 onClick={logoutHandler}
                 icon={<MdLogout style={{ width: "20px", height: "20px" }} />}

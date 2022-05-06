@@ -124,7 +124,7 @@ export default function Project() {
             onClick={addProject}
             readOnly
             value="Add"
-            className="btn solid"
+            className="btns solid"
             style={{ textAlign: "center" }}
           />
         </form>
@@ -140,13 +140,27 @@ export default function Project() {
           flexDirection: "column",
         }}
       >
-        <input
+        <div className=" box-title" >
+          <div>
+          <h2>List of Projects</h2>
+          <p>You have {projects&&projects.length} projects</p>
+          </div>
+        {/* <input
           onClick={onOpenModal}
           readOnly
           value="Add Project"
           className="btn solid"
           style={{ textAlign: "center" }}
-        />
+        /> */}
+        <div id="container" onClick={onOpenModal}>
+              <button className="learn-more">
+                <span className="circle" aria-hidden="true">
+                  <span className="icon arrow"></span>
+                </span>
+                <span className="button-text">Add Project</span>
+              </button>
+            </div>
+        </div>
         {projects &&
           projects.map((el) => (
             <div

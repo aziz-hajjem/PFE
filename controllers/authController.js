@@ -179,7 +179,7 @@ exports.forgotPassword = async (req, res, next) => {
       // zedna el option adhika fel save bech may9olich confirm your password
       await user.save({ validateBeforeSave: false });
       //3) send it to user email
-      const resetUrl = `${req.protocol}://localhost:3000/resetPassword/${resetToken}`;
+      const resetUrl = `${req.protocol}://${process.env.IP_ADDRESS}:3000/resetPassword/${resetToken}`;
       const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm 
           to ${resetUrl}.\n If you didn't forgot your password please ignore this email !`;
   

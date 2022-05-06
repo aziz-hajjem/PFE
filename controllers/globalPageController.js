@@ -1,4 +1,5 @@
 const Project = require("../models/projectModel");
+const verif=require('./verif')
 
 exports.createGlobalPage=async(req,res,next)=>{
     try {
@@ -12,6 +13,14 @@ exports.createGlobalPage=async(req,res,next)=>{
         text&&(data.text=text);
         tag&&(data.tag=tag);
         image&&(data.image=image);
+
+        if(verif(project,data))
+        return res.status(400).json({
+          error: {
+            status: "Fail",
+            message: "Key or Name is already Used",
+          },
+        });
         if (data)
           project.globalPages.push(data);
         await project.save();
@@ -36,7 +45,19 @@ exports.updateGlobalPage = async (req, res, next) => {
     try {
       const {  name, key, description, text,paramter,image,select,checkBox,tag } =
         req.body;
-      const project = await Project.findOneAndUpdate(
+        var project=await Project.findOne( {
+          _id: req.params.id,
+          macros: { $elemMatch: { _id: req.params.paramid } },
+        }, )
+        const data={name,key}
+        if(verif(project,data))
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "Key or Name is already Used",
+            },
+          });
+       project = await Project.findOneAndUpdate(
         {
           _id: req.params.id,
           globalPages: { $elemMatch: { _id: req.params.paramid } },
