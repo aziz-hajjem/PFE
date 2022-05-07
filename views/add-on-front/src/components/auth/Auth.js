@@ -114,7 +114,7 @@ export default function Auth() {
     <div>
         <Modal open={open} onClose={onCloseModal} center classNames="modal">
         <form onSubmit={forgotPassword} className="sign-in-form">
-          <h2 className="title">Please provide your email </h2>
+          <h2 className="auth-title">Please provide your email </h2>
           {sendEmail&&<span>{sendEmail}</span>}
           {error&&<h5 style={{color:"#ff3333"}}>{error}</h5>}
           <div className="input-field">
@@ -128,7 +128,7 @@ export default function Auth() {
         <div className="forms-container">
           <div className="signin-signup">
             <form onSubmit={loginHandler} className="sign-in-form">
-              <h2 className="title">Log in</h2>
+              <h2 className="auth-title">Log in</h2>
               {logInError&&<h5 style={{color:"#ff3333"}}>{logInError}</h5>}
               <div className="input-field">
                 <i className="fas fa-user"></i>
@@ -144,7 +144,7 @@ export default function Auth() {
               <input type="submit" value="Login" className="btn solid" />
             </form>
             <form onSubmit={signUpHandler} className="sign-up-form">
-              <h2 className="title">Register</h2>
+              <h2 className="auth-title">Register</h2>
               {signUpError&&<h5 style={{color:"#ff3333"}}>{signUpError}</h5>}
               <div className="input-field">
                 <i className="fas fa-user"></i>

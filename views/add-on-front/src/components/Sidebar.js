@@ -56,7 +56,7 @@ export default function Sidebar() {
           className="side"
           collapsed={collapsed}
           style={{ height: "auto", margin: "0px" }}
-          image={bg1}
+          
         >
           <SidebarHeader>
             <Menu>

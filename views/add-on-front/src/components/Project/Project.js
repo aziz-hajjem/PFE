@@ -120,13 +120,18 @@ export default function Project() {
             />
           </div>
 
-          <input
+          <a
             onClick={addProject}
-            readOnly
-            value="Add"
-            className="btns solid"
-            style={{ textAlign: "center" }}
-          />
+            className="cyan-btn"
+            style={{
+              textAlign: "center",
+              padding: "0.8rem 2.3rem",
+              fontSize: "1.1rem",
+              fontWeight: "500",
+            }}
+          >
+            Add project{" "}
+          </a>
         </form>
       </Modal>
 
@@ -140,26 +145,26 @@ export default function Project() {
           flexDirection: "column",
         }}
       >
-        <div className=" box-title" >
+        <div className=" box-title">
           <div>
-          <h2>List of Projects</h2>
-          <p>You have {projects&&projects.length} projects</p>
+            <h2>List of Projects</h2>
+            <p>You have {projects && projects.length} projects</p>
           </div>
-        {/* <input
+          {/* <input
           onClick={onOpenModal}
           readOnly
           value="Add Project"
           className="btn solid"
           style={{ textAlign: "center" }}
         /> */}
-        <div id="container" onClick={onOpenModal}>
-              <button className="learn-more">
-                <span className="circle" aria-hidden="true">
-                  <span className="icon arrow"></span>
-                </span>
-                <span className="button-text">Add Project</span>
-              </button>
-            </div>
+          <div id="container" onClick={onOpenModal}>
+            <button className="learn-more">
+              <span className="circle" aria-hidden="true">
+                <span className="icon arrow"></span>
+              </span>
+              <span className="button-text">Add Project</span>
+            </button>
+          </div>
         </div>
         {projects &&
           projects.map((el) => (
