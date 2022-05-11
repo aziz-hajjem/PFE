@@ -4,12 +4,20 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
+import { css } from "@emotion/react";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function AllMacro() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [macro, setMacro] = useState();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
 
+  const [macro, setMacro] = useState();
+  
   const getMacro = async () => {
     const config = {
       headers: {
@@ -42,7 +50,7 @@ export default function AllMacro() {
   }, []);
   return (
     <>
-      {macro && macro.length ? (
+      {macro  ? (
         macro.map((el) => (
           <div
             onClick={() =>
@@ -75,7 +83,7 @@ export default function AllMacro() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Macros , Please create one</h3>
+        <BeatLoader color="#231E39" loading={true} css={override} size={12} />
       )}
     </>
   );
