@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateHomePageFeed from "./UpdateHomePageFeed";
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function HomePageFeed() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [homePageFeed, sethomePageFeed] = useState();
 
 
@@ -65,7 +71,8 @@ export default function HomePageFeed() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+      {homePageFeed?(
+        <div className="Project-container">
         <div className="container-box">
           {homePageFeed && (
             <>
@@ -81,7 +88,7 @@ export default function HomePageFeed() {
                   <div className="box-header">
                     <h2>{homePageFeed.name}</h2>
                   </div>
-                  <a onClick={deletehomePageFeed} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deletehomePageFeed()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,9 @@ export default function HomePageFeed() {
           )}
         </div>
       </div>
+      ):(
+        <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+      )}
     </>
   );
 }

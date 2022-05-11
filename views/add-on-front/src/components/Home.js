@@ -13,35 +13,14 @@ import back2 from "../images/back2.svg"
 import "../styles/home.css";
 
 export default function Home() {
-  const [currentUser, setCurrentUser] = useState();
+ 
   const navigate = useNavigate();
 
-  const getMe = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      withCredentials: true,
-    };
-    try {
-      const { data } = await axios.get(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/me`,
-        config
-      );
 
-      setCurrentUser(data.data.me);
-    } catch (error) {
-      console.log(error.response.data.error.message);
-    }
-  };
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
     }
-    console.log(process.env.REACT_APP_IP_ADDRESS);
-
-    getMe();
   }, []);
 
   return (

@@ -6,6 +6,9 @@ import { MdDelete, MdMode } from "react-icons/md";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import "../../styles/auth.css";
+import { css } from "@emotion/react";
+import ClockLoader
+from "react-spinners/ClockLoader";
 
 export default function Users() {
   const navigate = useNavigate();
@@ -17,6 +20,11 @@ export default function Users() {
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
   const [updatedUser, setUpdatedUser] = useState();
+  const override = css`
+  display: block;
+  margin: auto auto;
+  border-color: #231E39;
+`;
   const onOpenModal = (user) => {
     setUserName(user.userName)
     setEmail(user.email)
@@ -106,7 +114,7 @@ export default function Users() {
 
   return (
     <>
-      <Modal open={open} onClose={onCloseModal} center>
+        <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
           <h2 className="title">Update User</h2>
           <div className="input-field">
@@ -156,7 +164,8 @@ export default function Users() {
           />
         </form>
       </Modal>
-      <div style={{width:"100%"}}>
+      {users?(
+        <div style={{width:"100%"}}>
         <div style={{ display: "flex", width: "100%" }}>
           <div
             style={{
@@ -204,7 +213,7 @@ export default function Users() {
                             width: "2em",
                             cursor: "pointer",
                           }}
-                          onClick={() => deleteHandling(el._id)}
+                          onClick={() =>window.confirm("Are you sure to delete This user ?")&&deleteHandling(el._id)}
                         />
                         <MdMode
                           onClick={() => onOpenModal(el)}
@@ -222,6 +231,10 @@ export default function Users() {
           </div>
         </div>
       </div>
-    </>
+      ):(
+<ClockLoader color="#231E39" loading={true} css={override} size={150} />
+      )}
+       </>
+    
   );
 }

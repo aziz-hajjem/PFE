@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateContextMenu from "./UpdateContextMenu";
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function ContextMenu() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [contextMenu, setContextMenu] = useState();
 
 
@@ -65,7 +71,8 @@ export default function ContextMenu() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+     {contextMenu?(
+        <div className="Project-container">
         <div className="container-box">
           {contextMenu && (
             <>
@@ -81,7 +88,7 @@ export default function ContextMenu() {
                   <div className="box-header">
                     <h2>{contextMenu.name}</h2>
                   </div>
-                  <a onClick={deletecontextMenu} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deletecontextMenu()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,10 @@ export default function ContextMenu() {
           )}
         </div>
       </div>
+     ):(
+      <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+
+     )}
     </>
   );
 }

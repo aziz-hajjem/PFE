@@ -5,6 +5,8 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { useNavigate } from "react-router";
 import "../../styles/projects.css";
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function Project() {
   const navigate = useNavigate();
@@ -13,6 +15,11 @@ export default function Project() {
   const [name, setName] = useState();
   const [key, setKey] = useState();
   const [description, setDescription] = useState();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const onOpenModal = () => {
     return setOpen(true);
   };
@@ -91,7 +98,9 @@ export default function Project() {
     getProjects();
   }, []);
   return (
-    <div className="Projects-container">
+<>
+{projects?(
+      <div className="Projects-container">
       <Modal open={open} onClose={onCloseModal} center>
         <form className="sign-in-form">
           <h2 className="title">Add Project</h2>
@@ -150,13 +159,7 @@ export default function Project() {
             <h2>List of Projects</h2>
             <p>You have {projects && projects.length} projects</p>
           </div>
-          {/* <input
-          onClick={onOpenModal}
-          readOnly
-          value="Add Project"
-          className="btn solid"
-          style={{ textAlign: "center" }}
-        /> */}
+          
           <div id="container" onClick={onOpenModal}>
             <button className="learn-more">
               <span className="circle" aria-hidden="true">
@@ -198,5 +201,7 @@ export default function Project() {
           ))}
       </div>
     </div>
+):( <ClockLoader color="#231E39" loading={true} css={override} size={150} />)}
+</>
   );
 }

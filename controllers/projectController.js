@@ -595,7 +595,7 @@ project.macros.map((el) => {
         const defaultColor=`Color:"red"
         `
         const defaultConfigColor=`
-        <Select label="colors" name="color" >
+        <Select label="colors" name="Color" >
         <Option defaultSelected label="red" value="red" />
         <Option label="green" value="green" />
         <Option label="blue" value="blue" />
@@ -606,13 +606,16 @@ project.macros.map((el) => {
       </Select>
       `
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={config.user} />
+  `)&&def.push(`user:context.accountId`)&&conf.push(`<UserPicker label="User" name="user" />
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
-  <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
-  </Text> 
+          <Text>
+          Date is : <DateLozenge value={config.date?new Date(config.date).getTime():new Date().getTime()} />
+        </Text> 
+  `)&&def.push(`date:new Date().getTime()
+  `)&&conf.push(`<DatePicker name="date" label="Choose Date" />
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>{config.Text}</Text>
@@ -690,19 +693,32 @@ export const config = render(<Config />);
 
 
 
-//
+//////////
     project.spaceSettings.length &&
       project.spaceSettings.map((el) => {
         var spaceData;
         var dat = [];
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
@@ -739,9 +755,23 @@ export const config = render(<Config />);
         </Select>
     </Form>
     `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         spaceData = {
           data: dat.join(""),
+          form:form.join(""),
         };
         var dataSpace = spaceTemplate(spaceData);
         zip.addFile(
@@ -756,54 +786,80 @@ export const config = render(<Config />);
       project.spacePages.map((el) => {
         var spaceData;
         var dat = [];
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
+    `);
         el.paramter.find((el) => el === "Tag") &&
           dat.push(`<Tag text="${el.tag}" color="red" />
-  `);
+    `);
         el.paramter.find((el) => el === "Image") &&
           dat.push(`<Image size='medium' src="${el.image}" alt="image" />
-   `);
-
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map(
-            (el) => `<Checkbox value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map(
-            (el) => `<Option value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         spaceData = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataSpace = spacePageTemplate(spaceData);
         zip.addFile(
@@ -819,50 +875,80 @@ export const config = render(<Config />);
       project.homePageFeeds.map((el) => {
         var homePageFeed;
         var dat = [];
-
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
-  `);
-        el.paramter.find((el) => el === "Tag") &&
-          dat.push(`<Tag text="${el.tag}" color="red" />
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
-
+    `);
+        el.paramter.find((el) => el === "Tag") &&
+          dat.push(`<Tag text="${el.tag}" color="red" />
+    `);
         el.paramter.find((el) => el === "Image") &&
-          dat.push(`<Image size='medium' src="${el.image}" alt="image" /> 
-  `);
-
+          dat.push(`<Image size='medium' src="${el.image}" alt="image" />
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map((el) => `<Checkbox value="${el}" label="${el}" />`)
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map((el) => `<Option value="${el}" label="${el}" />`)
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         homePageFeed = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataHomePageFeed = homePageFeedTemplate(homePageFeed);
         zip.addFile(
@@ -878,50 +964,80 @@ export const config = render(<Config />);
       project.contentByLineItems.map((el) => {
         var contentByLineItem;
         var dat = [];
-
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
-  `);
-        el.paramter.find((el) => el === "Tag") &&
-          dat.push(`<Tag text="${el.tag}" color="red" />
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
-
+    `);
+        el.paramter.find((el) => el === "Tag") &&
+          dat.push(`<Tag text="${el.tag}" color="red" />
+    `);
         el.paramter.find((el) => el === "Image") &&
-          dat.push(`<Image size='medium' src="${el.image}" alt="image" /> 
-  `);
-
+          dat.push(`<Image size='medium' src="${el.image}" alt="image" />
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map((el) => `<Checkbox value="${el}" label="${el}" />`)
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map((el) => `<Option value="${el}" label="${el}" />`)
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         contentByLineItem = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataContentByLineItem = contentByLineItemTemplate(contentByLineItem);
         zip.addFile(
@@ -937,51 +1053,81 @@ export const config = render(<Config />);
       project.contentActions.map((el) => {
         var contentAction;
         var dat = [];
-
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
-  `);
-        el.paramter.find((el) => el === "Tag") &&
-          dat.push(`<Tag text="${el.tag}" color="red" />
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
-
+    `);
+        el.paramter.find((el) => el === "Tag") &&
+          dat.push(`<Tag text="${el.tag}" color="red" />
+    `);
         el.paramter.find((el) => el === "Image") &&
-          dat.push(`<Image size='medium' src="${el.image}" alt="image" /> 
-  `);
-
+          dat.push(`<Image size='medium' src="${el.image}" alt="image" />
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map((el) => `<Checkbox value="${el}" label="${el}" />`)
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map((el) => `<Option value="${el}" label="${el}" />`)
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         contentAction = {
           title:el.name,
           data: dat.join(""),
+          form:form.join("")
         };
         var dataContentAction = contentActionTemplate(contentAction);
         zip.addFile(
@@ -996,54 +1142,79 @@ export const config = render(<Config />);
       project.globalSettings.map((el) => {
         var spaceData;
         var dat = [];
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
+    `);
         el.paramter.find((el) => el === "Tag") &&
           dat.push(`<Tag text="${el.tag}" color="red" />
-  `);
+    `);
         el.paramter.find((el) => el === "Image") &&
           dat.push(`<Image size='medium' src="${el.image}" alt="image" />
-   `);
-
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map(
-            (el) => `<Checkbox value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map(
-            (el) => `<Option value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
 
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
         spaceData = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataSpace = globalSettingTemplate(spaceData);
         zip.addFile(
@@ -1060,54 +1231,80 @@ export const config = render(<Config />);
       project.globalPages.map((el) => {
         var spaceData;
         var dat = [];
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
+    `);
         el.paramter.find((el) => el === "Tag") &&
           dat.push(`<Tag text="${el.tag}" color="red" />
-  `);
+    `);
         el.paramter.find((el) => el === "Image") &&
           dat.push(`<Image size='medium' src="${el.image}" alt="image" />
-   `);
-
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map(
-            (el) => `<Checkbox value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map(
-            (el) => `<Option value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         spaceData = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataSpace = globalPageTemplate(spaceData);
         zip.addFile(
@@ -1122,54 +1319,80 @@ export const config = render(<Config />);
       project.contextMenu.map((el) => {
         var contextData;
         var dat = [];
+        var form=[];
         el.paramter.find((el) => el === "User") &&
-          dat.push(`<User accountId={context.accountId} />
+          dat.push(`<User accountId={user?user:context.accountId} />
+  `)&&form.push(`
+  const onClick = (formData) => {
+    setUser(formData.user);
+  };
   `);
         el.paramter.find((el) => el === "Date") &&
           dat.push(`
   <Text>
-    Date of now is : <DateLozenge value={new Date().getTime()} />
+    Date  is : <DateLozenge value={date?new Date(date).getTime():new Date().getTime()} />
   </Text> 
+ 
+  `)&&form.push(`
+  const onDatePick = (formData) => {
+   
+    console.log(formData.date)
+    setDate(formData.date)
+    
+  }
   `);
         el.paramter.find((el) => el === "Text") &&
           dat.push(`<Text>${el.text}</Text>
-  `);
+    `);
         el.paramter.find((el) => el === "Tag") &&
           dat.push(`<Tag text="${el.tag}" color="red" />
-  `);
+    `);
         el.paramter.find((el) => el === "Image") &&
           dat.push(`<Image size='medium' src="${el.image}" alt="image" />
-   `);
-
+     `);
         el.paramter.find((el) => el === "CheckBox") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-    <CheckboxGroup name="CheckBox" label="CheckBox">
-        ${el.checkBox
-          .map(
-            (el) => `<Checkbox value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </CheckboxGroup>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+      <CheckboxGroup name="CheckBox" label="CheckBox">
+          ${el.checkBox
+            .map(
+              (el) => `<Checkbox value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </CheckboxGroup>
+    </Form>
+    `);
         el.paramter.find((el) => el === "Select") &&
           dat.push(`
-  <Form onSubmit={onSubmit} >
-      <Select label="Select" name="select">
-        ${el.select
-          .map(
-            (el) => `<Option value="${el}" label="${el}" />
-        `
-          )
-          .join("")}
-      </Select>
-  </Form>
-  `);
+    <Form onSubmit={onSubmit} >
+        <Select label="Select" name="select">
+          ${el.select
+            .map(
+              (el) => `<Option value="${el}" label="${el}" />
+          `
+            )
+            .join("")}
+        </Select>
+    </Form>
+    `);
+    el.paramter.find((el) => el === "User") &&
+    dat.push(`
+    <Form onSubmit={onClick} >
+      <UserPicker label="User" name="user"  />
+    </Form>
+`)
+el.paramter.find((el) => el === "Date") &&
+dat.push(`
+
+<Form onSubmit={onDatePick} >
+  <DatePicker name="date" label="Appointment Date" />
+</Form>
+`)
 
         contextData = {
           data: dat.join(""),
+          form:form.join("")
         };
         var dataContextMenu = contextMenuTemplate(contextData);
         zip.addFile(

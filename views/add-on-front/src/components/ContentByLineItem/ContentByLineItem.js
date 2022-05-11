@@ -7,9 +7,17 @@ import "../../styles/project.css";
 import UpdateContentByLineItem from "./UpdateContentByLineItem";
 
 
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
+
 export default function ContentByLineItem() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [contentByLineItem, setContentByLineItem] = useState();
 
 
@@ -65,7 +73,8 @@ export default function ContentByLineItem() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+      {contentByLineItem?(
+        <div className="Project-container">
         <div className="container-box">
           {contentByLineItem && (
             <>
@@ -81,7 +90,7 @@ export default function ContentByLineItem() {
                   <div className="box-header">
                     <h2>{contentByLineItem.name}</h2>
                   </div>
-                  <a onClick={deletecontentByLineItem} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deletecontentByLineItem()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -112,6 +121,10 @@ export default function ContentByLineItem() {
           )}
         </div>
       </div>
+      ):(
+        <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+
+      )}
     </>
   );
 }

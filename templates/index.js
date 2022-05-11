@@ -1,9 +1,9 @@
 const handlebars=require("handlebars")
 var source = 
 `
-import ForgeUI, {render, Macro, MacroConfig, useConfig,TextField, Form,useProductContext,Fragment,Avatar,useState,Image,CheckboxGroup,Text,Checkbox,Select,Option,Tag,DateLozenge,User
+import ForgeUI, {render, Macro, MacroConfig, useConfig,TextField, Form,useProductContext,Fragment,Avatar,useState,Image,CheckboxGroup,Text,Checkbox,Select,Option,Tag,DateLozenge,User,UserPicker,DatePicker
 } from "@forge/ui";
-
+  const context = useProductContext();
   {{{defaultConfig}}}
 
 
@@ -14,7 +14,7 @@ import ForgeUI, {render, Macro, MacroConfig, useConfig,TextField, Form,useProduc
       console.log(formData);
       
     }
-    const context = useProductContext();
+    
   
 
     return (

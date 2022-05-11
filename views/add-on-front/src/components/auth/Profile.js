@@ -3,10 +3,17 @@ import "../../styles/profile.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function Profile() {
   const [currentUser, setCurrentUser] = useState();
   const navigate = useNavigate();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const getMe = async () => {
     const config = {
       headers: {
@@ -34,50 +41,67 @@ export default function Profile() {
     getMe();
   }, []);
   return (
-    <div className="containers">
-      {currentUser && (
-        <div className="cards-container">
-          {console.log(currentUser)}
-          <div className="card card-one">
-            <header>
-              <div className="avatar">
-                {currentUser.photo && (
-                  <img
-                    src={require(`../../img/users/${currentUser.photo}`)}
-                    alt=""
-                  />
-                )}
-              </div>
-            </header>
+    <>
+      {currentUser ? (
+        <div className="body-profile">
+          <div className="card-container">
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "0.5em" }}
+            >
+              <span className="pro">{currentUser && currentUser.role}</span>
+              {currentUser && (
+                <img
+                  className="round"
+                  src={require(`../../img/users/${
+                    currentUser && currentUser.photo
+                  }`)}
+                  alt=""
+                />
+              )}
 
-            <h3>{currentUser && currentUser.userName}</h3>
-            <div className="desc">
-              <div className="prop">
-                <h4>Name :</h4>
-                <h5>{currentUser && currentUser.userName}</h5>
+              <h3>{currentUser && currentUser.userName}</h3>
+            </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "2.5em" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.15em",
+                  justifyContent: "center",
+                  paddingLeft: "1em",
+                }}
+              >
+                <div className="prop">
+                  <h6>Name :</h6>
+                  <p>{currentUser && currentUser.userName}</p>
+                </div>
+                <div className="prop">
+                  <h6>Email :</h6>
+                  <p>{currentUser && currentUser.email}</p>
+                </div>
+                <div className="prop">
+                  <h6>Status :</h6>
+                  <p>
+                    {currentUser && currentUser.enable ? "Enable" : "Disable"}
+                  </p>
+                </div>
               </div>
-              <div className="prop">
-                <h4>Email :</h4>
-                <h5>{currentUser && currentUser.email}</h5>
-              </div>
-              <div className="prop">
-                <h4>Role :</h4>
-                <h5>{currentUser && currentUser.role}</h5>
-              </div>
-              <div className="prop">
-                <h4>Status :</h4>
-                <h5>
-                  {currentUser && currentUser.enable ? "Enable" : "Disable"}
-                </h5>
+              <div className="buttons">
+                <button
+                  className="primary ghost"
+                  onClick={() => navigate("/projects")}
+                >
+                  Your projects
+                </button>
               </div>
             </div>
-
-            <footer></footer>
           </div>
-
-          <div className="clear"></div>
         </div>
+      ) : (
+        <ClockLoader color="#231E39" loading={true} css={override} size={150} />
       )}
-    </div>
+    </>
   );
 }

@@ -4,10 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
+import BeatLoader from "react-spinners/BeatLoader";
+import { css } from "@emotion/react";
 
-export default function AllglobalSetting() {
+
+export default function AllGlobalSetting() {
   const navigate = useNavigate();
   const location = useLocation();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [globalSetting, setGlobalSetting] = useState();
 
   const getGlobalSetting = async () => {
@@ -42,40 +50,41 @@ export default function AllglobalSetting() {
   }, []);
   return (
     <>
-      {globalSetting && globalSetting.length ? (
-        globalSetting.map((el) => (
+    {globalSetting  ? (
+      globalSetting.map((el) => (
+        <div
+          onClick={() =>
+            navigate(
+              `/project/${location.pathname.split("/")[2]}/globalSetting/${
+                el._id
+              }`
+            )
+          }
+          className="box box-down "
+          style={{
+            width: "auto",
+            height:"auto",
+            border: `2px solid #${Math.floor(
+              Math.random() * 16777215
+            ).toString(16)}`,
+          }}
+          key={el._id}
+        >
           <div
-            onClick={() =>
-              navigate(
-                `/project/${location.pathname.split("/")[2]}/globalSetting/${
-                  el._id
-                }`
-              )
-            }
-            className="box box-down "
             style={{
-              width: "auto",
-              height:"auto",
-              border: `2px solid #${Math.floor(
-                Math.random() * 16777215
-              ).toString(16)}`,
+              display: "flex",
+              fontSize:"70%",
+              alignItems: "center",
             }}
-            key={el._id}
           >
-            <div
-              style={{
-                display: "flex",
-                fontSize:"70%",
-                alignItems: "center",
-              }}
-            >
-              <h2>{el.name}</h2>
-            </div>
+            <h2>{el.name}</h2>
           </div>
-        ))
-      ) : (
-        <h3>This Project didn't have any Global Settings , Please create one</h3>
-      )}
-    </>
+
+        </div>
+      ))
+    ) : (
+      <BeatLoader color="#231E39" loading={true} css={override} size={12} />
+    )}
+  </>
   );
 }

@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateGlobalPage from "./UpdateGlobalPage";
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function GlobalPage() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [globalPage, setGlobalPage] = useState();
 
 
@@ -65,7 +71,8 @@ export default function GlobalPage() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+      {globalPage?(
+        <div className="Project-container">
         <div className="container-box">
           {globalPage && (
             <>
@@ -81,7 +88,7 @@ export default function GlobalPage() {
                   <div className="box-header">
                     <h2>{globalPage.name}</h2>
                   </div>
-                  <a onClick={deleteglobalPage} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deleteglobalPage()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,8 @@ export default function GlobalPage() {
           )}
         </div>
       </div>
+      ):(        <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+      )}
     </>
   );
 }

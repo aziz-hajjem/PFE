@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateGlobalSetting from "./UpdateGlobalSetting";
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function GlobalSetting() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [globalSetting, setGlobalSetting] = useState();
 
 
@@ -65,7 +71,8 @@ export default function GlobalSetting() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+     {globalSetting?(
+        <div className="Project-container">
         <div className="container-box">
           {globalSetting && (
             <>
@@ -81,7 +88,7 @@ export default function GlobalSetting() {
                   <div className="box-header">
                     <h2>{globalSetting.name}</h2>
                   </div>
-                  <a onClick={deleteglobalSetting} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deleteglobalSetting()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,10 @@ export default function GlobalSetting() {
           )}
         </div>
       </div>
+     ):(
+      <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+
+     )}
     </>
   );
 }

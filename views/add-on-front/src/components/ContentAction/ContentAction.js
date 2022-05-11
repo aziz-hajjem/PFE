@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateContentAction from "./UpdateContentAction";
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function ContentAction() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [contentAction, setContentAction] = useState();
 
 
@@ -65,7 +71,8 @@ export default function ContentAction() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+{contentAction?(
+        <div className="Project-container">
         <div className="container-box">
           {contentAction && (
             <>
@@ -81,7 +88,7 @@ export default function ContentAction() {
                   <div className="box-header">
                     <h2>{contentAction.name}</h2>
                   </div>
-                  <a onClick={deletecontentAction} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deletecontentAction()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,10 @@ export default function ContentAction() {
           )}
         </div>
       </div>
+):(
+  <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+
+)}
     </>
   );
 }

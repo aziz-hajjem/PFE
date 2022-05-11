@@ -5,10 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateSpaceSetting from "./UpdateSpaceSetting";
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function SpaceSetting() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [spaceSetting, setSpaceSetting] = useState();
 
   const getSpaceSetting = async () => {
@@ -67,7 +74,8 @@ export default function SpaceSetting() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+   {spaceSetting?(
+        <div className="Project-container">
         <div className="container-box">
           {spaceSetting && (
             <>
@@ -83,7 +91,7 @@ export default function SpaceSetting() {
                   <div className="box-header">
                     <h2>{spaceSetting.name}</h2>
                   </div>
-                  <a onClick={deleteSpaceSetting} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deleteSpaceSetting()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -112,6 +120,9 @@ export default function SpaceSetting() {
           )}
         </div>
       </div>
+   ):(
+    <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+   )}
     </>
   );
 }

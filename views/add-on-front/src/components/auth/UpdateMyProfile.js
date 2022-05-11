@@ -1,10 +1,16 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router"
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function UpdateMyProfile() {
-
-    const navigate = useNavigate()
+  const navigate = useNavigate(); 
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
     const [currentUser, setCurrentUser] = useState()
     const [userName, setUserName] = useState()
     const [email, setEmail] = useState()
@@ -79,7 +85,8 @@ export default function UpdateMyProfile() {
 
     return (
         <>
-            <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {currentUser?(
+                <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
 
                 <form className="sign-in-form">
@@ -113,6 +120,9 @@ export default function UpdateMyProfile() {
 
 
             </div>
+            ):(
+                <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+            )}
         </>
     )
 }

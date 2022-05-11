@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
 import UpdateSpacePage from "./UpdateSpacePage"
-
+import { css } from "@emotion/react";
+import ClockLoader from "react-spinners/ClockLoader";
 
 export default function SpacePage() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation();  
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [spacePage, setspacePage] = useState();
 
 
@@ -65,7 +71,8 @@ export default function SpacePage() {
   }, []);
   return (
     <>
-      <div className="Project-container">
+     {spacePage?(
+        <div className="Project-container">
         <div className="container-box">
           {spacePage && (
             <>
@@ -81,7 +88,7 @@ export default function SpacePage() {
                   <div className="box-header">
                     <h2>{spacePage.name}</h2>
                   </div>
-                  <a onClick={deletespacePage} className="close"></a>
+                  <a onClick={()=>window.confirm("Are you sure to delete this ?")&&deletespacePage()} className="close"></a>
                 </div>
                 <div className="content">
                   <div className="row">
@@ -108,6 +115,9 @@ export default function SpacePage() {
           )}
         </div>
       </div>
+     ):(
+      <ClockLoader color="#231E39" loading={true} css={override} size={150} />
+     )}
     </>
   );
 }

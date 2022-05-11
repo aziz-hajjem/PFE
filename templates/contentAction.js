@@ -16,15 +16,21 @@ import ForgeUI, {
     Tag,
     DateLozenge,
     User,
+    UserPicker,
+    DatePicker
   } from "@forge/ui";
   
   const App = () => {
     const [isOpen, setOpen] = useState(true);
-    const onSubmit = (formData) => {
-     
-      console.log(formData);
-      
-    }
+    const [user,setUser]=useState('')
+    const [date,setDate]=useState('')
+  const onSubmit = (formData) => {
+   
+    console.log(formData);
+    
+
+  }
+  {{{form}}}
     const context = useProductContext();
   
     if (!isOpen) {

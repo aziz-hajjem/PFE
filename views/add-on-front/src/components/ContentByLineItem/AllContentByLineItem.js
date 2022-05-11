@@ -4,10 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
+import BeatLoader from "react-spinners/BeatLoader";
+import { css } from "@emotion/react";
+
 
 export default function AllContentByLineItem() {
   const navigate = useNavigate();
   const location = useLocation();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [ContentByLineItem, setContentByLineItems] = useState();
 
   const getContentByLineItem = async () => {
@@ -42,12 +50,12 @@ export default function AllContentByLineItem() {
   }, []);
   return (
     <>
-      {ContentByLineItem && ContentByLineItem.length ? (
+      {ContentByLineItem  ? (
         ContentByLineItem.map((el) => (
           <div
             onClick={() =>
               navigate(
-                `/project/${location.pathname.split("/")[2]}/ContentByLineItem/${
+                `/project/${location.pathname.split("/")[2]}/contentByLineItem/${
                   el._id
                 }`
               )
@@ -75,7 +83,7 @@ export default function AllContentByLineItem() {
           </div>
         ))
       ) : (
-        <h3>This Project didn't have any Content By Line Item , Please create one</h3>
+        <BeatLoader color="#231E39" loading={true} css={override} size={12} />
       )}
     </>
   );

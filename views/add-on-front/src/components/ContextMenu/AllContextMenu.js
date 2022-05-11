@@ -4,10 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import "../../styles/project.css";
+import BeatLoader from "react-spinners/BeatLoader";
+import { css } from "@emotion/react";
 
-export default function AllContextMenu() {
+
+export default function AllcontextMenu() {
   const navigate = useNavigate();
   const location = useLocation();
+  const override = css`
+    display: block;
+    margin: auto auto;
+    border-color: #231e39;
+  `;
   const [contextMenu, setContextMenu] = useState();
 
   const getcontextMenu = async () => {
@@ -42,41 +50,41 @@ export default function AllContextMenu() {
   }, []);
   return (
     <>
-      {contextMenu && contextMenu.length ? (
-        contextMenu.map((el) => (
+    {contextMenu  ? (
+      contextMenu.map((el) => (
+        <div
+          onClick={() =>
+            navigate(
+              `/project/${location.pathname.split("/")[2]}/contextMenu/${
+                el._id
+              }`
+            )
+          }
+          className="box box-down "
+          style={{
+            width: "auto",
+            height:"auto",
+            border: `2px solid #${Math.floor(
+              Math.random() * 16777215
+            ).toString(16)}`,
+          }}
+          key={el._id}
+        >
           <div
-            onClick={() =>
-              navigate(
-                `/project/${location.pathname.split("/")[2]}/contextMenu/${
-                  el._id
-                }`
-              )
-            }
-            className="box box-down "
             style={{
-              width: "auto",
-              height:"auto",
-              border: `2px solid #${Math.floor(
-                Math.random() * 16777215
-              ).toString(16)}`,
+              display: "flex",
+              fontSize:"70%",
+              alignItems: "center",
             }}
-            key={el._id}
           >
-            <div
-              style={{
-                display: "flex",
-                fontSize:"70%",
-                alignItems: "center",
-              }}
-            >
-              <h2>{el.name}</h2>
-            </div>
-
+            <h2>{el.name}</h2>
           </div>
-        ))
-      ) : (
-        <h3>This Project didn't have any Context Menu , Please create one</h3>
-      )}
-    </>
+
+        </div>
+      ))
+    ) : (
+      <BeatLoader color="#231E39" loading={true} css={override} size={12} />
+    )}
+  </>
   );
 }

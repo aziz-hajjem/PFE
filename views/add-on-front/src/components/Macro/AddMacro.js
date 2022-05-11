@@ -75,7 +75,7 @@ export default function AddMacro() {
       console.log(data);
       refreshPage();
     } catch (error) {
-      console.log(error.response.error.message);
+      console.log(error.response.data.error.message);
     }
   };
 
