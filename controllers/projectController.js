@@ -56,6 +56,14 @@ exports.createProject = async (req, res, next) => {
       key,
       description,
     } = req.body;
+    if (!name||!key) {
+      return res.status(400).json({
+        error: {
+          status: "Fail",
+          message: "There is no Data 😞 ",
+        },
+      });
+    }
 
     const newProject = await Project.create({
       name: name,
@@ -291,6 +299,14 @@ exports.generate = async (req, res, next) => {
         },
       });
     }
+    if(!project.macros.length&&!project.spaceSettings.length&&!project.spacePages.length&&!project.contentActions.length&&!project.contextMenu.length&&!project.globalPages.length&&!project.globalSettings.length&&!project.homePageFeeds.length&&!project.contentByLineItems.length){
+      return  res.status(400).json({
+        error: {
+          status: "Fail",
+          message: "Project is empty !",
+        },
+      });
+    }
     const dataManifest = `
     modules:
     ${
@@ -303,13 +319,13 @@ exports.generate = async (req, res, next) => {
          .map(
            (el) =>
              `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
         description: ${el.description}
         ${(el.text||el.tag)?(`
         config:
-          function: ${el.name}-config`):""}
+          function: ${el.name.split(' ').join("-")}-config`):""}
         `
          )
          .join("")}
@@ -323,9 +339,9 @@ exports.generate = async (req, res, next) => {
         .map(
           (el) =>
             `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
         description: ${el.description}
 
         `
@@ -341,10 +357,10 @@ exports.generate = async (req, res, next) => {
         .map(
           (el) =>
             `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
-        route: ${(el.name).toLowerCase()}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
+        route: ${(el.name.split(' ').join("-")).toLowerCase()}
 
       `
         )
@@ -360,9 +376,9 @@ exports.generate = async (req, res, next) => {
           .map(
             (el) =>
               `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
         description: ${el.description}
   
         `
@@ -378,10 +394,10 @@ exports.generate = async (req, res, next) => {
             .map(
               (el) =>
                 `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
-        route: ${(el.name).toLowerCase()}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
+        route: ${(el.name.split(' ').join("-")).toLowerCase()}
     
           `
             )
@@ -396,9 +412,9 @@ exports.generate = async (req, res, next) => {
       .map(
         (el) =>
           `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
         description: ${el.description}
 
     `
@@ -414,9 +430,9 @@ exports.generate = async (req, res, next) => {
         .map(
           (el) =>
             `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
   
       `
         )
@@ -431,9 +447,9 @@ exports.generate = async (req, res, next) => {
           .map(
             (el) =>
               `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
         tooltip: ${el.tooltip}
         description: ${el.description}
         `
@@ -449,9 +465,9 @@ exports.generate = async (req, res, next) => {
             .map(
               (el) =>
                 `
-      - key: ${el.key}
-        function: ${el.name}
-        title: ${el.name}
+      - key: ${el.key.split(' ').join('-')}
+        function: ${el.name.split(' ').join("-")}
+        title: ${el.name.split(' ').join("-")}
           `
             )
             .join("")}
@@ -462,11 +478,11 @@ exports.generate = async (req, res, next) => {
        .map(
          (el) =>
            `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
         ${(el.text||el.tag)?(`
-      - key: ${el.name}-config
-        handler: ${el.name}.config`):""}
+      - key: ${el.name.split(' ').join("-")}-config
+        handler: ${el.name.split(' ').join("-")}.config`):""}
 
       `
        )
@@ -475,8 +491,8 @@ exports.generate = async (req, res, next) => {
       .map(
         (el) =>
           `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
 
       `
       )
@@ -485,8 +501,8 @@ exports.generate = async (req, res, next) => {
       .map(
         (el) =>
           `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
 
       `
       )
@@ -495,8 +511,8 @@ exports.generate = async (req, res, next) => {
       .map(
         (el) =>
           `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
 
       `
       )
@@ -505,8 +521,8 @@ exports.generate = async (req, res, next) => {
         .map(
           (el) =>
             `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
   
         `
         )
@@ -515,8 +531,8 @@ exports.generate = async (req, res, next) => {
           .map(
             (el) =>
               `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
     
           `
           )
@@ -525,8 +541,8 @@ exports.generate = async (req, res, next) => {
             .map(
               (el) =>
                 `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
       
             `
             )
@@ -535,8 +551,8 @@ exports.generate = async (req, res, next) => {
               .map(
                 (el) =>
                   `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
         
               `
               )
@@ -545,8 +561,8 @@ exports.generate = async (req, res, next) => {
                 .map(
                   (el) =>
                     `
-      - key: ${el.name}
-        handler: ${el.name}.run
+      - key: ${el.name.split(' ').join("-")}
+        handler: ${el.name.split(' ').join("-")}.run
           
                 `
                 )
@@ -682,7 +698,7 @@ export const config = render(<Config />);
        
         var macroData = indexTemplate(macro);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(macroData, "utf8"),
           "entry comment goes here"
         );
@@ -775,7 +791,7 @@ dat.push(`
         };
         var dataSpace = spaceTemplate(spaceData);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataSpace, "utf8"),
           "entry comment goes here"
         );
@@ -863,7 +879,7 @@ dat.push(`
         };
         var dataSpace = spacePageTemplate(spaceData);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataSpace, "utf8"),
           "entry comment goes here"
         );
@@ -952,7 +968,7 @@ dat.push(`
         };
         var dataHomePageFeed = homePageFeedTemplate(homePageFeed);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataHomePageFeed, "utf8"),
           "entry comment goes here"
         );
@@ -1041,7 +1057,7 @@ dat.push(`
         };
         var dataContentByLineItem = contentByLineItemTemplate(contentByLineItem);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataContentByLineItem, "utf8"),
           "entry comment goes here"
         );
@@ -1125,13 +1141,13 @@ dat.push(`
 `)
 
         contentAction = {
-          title:el.name,
+          title:el.name.split(' ').join("-"),
           data: dat.join(""),
           form:form.join("")
         };
         var dataContentAction = contentActionTemplate(contentAction);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataContentAction, "utf8"),
           "entry comment goes here"
         );
@@ -1218,7 +1234,7 @@ dat.push(`
         };
         var dataSpace = globalSettingTemplate(spaceData);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataSpace, "utf8"),
           "entry comment goes here"
         );
@@ -1308,7 +1324,7 @@ dat.push(`
         };
         var dataSpace = globalPageTemplate(spaceData);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataSpace, "utf8"),
           "entry comment goes here"
         );
@@ -1396,7 +1412,7 @@ dat.push(`
         };
         var dataContextMenu = contextMenuTemplate(contextData);
         zip.addFile(
-          `src/${el.name}.jsx`,
+          `src/${el.name.split(' ').join("-")}.jsx`,
           Buffer.from(dataContextMenu, "utf8"),
           "entry comment goes here"
         );

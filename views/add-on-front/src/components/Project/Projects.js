@@ -34,6 +34,8 @@ export default function Projects() {
   const navigate = useNavigate();
   const location = useLocation();
   const [project, setProject] = useState();
+  
+
 
 
   const override = css`
@@ -90,7 +92,17 @@ export default function Projects() {
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response);
+      toast.error("Your Project is Empty 😒", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        });
+      
     }
   };
 
@@ -122,6 +134,7 @@ export default function Projects() {
   }, []);
   return (
     <>
+    
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -131,7 +144,7 @@ export default function Projects() {
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover
+        pauseOnHover={false}
       />
 {
   project?(
@@ -310,7 +323,7 @@ export default function Projects() {
               >
                 <AllGlobalPage />
               </div>
-              {/* <div
+             <div
                 className="row"
                 style={{
                   justifyContent: "space-between",
@@ -332,6 +345,7 @@ export default function Projects() {
               >
                 <AllContextMenu />
               </div> 
+               {/* 
                <div
                 className="row"
                 style={{

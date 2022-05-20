@@ -4,8 +4,9 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import "react-toastify/dist/ReactToastify.css";
 import "../../styles/project.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function UpdateProject() {
@@ -44,6 +45,15 @@ export default function UpdateProject() {
       setProject(data.data.project);
     } catch (error) {
       console.log(error.response.data.error.message);
+      toast.error(error.response.data.error.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -80,6 +90,15 @@ export default function UpdateProject() {
       // console.log(data)
     } catch (error) {
       console.log(error.response.data.error.message);
+      toast.error(error.response.data.error.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -95,6 +114,17 @@ export default function UpdateProject() {
   return (
     <>
       <Modal open={open} onClose={onCloseModal} center>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
         <form className="sign-in-form">
           <h2 className="title">Update Project</h2>
           <div className="input-field">

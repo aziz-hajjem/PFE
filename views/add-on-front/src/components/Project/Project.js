@@ -7,6 +7,8 @@ import { useNavigate } from "react-router";
 import "../../styles/projects.css";
 import { css } from "@emotion/react";
 import ClockLoader from "react-spinners/ClockLoader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Project() {
   const navigate = useNavigate();
@@ -48,6 +50,15 @@ export default function Project() {
       // console.log(data)
     } catch (error) {
       console.log(error.response.data.error.message);
+      toast.error(error.response.data.error.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
   const getProjects = async () => {
@@ -72,24 +83,7 @@ export default function Project() {
   function refreshPage() {
     window.location.reload(false);
   }
-  const deleteProject = async (id) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      withCredentials: true,
-    };
-    try {
-      const { data } = await axios.delete(
-        `http://${process.env.REACT_APP_IP_ADDRESS}:5000/api/pfe/user/projects/${id}`,
-        config
-      );
-      navigate("/projects");
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+  
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       navigate("/auth");
@@ -102,6 +96,17 @@ export default function Project() {
 {projects?(
       <div className="Projects-container">
       <Modal open={open} onClose={onCloseModal} center>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
         <form className="sign-in-form">
           <h2 className="title">Add Project</h2>
           <div className="input-field">

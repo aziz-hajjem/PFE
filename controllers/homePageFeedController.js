@@ -6,6 +6,22 @@ exports.createHomePageFeed=async(req,res,next)=>{
         const { name, key, description, text,paramter,image,select,checkBox,tag} =
           req.body;
         const project = await Project.findById(req.params.id);
+        if (!name||!key) {
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "There is no Data 😞 ",
+            },
+          });
+        }
+        if(name===key){
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "Key should be diffrent with name , Please",
+            },
+          }); 
+        }
         const data={name,key,description};
         paramter&&(data.paramter=[...paramter]);
         select&&(data.select=[...select]);
@@ -45,6 +61,14 @@ exports.updateHomePageFeed = async (req, res, next) => {
     try {
       const {  name, key, description, text,paramter,image,select,checkBox,tag } =
         req.body;
+        if(name===key){
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "Key should be diffrent with name , Please",
+            },
+          }); 
+        }
         var project=await Project.findOne( {
           _id: req.params.id,
           macros: { $elemMatch: { _id: req.params.paramid } },

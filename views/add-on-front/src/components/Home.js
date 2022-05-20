@@ -33,7 +33,8 @@ export default function Home() {
     <article className="section-1">
 
       <div className="main-info">
-   <h1 className="home-title">More than just shorter links</h1>
+   <h1 className="home-title">More than just simple App</h1>
+   <br/>
         <p className="gray-p"> Build your Addon like never before and customize <br/> it.</p>
         <a className="cyan-btn" onClick={()=>navigate("/projects")}> Learn More</a>
       </div>
@@ -53,28 +54,33 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <h2 > Advanced Statistics</h2>
-      <p className="info">Track how your links are performing across the web with our
-        advanced statistics dashboard.</p>
+      <h2 > How to build your Addon ?</h2>
+      <p className="info">Build your Atlassian cloud apps with Forge in few steps.</p>
       <section className="section-3-blocks ">
 
         <div>
           <img src={iconbrandrecognition} alt=""/>
           <h2 style={{fontSize:"1.4rem",marginTop:"2rem"}}> Step 1</h2>
-          <p className="gray-p">Boost your brand recognition with each click. Generic links don’t
-            mean a thing. Branded links help instil confidence in your content.</p>
+          <p className="gray-p">- Go to " Projects " <br/>
+          - Create your own project <br/>
+           </p>
         </div>
         <div>
           <img src={icondetailedrecords} alt=""/>
           <h2 style={{fontSize:"1.4rem",marginTop:"2rem"}}>Step 2</h2>
-          <p className="gray-p">Gain insights into who is clicking your links. Knowing when and where
-            people engage with your content helps inform better decisions.</p>
+          <p className="gray-p">- Customize your Confluence <br/> UI kit components <br/>
+          - Click on " Generate " button <br/>
+          - Extract your project  </p>
         </div>
         <div>
           <img src={iconfullycustomizable }alt=""/>
           <h2 style={{fontSize:"1.4rem",marginTop:"2rem"}}>Step 3</h2>
-          <p className="gray-p"> Improve brand awareness and content discoverability through customizable
-            links, supercharging audience engagement.</p>
+          <p className="gray-p"> in your code run this commands : 
+          <br/>
+          - npm install <br/>
+          - forge register <br/>
+          - forge deploy <br/>
+          - forge install</p>
         </div>
       </section>
     </article>
@@ -82,8 +88,7 @@ export default function Home() {
 
       <div className="main-info">
    <h1 className="home-title">About us</h1>
-        <p className="gray-p"> Build your brand's recognition and get detailed insights
-          on how your links are performing.</p>
+        <p className="gray-p"> Build your Atlassian cloud apps with Forge Now ❤️.</p>
         <a className="cyan-btn" onClick={()=>navigate("/projects")}> Get Started</a>
       </div>
       <img src={back2} alt=""/>

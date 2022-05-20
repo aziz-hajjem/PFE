@@ -43,20 +43,6 @@ const macroSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  // categories: {
-  //   type: [String],
-  //   enum: [
-  //     "administration",
-  //     "communication",
-  //     "confluence content",
-  //     "Development",
-  //     "external content",
-  //     "media",
-  //     "navigation",
-  //     "reporting",
-  //     "visuals & images",
-  //   ],
-  // },
 
 
   paramter:{

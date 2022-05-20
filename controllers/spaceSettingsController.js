@@ -7,7 +7,23 @@ exports.createSpaceSettings=async(req,res,next)=>{
         const { name, key, description, text,paramter,image,select,checkBox,tag} =
           req.body;
         const project = await Project.findById(req.params.id);
+        if (!name||!key) {
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "There is no Data 😞 ",
+            },
+          });
+        }
         const data={name,key,description};
+        if(name===key){
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "Key should be diffrent with name , Please",
+            },
+          }); 
+        }
         paramter&&(data.paramter=[...paramter]);
         select&&(data.select=[...select]);
         checkBox&&(data.checkBox=[...checkBox]);
@@ -46,6 +62,14 @@ exports.updateSpaceSettings = async (req, res, next) => {
     try {
       const {  name, key, description, text,paramter,image,select,checkBox,tag } =
         req.body;
+        if(name===key){
+          return res.status(400).json({
+            error: {
+              status: "Fail",
+              message: "Key should be diffrent with name , Please",
+            },
+          }); 
+        }
         var project=await Project.findOne( {
           _id: req.params.id,
           spaceSettings: { $elemMatch: { _id: req.params.paramid } },

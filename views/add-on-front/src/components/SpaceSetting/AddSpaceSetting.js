@@ -6,6 +6,8 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import "../../styles/project.css";
 import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function SpaceSetting() {
   const [open, setOpen] = useState(false);
@@ -78,6 +80,15 @@ export default function SpaceSetting() {
       refreshPage();
     } catch (error) {
       console.log(error.response.data.error);
+      toast.error(error.response.data.error.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -92,6 +103,17 @@ export default function SpaceSetting() {
         </div>
       </div>
       <Modal open={open} onClose={onCloseModal} center>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
         <form className="sign-in-form">
           <h2 className="title">Add Space Setting </h2>
           <div className="input-field">
