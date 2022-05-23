@@ -345,7 +345,7 @@ export default function Projects() {
               >
                 <AllContextMenu />
               </div> 
-               {/* 
+               
                <div
                 className="row"
                 style={{
@@ -389,7 +389,7 @@ export default function Projects() {
                 }}
               >
                 <AllContentAction />
-              </div> */}
+              </div>
 
             </div>
           </div>

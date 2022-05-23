@@ -612,13 +612,13 @@ project.macros.map((el) => {
         `
         const defaultConfigColor=`
         <Select label="colors" name="Color" >
-        <Option defaultSelected label="red" value="red" />
-        <Option label="green" value="green" />
-        <Option label="blue" value="blue" />
-        <Option label="purple" value="purple" />
-        <Option label="yellow" value="yellow" />
-        <Option label="teal" value="teal" />
-        <Option label="red-light" value="red-light" />
+        <Option defaultSelected label="🔴 red" value="red" />
+        <Option label="🟢 green" value="green" />
+        <Option label="🔵 blue" value="blue" />
+        <Option label="🟣 purple" value="purple" />
+        <Option label="🟡 yellow" value="yellow" />
+        <Option label="🔵 teal" value="teal" />
+        <Option label="🎗️ red-light" value="red-light" />
       </Select>
       `
         el.paramter.find((el) => el === "User") &&

@@ -71,7 +71,7 @@ exports.updateGlobalPage = async (req, res, next) => {
         }
         var project=await Project.findOne( {
           _id: req.params.id,
-          macros: { $elemMatch: { _id: req.params.paramid } },
+          globalPages: { $elemMatch: { _id: req.params.paramid } },
         }, )
         const data={name,key}
         if(verif(project,data))

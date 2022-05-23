@@ -71,7 +71,7 @@ exports.updateContentByLineItem = async (req, res, next) => {
         }
         var project=await Project.findOne( {
           _id: req.params.id,
-          macros: { $elemMatch: { _id: req.params.paramid } },
+          contentByLineItems: { $elemMatch: { _id: req.params.paramid } },
         }, )
         const data={name,key}
         if(verif(project,data))
@@ -84,7 +84,7 @@ exports.updateContentByLineItem = async (req, res, next) => {
        project = await Project.findOneAndUpdate(
         {
           _id: req.params.id,
-          globalPages: { $elemMatch: { _id: req.params.paramid } },
+          contentByLineItems: { $elemMatch: { _id: req.params.paramid } },
         }, 
         {
           $set: {
