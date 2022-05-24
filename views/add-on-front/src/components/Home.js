@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import logoSpectrutm from "../img/logo.png";
 import logo from "../images/logo.png";
 import illustrationworking from "../images/illustration-working.svg"
 import iconbrandrecognition from "../images/icon-brand-recognition.svg"

@@ -12,7 +12,6 @@ import { MdLogout, MdSecurity, MdBuild, MdMenu } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
 import { GoSettings, GoProject } from "react-icons/go";
-import bg1 from "../img/bg1.jpg";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { useState, useEffect } from "react";
